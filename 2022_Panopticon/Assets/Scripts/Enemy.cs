@@ -36,7 +36,7 @@ public class Enemy : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log("스페이스");
+            //Debug.Log("스페이스");
             agent.isStopped = false;
             animator.SetBool("isRun", true);
         }
@@ -100,10 +100,15 @@ public class Enemy : MonoBehaviour
     public void playHurtAnim()
     {
         //animator.SetBool("isHurt", true);
+        agent.isStopped = false;
         animator.SetTrigger("isHurt");
-        
+        Invoke("playNav", 0.167f);
     }
 
+    void playNav()
+    {
+        agent.isStopped = true;
+    }
 
     void deadCheck()
     {

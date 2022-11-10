@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class tower : MonoBehaviour
 {
-    public int hp = 100;
+    public int hp = 10000;
     public GameObject towerHp;
 
     // Start is called before the first frame update
