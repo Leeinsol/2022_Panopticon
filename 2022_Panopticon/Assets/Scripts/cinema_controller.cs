@@ -16,14 +16,14 @@ public class cinema_controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey("1"))
+        if (PlayerPrefs.GetInt("isCinemaEnd")==1)
         {
             ShowMainCamera();
-        }    
-        if (Input.GetKey("2"))
+        }
+        else
         {
             ShowCinemaCamera();
-        }    
+        }
     }
 
     public void ShowMainCamera()

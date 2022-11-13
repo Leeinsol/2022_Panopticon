@@ -1,27 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class cinema_moving : MonoBehaviour
 {
+
     public float goalRotation = -30f;
     public float Speed = 1f;
 
-    bool isRotateleft = false;
-    bool isRotateRight = false;
-    bool isRotateMiddle = false;
-
+    public int[] cinemaNums;
     float time = 3f;
 
     float maximum = 60.0F;
     private float startTime;
 
-    int cinemaNum = 1;
+    int cinemaNum = 0;
+    int index = 0;
+
+
     // Start is called before the first frame update
     void Start()
     {
         startTime = Time.time;
-
+        cinemaNum = cinemaNums[0];
     }
 
     // Update is called once per frame
@@ -48,25 +50,46 @@ public class cinema_moving : MonoBehaviour
         //}
 
 
-        if (cinemaNum == 1)
+        if (cinemaNum == 0)
             moveRotateLeft();
 
-        if (cinemaNum == 2)
+        if (cinemaNum == 1)
         {
             moveRotateRight();
 
         }
 
-        if (cinemaNum == 3)
+        if (cinemaNum == 2)
         {
             moveRotateMiddle();
 
         }
-        if (cinemaNum == 4)
+        if (cinemaNum == 3)
         {
             zoomCamera();
 
         }
+
+
+        //if (cinemaNum == 1)
+        //    moveRotateLeft();
+
+        //if (cinemaNum == 2)
+        //{
+        //    moveRotateRight();
+
+        //}
+
+        //if (cinemaNum == 3)
+        //{
+        //    moveRotateMiddle();
+
+        //}
+        //if (cinemaNum == 4)
+        //{
+        //    zoomCamera();
+
+        //}
 
 
         //else if (isRotateleft)
@@ -99,8 +122,7 @@ public class cinema_moving : MonoBehaviour
 
         if (transform.localRotation == rot)
         {
-            isRotateleft = true;
-            cinemaNum++;
+            indexCheck();
         }
 
     }
@@ -111,9 +133,7 @@ public class cinema_moving : MonoBehaviour
         transform.localRotation = Quaternion.Slerp(transform.localRotation, rot, Time.deltaTime * Speed);
         if (transform.localRotation == rot)
         {
-            isRotateRight = true;
-            cinemaNum++;
-
+            indexCheck();
         }
     }
 
@@ -125,9 +145,7 @@ public class cinema_moving : MonoBehaviour
 
         if (transform.localRotation == rot)
         {
-            isRotateMiddle = true;
-            cinemaNum++;
-
+            indexCheck();
         }
     }
 
@@ -152,6 +170,27 @@ public class cinema_moving : MonoBehaviour
 
         //Debug.Log(transform.localPosition.y);
         //Debug.Log(transform.GetComponent<Camera>().fieldOfView);
+        if (transform.GetComponent<Camera>().fieldOfView == 10)
+        {
+            indexCheck();
+        }
+    }
+    void indexCheck()
+    {
+        if (index >= cinemaNums.Length - 1)
+        {
+            Invoke("loadTitle", 1.5f);
+            //ShowMainCamera();
+            return;
+        }
+        index++;
+        cinemaNum = cinemaNums[index];
 
+    }
+
+    void loadTitle()
+    {
+        PlayerPrefs.SetInt("isCinemaEnd", 1);
+        SceneManager.LoadScene("Title");
     }
 }
