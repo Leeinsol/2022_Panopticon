@@ -30,6 +30,7 @@ public class cinema_controller : MonoBehaviour
     {
         MainCamera.enabled = true;
         CinemaCamera.enabled = false;
+        //CinemaCamera.GetComponent<cinema_moving>().enabled = false;
     }
 
     public void ShowCinemaCamera()

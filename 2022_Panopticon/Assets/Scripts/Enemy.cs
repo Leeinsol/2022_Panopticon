@@ -6,7 +6,8 @@ using UnityEngine.AI;
 public class Enemy : MonoBehaviour
 {
     NavMeshAgent agent;
-
+    public RuntimeAnimatorController enemy_controller;
+    
     //[SerializeField]
     //Transform target;
 
@@ -22,10 +23,15 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         hp = maxHp;
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
-
+        if (PlayerPrefs.GetInt("isCinemaEnd") == 1)
+        {
+            animator.runtimeAnimatorController = enemy_controller;
+        }
+        
         agent.isStopped = true;
     }
 
@@ -35,6 +41,10 @@ public class Enemy : MonoBehaviour
         agent.SetDestination(targetPos);
 
         if (Input.GetKeyDown(KeyCode.Space))
+        {
+            GameObject.Find("CinemaCamera").GetComponent<cinema_moving>().isDoorOpen = true;
+        }
+        if (GameObject.Find("CinemaCamera").GetComponent<cinema_moving>().isDoorOpen)
         {
             //Debug.Log("스페이스");
             agent.isStopped = false;
@@ -48,6 +58,7 @@ public class Enemy : MonoBehaviour
         //animator.SetBool("isAttack", false);
         deadCheck();
 
+        
     }
 
     //private void OnTriggerEnter(Collider other)
@@ -116,6 +127,7 @@ public class Enemy : MonoBehaviour
         {
             //Debug.Log("hp 0");
             agent.isStopped = true;
+
             //Debug.Log(agent.isStopped);
             //animator.SetBool("isDie1", true);
             animator.SetTrigger("isDie");

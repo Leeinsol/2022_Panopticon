@@ -8,18 +8,26 @@ public class prisonDoor : MonoBehaviour
     public float rotationSpeed= 1f;
 
     bool isOpen = false;
+
     // Start is called before the first frame update
     void Start()
     {
-      
+        //isOpen=gameObject.Find("Camera").GetComponent<cinema_moving>().
+        //isOpen = transform.Find("CinemaCamera").GetComponent<cinema_moving>().isDoorOpen;
+        //isOpen = GameObject.Find("CinemaCamera").GetComponent<cinema_moving>().isDoorOpen;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        Quaternion rot = Quaternion.Euler(0, goalRotation, 0);
-        //Debug.Log("Open door");
-        transform.localRotation = Quaternion.Slerp(transform.localRotation, rot, Time.deltaTime * rotationSpeed);
+        if (GameObject.Find("CinemaCamera").GetComponent<cinema_moving>().isDoorOpen)
+        {
+            Quaternion rot = Quaternion.Euler(0, goalRotation, 0);
+            //Debug.Log("Open door");
+            transform.localRotation = Quaternion.Slerp(transform.localRotation, rot, Time.deltaTime * rotationSpeed);
+
+        }
 
         //if (Input.GetKeyDown(KeyCode.Space))
         //{

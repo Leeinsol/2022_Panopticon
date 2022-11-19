@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
 
 public class cinema_moving : MonoBehaviour
 {
@@ -9,21 +10,37 @@ public class cinema_moving : MonoBehaviour
     public float goalRotation = -30f;
     public float Speed = 1f;
 
-    public int[] cinemaNums;
-    float time = 3f;
+    public float doorGoalRotation = -75f;
+    public float doorRotationSpeed = 1f;
 
+    public int[] cinemaNums;
+    float timer15;
+    float timer30;
+
+    float Maxtimer15 = 1.5f;
+    float Maxtimer30 = 3f;
+    
     float maximum = 60.0F;
     private float startTime;
 
     int cinemaNum = 0;
     int index = 0;
 
-
+    public bool isDoorOpen = false;
+    
     // Start is called before the first frame update
     void Start()
     {
+        isDoorOpen = false;
+        timer15 = Maxtimer15;
+        timer30 = Maxtimer30;
         startTime = Time.time;
         cinemaNum = cinemaNums[0];
+        if(PlayerPrefs.GetInt("isCinemaEnd") == 1)
+        {
+            Array.Resize(ref cinemaNums, 0);
+            //isDoorOpen = false;
+        }
     }
 
     // Update is called once per frame
@@ -48,49 +65,28 @@ public class cinema_moving : MonoBehaviour
         //    zoomCamera();
 
         //}
-
-
-        if (cinemaNum == 0)
-            moveRotateLeft();
-
-        if (cinemaNum == 1)
+        if (PlayerPrefs.GetInt("isCinemaEnd") == 0)
         {
-            moveRotateRight();
+            if (cinemaNum == 0)
+                moveRotateLeft();
 
+            if (cinemaNum == 1)
+                moveRotateRight();
+
+            if (cinemaNum == 2)
+                moveRotateMiddle();
+
+            if (cinemaNum == 3)
+                zoomCamera();
+
+            if (cinemaNum == 4)
+                setCameraPosition();
+
+            if (cinemaNum == 5)
+                doorOpen();
         }
 
-        if (cinemaNum == 2)
-        {
-            moveRotateMiddle();
-
-        }
-        if (cinemaNum == 3)
-        {
-            zoomCamera();
-
-        }
-
-
-        //if (cinemaNum == 1)
-        //    moveRotateLeft();
-
-        //if (cinemaNum == 2)
-        //{
-        //    moveRotateRight();
-
-        //}
-
-        //if (cinemaNum == 3)
-        //{
-        //    moveRotateMiddle();
-
-        //}
-        //if (cinemaNum == 4)
-        //{
-        //    zoomCamera();
-
-        //}
-
+            
 
         //else if (isRotateleft)
         //{
@@ -160,20 +156,28 @@ public class cinema_moving : MonoBehaviour
         //transform.GetComponent<Camera>().fieldOfView = Mathf.SmoothStep(60, 10, Time.deltaTime * 100.0f);
         //float FOVtime = (Time.time - startTime) / time;
         
-        time = time - Time.deltaTime;
-        Debug.Log(time);
-        transform.GetComponent<Camera>().fieldOfView = Mathf.Lerp(10, 60, time*0.33f);
+        timer15 = timer15 - Time.deltaTime;
+        transform.GetComponent<Camera>().fieldOfView = Mathf.Lerp(10, 60, timer15 * 0.33f);
 
 
         Vector3 destination = new Vector3(transform.position.x, 19.4f, transform.position.z);
-        transform.localPosition = Vector3.MoveTowards(transform.position, destination, 0.001f);
+        transform.localPosition = Vector3.MoveTowards(transform.position, destination, 0.004f);
 
         //Debug.Log(transform.localPosition.y);
         //Debug.Log(transform.GetComponent<Camera>().fieldOfView);
         if (transform.GetComponent<Camera>().fieldOfView == 10)
         {
-            indexCheck();
+            timer30 = timer30 - Time.deltaTime;
+
+            if (timer30 < 0)
+            {
+                timer15 = Maxtimer15;
+                timer30 = Maxtimer30;
+                indexCheck();
+            }
         }
+
+
     }
     void indexCheck()
     {
@@ -192,5 +196,31 @@ public class cinema_moving : MonoBehaviour
     {
         PlayerPrefs.SetInt("isCinemaEnd", 1);
         SceneManager.LoadScene("Title");
+    }
+
+    void setCameraPosition()
+    {
+        transform.position = new Vector3(transform.position.x, 24f, -23f);
+        //transform.GetComponent<Camera>().fieldOfView = 60;
+        timer30 = timer30 - Time.deltaTime;
+        //Debug.Log(timer30);
+        if (timer30 < 0)
+        {
+            timer30 = Maxtimer30;
+            indexCheck();
+        }
+    }
+    void doorOpen()
+    {
+        transform.position = new Vector3(transform.position.x, 19.4f, 0f);
+
+        isDoorOpen = true;
+        
+        timer30 = timer30 - Time.deltaTime;
+        if(timer30 < 0)
+        {
+            timer30 = Maxtimer30;
+            indexCheck();
+        }
     }
 }

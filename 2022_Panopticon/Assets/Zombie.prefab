@@ -42,7 +42,7 @@ PrefabInstance:
     - target: {fileID: -6057140222963153312, guid: 8f7380da49034cd488ddff94b1ac35d1, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 3c91e6a66b39456499c367f71de794c3, type: 2}
+      objectReference: {fileID: 9100000, guid: 8e8d6a81b782bf84f83649d5e678ff32, type: 2}
     - target: {fileID: -5649415677901578671, guid: 8f7380da49034cd488ddff94b1ac35d1, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
@@ -173,7 +173,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 8f7380da49034cd488ddff94b1ac35d1, type: 3}
       propertyPath: m_Name
-      value: Zombie1 (6)
+      value: Zombie
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 8f7380da49034cd488ddff94b1ac35d1, type: 3}
       propertyPath: m_IsActive
@@ -376,7 +376,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!136 &255661460
 CapsuleCollider:
@@ -426,6 +426,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62fce57f555c4504aa51f47b640c4e97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  enemy_controller: {fileID: 9100000, guid: 3c91e6a66b39456499c367f71de794c3, type: 2}
   maxHp: 5
   hp: 5
