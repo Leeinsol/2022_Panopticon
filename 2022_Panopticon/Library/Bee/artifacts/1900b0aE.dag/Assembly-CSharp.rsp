@@ -376,6 +376,7 @@
 "Assets/Scripts/prisonDoor.cs"
 "Assets/Scripts/title.cs"
 "Assets/Scripts/tower.cs"
+"Assets/Simple Camera Controller/Scripts/Camera_Controller.cs"
 "Assets/SirenRotate.cs"
 "Assets/Travis Game Assets/Hit Impact Effects/Demo Scene/Scripts/HitImpactEffectsPreview.cs"
 -langversion:9.0

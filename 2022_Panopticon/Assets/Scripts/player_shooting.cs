@@ -20,7 +20,11 @@ public class player_shooting : MonoBehaviour
 
     public int maxBulletNum = 10;
     int bulletNum;
-    public float time = 2;
+    public float maxReloadTime = 5f;
+    float time;
+    public float fireRate = 0.5f;
+    float fireTimer;
+    
 
     //Transform firePos;
 
@@ -28,7 +32,7 @@ public class player_shooting : MonoBehaviour
     void Start()
     {
         bulletNum = maxBulletNum;
-        cam = transform.Find("Main Camera").GetComponent<Camera>();
+        cam = GameObject.Find("Main Camera").GetComponent<Camera>();
         //center = new Vector3(cam.pixelWidth / 2, cam.pixelHeight / 2, 0);
 
         
@@ -36,6 +40,7 @@ public class player_shooting : MonoBehaviour
         animator = GetComponent<Animator>();
      
         timer.SetActive(false);
+        time = maxReloadTime;
         timer.GetComponent<Slider>().maxValue = time;
     }
 
@@ -52,33 +57,45 @@ public class player_shooting : MonoBehaviour
         bulletText.text = "ÃÑ¾Ë ¼ö: " + bulletNum;
         //Debug.DrawRay(this.transform.position+Vector3.up, Vector3.forward * 15, Color.red);
 
-        if (bulletNum > 0)
+
+        if (Input.GetMouseButton(0))
         {
-            if (Input.GetMouseButtonDown(0))
+            if (bulletNum > 0)
             {
                 Fire();
             }
-            else
+            if (fireTimer < fireRate)
             {
-                animator.SetBool("isShoot", false);
+                fireTimer += Time.deltaTime;
             }
         }
-        else
+        if (Input.GetMouseButtonDown(0))
         {
-            timer.SetActive(true);
+            fireTimer = fireRate;
+
+        }
+
+        if (bulletNum == 0)
+        {
             animator.SetBool("isShoot", false);
+            timer.SetActive(true);
             reloadBullet();
         }
 
-        
             //Instantiate(bullet, firePos.position, Quaternion.Euler(0,0,0));
             //GameObject bullet_clone = Instantiate(bulletFactory);
             //bulletFactory.transform.position=
 
-        
+
     }
     void Fire()
     {
+        if (fireTimer < fireRate)
+        {
+            animator.SetBool("isShoot", false);
+            return;
+        }
+
         bulletNum--;
         //Debug.Log("Bullet Num: "+ bulletNum);
         Debug.Log("Fire");
@@ -102,7 +119,10 @@ public class player_shooting : MonoBehaviour
             //Debug.Log(ob.GetComponent<Enemy>().hp);
             //Destroy(hitInfo.collider.gameObject);
         }
+
+        fireTimer = 0f;
     }
+
 
     void reloadBullet()
     {
@@ -116,7 +136,7 @@ public class player_shooting : MonoBehaviour
             bulletNum = maxBulletNum;
             Debug.Log("reloadBullet");
             timer.SetActive(false);
-            time = 2;
+            time = maxReloadTime;
         }
     }
 }

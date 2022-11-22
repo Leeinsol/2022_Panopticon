@@ -111,14 +111,14 @@ public class Enemy : MonoBehaviour
     public void playHurtAnim()
     {
         //animator.SetBool("isHurt", true);
-        agent.isStopped = false;
+        agent.isStopped = true;
         animator.SetTrigger("isHurt");
         Invoke("playNav", 0.167f);
     }
 
     void playNav()
     {
-        agent.isStopped = true;
+        agent.isStopped = false;
     }
 
     void deadCheck()
@@ -127,7 +127,7 @@ public class Enemy : MonoBehaviour
         {
             //Debug.Log("hp 0");
             agent.isStopped = true;
-
+            transform.GetComponent<CapsuleCollider>().enabled = false;
             //Debug.Log(agent.isStopped);
             //animator.SetBool("isDie1", true);
             animator.SetTrigger("isDie");
