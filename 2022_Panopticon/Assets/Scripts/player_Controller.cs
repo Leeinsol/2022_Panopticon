@@ -29,6 +29,13 @@ public class player_Controller : MonoBehaviour
     float Timer;
 
     bool iswalking = false;
+    bool isSprinting = false;
+
+    float stamina = 5;
+    float maxStamina = 5;
+
+    Rect staminaRect;
+    Texture2D StaminaTexture;
 
     // Start is called before the first frame update
     void Start()
@@ -37,6 +44,13 @@ public class player_Controller : MonoBehaviour
         myRigid = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         Pos = camHandle.localPosition;
+
+        staminaRect = new Rect(Screen.width / 10, Screen.height * 9 / 10,
+            Screen.width / 3, Screen.height / 50);
+        StaminaTexture = new Texture2D(1, 1);
+        StaminaTexture.SetPixel(0, 0, Color.white);
+        StaminaTexture.Apply();
+
     }
 
     // Update is called once per frame
@@ -46,6 +60,20 @@ public class player_Controller : MonoBehaviour
         CameraRotation();   
         MoveFloor();
         heightFOV();
+        walkshake();
+
+        if(iswalking && Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            isSprinting = true;
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            isSprinting = false;
+        }
+
+
+        Sprint();
+        Debug.Log(stamina);
     }
 
     private void Move()
@@ -60,7 +88,7 @@ public class player_Controller : MonoBehaviour
         if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical")!=0)
         {
             Vector3 _velocity;
-            if (Input.GetKey(KeyCode.LeftShift))
+            if(isSprinting)
             {
                 _velocity = (_moveHorizontal + _moveVertical).normalized * sprintSpeed;
 
@@ -81,11 +109,37 @@ public class player_Controller : MonoBehaviour
         }
         else
         {
+            iswalking = false;
             animator.SetBool("isRun", false);
         }
 
     }
 
+
+    void Sprint()
+    {
+        if (isSprinting)
+        {
+            stamina -= Time.deltaTime;
+            if (stamina < 0)
+            {
+                stamina = 0;
+                isSprinting = false;
+
+            }
+        }
+        else if(stamina < maxStamina){
+            stamina += Time.deltaTime;
+        }
+
+    }
+    private void OnGUI()
+    {
+        float ratio = stamina / maxStamina;
+        float rectWidth = ratio * Screen.width / 3;
+        staminaRect.width = rectWidth;
+        GUI.DrawTexture(staminaRect, StaminaTexture);
+    }
 
 
     private void CameraRotation()
@@ -116,17 +170,17 @@ public class player_Controller : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
-            SetCameraFOV(60f);
+            //SetCameraFOV(60f);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             transform.position = new Vector3(transform.position.x, 7.5f, transform.position.z);
-            SetCameraFOV(65f);
+            //SetCameraFOV(65f);
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             transform.position = new Vector3(transform.position.x, 15f, transform.position.z);
-            SetCameraFOV(70f);
+            //SetCameraFOV(70f);
         }
     } 
 
@@ -141,25 +195,30 @@ public class player_Controller : MonoBehaviour
         theCamera.fieldOfView = fov;
     }
 
-    //void walkshake()
-    //{
-    //    if (iswalking)
-    //    {
-    //        Timer += Time.deltaTime * 10f;
-    //        camHandle.localPosition = new Vector3(Pos.x + Mathf.Sin(Timer) * Amount.x,
-    //            Pos.y + Mathf.Sin(Timer) * Amount.y,
-    //            Pos.z + Mathf.Sin(Timer) * Amount.z);
-    //    }
-    //    else
-    //    {
-    //        Timer = 0;
-    //        camHandle.localPosition = new Vector3(Mathf.Lerp(joint.localPosition.x, 
-    //            jointOriginalPos.x, Time.deltaTime * bobSpeed), 
-    //            Mathf.Lerp(joint.localPosition.y, jointOriginalPos.y, 
-    //            Time.deltaTime * bobSpeed), Mathf.Lerp(joint.localPosition.z, 
-    //            jointOriginalPos.z, Time.deltaTime * bobSpeed));
+    void walkshake()
+    {
+        if (iswalking)
+        {
+            Timer += Time.deltaTime * 7f;
+            camHandle.localPosition = new Vector3(Pos.x + Mathf.Sin(Timer) * Amount.x,
+                Pos.y + Mathf.Sin(Timer) * Amount.y,
+                Pos.z + Mathf.Sin(Timer) * Amount.z);
+        }
+        else
+        {
+            Timer = 0;
+            //camHandle.localPosition = new Vector3(Mathf.Lerp(joint.localPosition.x,
+            //    jointOriginalPos.x, Time.deltaTime * bobSpeed),
+            //    Mathf.Lerp(joint.localPosition.y, jointOriginalPos.y,
+            //    Time.deltaTime * bobSpeed), Mathf.Lerp(joint.localPosition.z,
+            //    jointOriginalPos.z, Time.deltaTime * bobSpeed));
 
-    //    }
-    //}
+            camHandle.localPosition = new Vector3(Mathf.Lerp(camHandle.localPosition.x, Pos.x, Time.deltaTime * 7f),
+                Mathf.Lerp(camHandle.localPosition.y, Pos.y, Time.deltaTime * 10f),
+                Mathf.Lerp(camHandle.localPosition.z, Pos.z, Time.deltaTime * 10f));
+
+
+        }
+    }
 }
 
