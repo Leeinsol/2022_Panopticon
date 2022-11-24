@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class player_Controller : MonoBehaviour
 {
@@ -22,8 +23,8 @@ public class player_Controller : MonoBehaviour
     private Camera theCamera;
     private Rigidbody myRigid;
 
-    public Transform camHandle;
-    public Vector3 Amount = new Vector3(.15f, .05f, 0f);
+    Transform camHandle;
+    public Vector3 WalkShakeAmount = new Vector3(.15f, .05f, 0f);
     Animator animator;
     Vector3 Pos;
     float Timer;
@@ -34,23 +35,15 @@ public class player_Controller : MonoBehaviour
     float stamina = 5;
     float maxStamina = 5;
 
-    Rect staminaRect;
-    Texture2D StaminaTexture;
-
+    public Slider StaminaBar;
     // Start is called before the first frame update
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked; 
         myRigid = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+        camHandle = transform.Find("CamHandle");
         Pos = camHandle.localPosition;
-
-        staminaRect = new Rect(Screen.width / 10, Screen.height * 9 / 10,
-            Screen.width / 3, Screen.height / 50);
-        StaminaTexture = new Texture2D(1, 1);
-        StaminaTexture.SetPixel(0, 0, Color.white);
-        StaminaTexture.Apply();
-
     }
 
     // Update is called once per frame
@@ -73,7 +66,8 @@ public class player_Controller : MonoBehaviour
 
 
         Sprint();
-        Debug.Log(stamina);
+        StaminaUI();
+        //Debug.Log(stamina);
     }
 
     private void Move()
@@ -133,13 +127,14 @@ public class player_Controller : MonoBehaviour
         }
 
     }
-    private void OnGUI()
+
+    void StaminaUI()
     {
         float ratio = stamina / maxStamina;
-        float rectWidth = ratio * Screen.width / 3;
-        staminaRect.width = rectWidth;
-        GUI.DrawTexture(staminaRect, StaminaTexture);
+
+        StaminaBar.value = ratio;
     }
+
 
 
     private void CameraRotation()
@@ -200,18 +195,13 @@ public class player_Controller : MonoBehaviour
         if (iswalking)
         {
             Timer += Time.deltaTime * 7f;
-            camHandle.localPosition = new Vector3(Pos.x + Mathf.Sin(Timer) * Amount.x,
-                Pos.y + Mathf.Sin(Timer) * Amount.y,
-                Pos.z + Mathf.Sin(Timer) * Amount.z);
+            camHandle.localPosition = new Vector3(Pos.x + Mathf.Sin(Timer) * WalkShakeAmount.x,
+                Pos.y + Mathf.Sin(Timer) * WalkShakeAmount.y,
+                Pos.z + Mathf.Sin(Timer) * WalkShakeAmount.z);
         }
         else
         {
             Timer = 0;
-            //camHandle.localPosition = new Vector3(Mathf.Lerp(joint.localPosition.x,
-            //    jointOriginalPos.x, Time.deltaTime * bobSpeed),
-            //    Mathf.Lerp(joint.localPosition.y, jointOriginalPos.y,
-            //    Time.deltaTime * bobSpeed), Mathf.Lerp(joint.localPosition.z,
-            //    jointOriginalPos.z, Time.deltaTime * bobSpeed));
 
             camHandle.localPosition = new Vector3(Mathf.Lerp(camHandle.localPosition.x, Pos.x, Time.deltaTime * 7f),
                 Mathf.Lerp(camHandle.localPosition.y, Pos.y, Time.deltaTime * 10f),
