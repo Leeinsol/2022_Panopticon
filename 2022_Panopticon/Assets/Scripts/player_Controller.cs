@@ -36,6 +36,11 @@ public class player_Controller : MonoBehaviour
     float maxStamina = 5;
 
     public Slider StaminaBar;
+    RaycastHit Hit;
+
+    public bool isGround = false;
+
+    float jumpForce = 5f;
     // Start is called before the first frame update
     void Start()
     {
@@ -67,6 +72,9 @@ public class player_Controller : MonoBehaviour
 
         Sprint();
         StaminaUI();
+        checkGround();
+        Jump();
+
         //Debug.Log(stamina);
     }
 
@@ -208,6 +216,58 @@ public class player_Controller : MonoBehaviour
                 Mathf.Lerp(camHandle.localPosition.z, Pos.z, Time.deltaTime * 10f));
 
 
+        }
+    }
+
+    void checkGround()
+    {
+
+        //CapsuleCollider capsuleCollider = transform.GetComponent<CapsuleCollider>();
+        ////Debug.Log(capsuleCollider.bounds.extents.y);
+        ////isGround = Physics.Raycast(transform.position, Vector3.down, capsuleCollider.bounds.extents.y+ 1.5f); ;
+        //isGround = Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 1f);
+        //Debug.Log(isGround);
+        //Debug.DrawRay(transform.position, Vector3.down, Color.red) ;
+
+
+        //Vector3 origin = new Vector3(transform.position.x, transform.position.y - (transform.localScale.y * .5f), transform.position.z);
+        //Vector3 direction = transform.TransformDirection(Vector3.down);
+        //float distance = .75f;
+
+        //if (Physics.Raycast(origin, direction, out RaycastHit hit, distance))
+        //{
+        //    Debug.DrawRay(origin, direction * distance, Color.red);
+        //    isGround = true;
+        //}
+        //else
+        //{
+        //    isGround = false;
+        //}
+
+        //RaycastHit hit;
+        RaycastHit hitInfo = new RaycastHit();
+
+        Ray landingRay = new Ray(transform.position, Vector3.down);
+        Debug.DrawRay(landingRay.origin, landingRay.direction * 10f, Color.red);
+        if (Physics.Raycast(landingRay, out hitInfo))
+        {
+            Debug.Log(hitInfo.collider.name);
+            if (hitInfo.collider == null)
+            {
+                isGround = true;
+            }
+            else
+            {
+                isGround = false;
+            }
+        }
+    }
+
+    void Jump()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) )
+        {
+            myRigid.velocity = transform.up * jumpForce;
         }
     }
 }

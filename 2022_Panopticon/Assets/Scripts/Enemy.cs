@@ -40,10 +40,10 @@ public class Enemy : MonoBehaviour
     {
         agent.SetDestination(targetPos);
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            GameObject.Find("CinemaCamera").GetComponent<cinema_moving>().isDoorOpen = true;
-        }
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    GameObject.Find("CinemaCamera").GetComponent<cinema_moving>().isDoorOpen = true;
+        //}
         if (GameObject.Find("CinemaCamera").GetComponent<cinema_moving>().isDoorOpen)
         {
             //Debug.Log("스페이스");
