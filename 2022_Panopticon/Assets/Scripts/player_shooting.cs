@@ -96,17 +96,19 @@ public class player_shooting : MonoBehaviour
             return;
         }
 
-        bulletNum--;
         //Debug.Log("Bullet Num: "+ bulletNum);
         Debug.Log("Fire");
         Ray ray = new Ray(cam.transform.position, cam.transform.forward);
         RaycastHit hitInfo = new RaycastHit();
+        bulletNum--;
 
         animator.SetBool("isShoot", true);
         Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red,2f);
 
         if (Physics.Raycast(ray, out hitInfo))
         {
+            //if (hitInfo.collider.name == "Plane") return;
+
             bulletEffect.transform.position = hitInfo.point;
             bulletEffect.transform.forward = hitInfo.normal;
             Debug.Log("ÃÑ ¸ÂÀ½"+hitInfo.collider.gameObject.name);

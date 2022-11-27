@@ -10,6 +10,9 @@ public class player_Controller : MonoBehaviour
     
     [SerializeField]
     private float sprintSpeed;
+    
+    [SerializeField]
+    private float crouchSpeed;
 
 
     [SerializeField]
@@ -31,6 +34,7 @@ public class player_Controller : MonoBehaviour
 
     bool iswalking = false;
     bool isSprinting = false;
+    bool isCrouch = false;
 
     float stamina = 5;
     float maxStamina = 5;
@@ -41,6 +45,19 @@ public class player_Controller : MonoBehaviour
     public bool isGround = false;
 
     float jumpForce = 5f;
+
+    public float groundCheckDistance;
+    float bufferCheckDistance = 0.1f;
+
+    public string LayerName;
+
+    float nowSpeed;
+    public float nowHeight;
+    float moveHeight;
+
+    public float crouchHeight;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -49,6 +66,10 @@ public class player_Controller : MonoBehaviour
         animator = GetComponent<Animator>();
         camHandle = transform.Find("CamHandle");
         Pos = camHandle.localPosition;
+        nowSpeed = walkSpeed;
+
+        moveHeight = theCamera.transform.localPosition.y;
+        nowHeight = moveHeight;
     }
 
     // Update is called once per frame
@@ -60,20 +81,34 @@ public class player_Controller : MonoBehaviour
         heightFOV();
         walkshake();
 
-        if(iswalking && Input.GetKeyDown(KeyCode.LeftShift))
+        if(Input.GetKeyDown(KeyCode.LeftShift) && iswalking)
         {
+            nowSpeed = sprintSpeed;
             isSprinting = true;
         }
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
+            nowSpeed = walkSpeed;
             isSprinting = false;
         }
 
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            nowSpeed = crouchSpeed;
+            isCrouch = true;
+        }
+        if (Input.GetKeyUp(KeyCode.LeftControl))
+        {
+            nowSpeed = crouchSpeed;
+            isCrouch = false;
+        }
+       
 
         Sprint();
+        Crouch();
         StaminaUI();
-        checkGround();
         Jump();
+        //Jump();
 
         //Debug.Log(stamina);
     }
@@ -90,16 +125,19 @@ public class player_Controller : MonoBehaviour
         if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical")!=0)
         {
             Vector3 _velocity;
-            if(isSprinting)
-            {
-                _velocity = (_moveHorizontal + _moveVertical).normalized * sprintSpeed;
+            _velocity = (_moveHorizontal + _moveVertical).normalized * nowSpeed;
+            transform.localScale = new Vector3(transform.localScale.x, moveHeight, transform.localScale.z);
 
-            }
-            else
-            {
-                _velocity = (_moveHorizontal + _moveVertical).normalized * walkSpeed;
+            //if (isSprinting)
+            //{
+            //    _velocity = (_moveHorizontal + _moveVertical).normalized * sprintSpeed;
 
-            }
+            //}
+            //else
+            //{
+            //    _velocity = (_moveHorizontal + _moveVertical).normalized * walkSpeed;
+
+            //}
             myRigid.MovePosition(transform.position + _velocity * Time.deltaTime);
             animator.SetBool("isRun", true);
             iswalking = true;
@@ -132,6 +170,34 @@ public class player_Controller : MonoBehaviour
         }
         else if(stamina < maxStamina){
             stamina += Time.deltaTime;
+        }
+
+    }
+
+
+    void Crouch()
+    {
+        if (isCrouch)
+        {
+            nowSpeed = crouchSpeed;
+            nowHeight = crouchHeight;
+            transform.localScale = new Vector3(transform.localScale.x, nowHeight, transform.localScale.z);
+            //float center = crouchHeight / 2;
+            //GetComponent<CapsuleCollider>().height = Mathf.Lerp(GetComponent<CapsuleCollider>().height, crouchHeight, 0.1f);
+            //GetComponent<CapsuleCollider>().center = Vector3.Lerp(GetComponent<CapsuleCollider>().center, new Vector3(0, center, 0), 0.3f);
+
+        }
+        else
+        {
+            nowSpeed = walkSpeed;
+            nowHeight = moveHeight;
+            Debug.Log("move: " + moveHeight);
+            Debug.Log("now: " + nowHeight);
+            transform.localScale = new Vector3(transform.localScale.x, nowHeight, transform.localScale.z);
+            //float center = moveHeight;
+            //GetComponent<CapsuleCollider>().height = Mathf.Lerp(GetComponent<CapsuleCollider>().height, nowHeight, 0.1f);
+            //GetComponent<CapsuleCollider>().center = Vector3.Lerp(GetComponent<CapsuleCollider>().center, new Vector3(0, 0, 0), 0.3f);
+
         }
 
     }
@@ -219,7 +285,7 @@ public class player_Controller : MonoBehaviour
         }
     }
 
-    void checkGround()
+    void Jump()
     {
 
         //CapsuleCollider capsuleCollider = transform.GetComponent<CapsuleCollider>();
@@ -245,30 +311,41 @@ public class player_Controller : MonoBehaviour
         //}
 
         //RaycastHit hit;
-        RaycastHit hitInfo = new RaycastHit();
+        //RaycastHit hitInfo = new RaycastHit();
 
-        Ray landingRay = new Ray(transform.position, Vector3.down);
-        Debug.DrawRay(landingRay.origin, landingRay.direction * 10f, Color.red);
-        if (Physics.Raycast(landingRay, out hitInfo))
+        //Ray landingRay = new Ray(transform.position, Vector3.down);
+        //Debug.DrawRay(landingRay.origin, landingRay.direction * 10f, Color.red);
+        //if (Physics.Raycast(landingRay, out hitInfo))
+        //{
+        //    Debug.Log(hitInfo.collider.name);
+        //    if (hitInfo.collider == null)
+        //    {
+        //        isGround = true;
+        //    }
+        //    else
+        //    {
+        //        isGround = false;
+        //    }
+        //}
+
+
+        Debug.Log("groundcheck");
+        groundCheckDistance = (GetComponent<CapsuleCollider>().height / 2) + bufferCheckDistance;
+        if (Input.GetKeyDown(KeyCode.Space) && isGround)
         {
-            Debug.Log(hitInfo.collider.name);
-            if (hitInfo.collider == null)
-            {
-                isGround = true;
-            }
-            else
-            {
-                isGround = false;
-            }
+            GetComponent<Rigidbody>().AddForce(transform.up * 3, ForceMode.Impulse);
         }
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, -transform.up, out hit, groundCheckDistance, 1 << LayerMask.NameToLayer(LayerName)))
+        {
+            isGround = true;
+        }
+        else
+        {
+            isGround = false;
+        }
+
     }
 
-    void Jump()
-    {
-        if (Input.GetKeyDown(KeyCode.Space) )
-        {
-            myRigid.velocity = transform.up * jumpForce;
-        }
-    }
 }
 

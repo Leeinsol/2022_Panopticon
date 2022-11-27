@@ -374,6 +374,7 @@
 "Assets/Scripts/player_Controller.cs"
 "Assets/Scripts/player_shooting.cs"
 "Assets/Scripts/prisonDoor.cs"
+"Assets/Scripts/test.cs"
 "Assets/Scripts/title.cs"
 "Assets/Scripts/tower.cs"
 "Assets/Simple Camera Controller/Scripts/Camera_Controller.cs"
