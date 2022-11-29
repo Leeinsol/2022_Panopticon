@@ -160,8 +160,10 @@ public class cinema_moving : MonoBehaviour
         transform.GetComponent<Camera>().fieldOfView = Mathf.Lerp(10, 60, timer15 * 0.33f);
 
 
-        Vector3 destination = new Vector3(transform.position.x, 19.4f, transform.position.z);
-        transform.localPosition = Vector3.MoveTowards(transform.position, destination, 0.004f);
+        Vector3 destination = new Vector3(transform.position.x, 19.7f, transform.position.z);
+        Debug.Log(destination);
+        //transform.localPosition = Vector3.MoveTowards(transform.position, destination, 0.004f);
+        transform.localPosition =destination;
 
         //Debug.Log(transform.localPosition.y);
         //Debug.Log(transform.GetComponent<Camera>().fieldOfView);

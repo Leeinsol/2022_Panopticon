@@ -33,7 +33,7 @@ public class player_Controller : MonoBehaviour
     float Timer;
 
     bool iswalking = false;
-    bool isSprinting = false;
+    public bool isSprinting = false;
     bool isCrouch = false;
 
     float stamina = 5;
@@ -51,7 +51,7 @@ public class player_Controller : MonoBehaviour
 
     public string LayerName;
 
-    float nowSpeed;
+    public float nowSpeed;
     public float nowHeight;
     float moveHeight;
 
@@ -83,7 +83,6 @@ public class player_Controller : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.LeftShift) && iswalking)
         {
-            nowSpeed = sprintSpeed;
             isSprinting = true;
         }
         if (Input.GetKeyUp(KeyCode.LeftShift))
@@ -99,7 +98,7 @@ public class player_Controller : MonoBehaviour
         }
         if (Input.GetKeyUp(KeyCode.LeftControl))
         {
-            nowSpeed = crouchSpeed;
+            nowSpeed = walkSpeed;
             isCrouch = false;
         }
        
@@ -160,6 +159,7 @@ public class player_Controller : MonoBehaviour
     {
         if (isSprinting)
         {
+            nowSpeed = sprintSpeed;
             stamina -= Time.deltaTime;
             if (stamina < 0)
             {
@@ -179,7 +179,7 @@ public class player_Controller : MonoBehaviour
     {
         if (isCrouch)
         {
-            nowSpeed = crouchSpeed;
+            //nowSpeed = crouchSpeed;
             nowHeight = crouchHeight;
             transform.localScale = new Vector3(transform.localScale.x, nowHeight, transform.localScale.z);
             //float center = crouchHeight / 2;
@@ -189,10 +189,10 @@ public class player_Controller : MonoBehaviour
         }
         else
         {
-            nowSpeed = walkSpeed;
+            //nowSpeed = walkSpeed;
             nowHeight = moveHeight;
-            Debug.Log("move: " + moveHeight);
-            Debug.Log("now: " + nowHeight);
+            //Debug.Log("move: " + moveHeight);
+            //Debug.Log("now: " + nowHeight);
             transform.localScale = new Vector3(transform.localScale.x, nowHeight, transform.localScale.z);
             //float center = moveHeight;
             //GetComponent<CapsuleCollider>().height = Mathf.Lerp(GetComponent<CapsuleCollider>().height, nowHeight, 0.1f);
@@ -238,17 +238,17 @@ public class player_Controller : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
+            transform.position = new Vector3(transform.position.x, 1.5f, transform.position.z);
             //SetCameraFOV(60f);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            transform.position = new Vector3(transform.position.x, 7.5f, transform.position.z);
+            transform.position = new Vector3(transform.position.x, 9f, transform.position.z);
             //SetCameraFOV(65f);
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            transform.position = new Vector3(transform.position.x, 15f, transform.position.z);
+            transform.position = new Vector3(transform.position.x, 16.5f, transform.position.z);
             //SetCameraFOV(70f);
         }
     } 
@@ -329,11 +329,11 @@ public class player_Controller : MonoBehaviour
         //}
 
 
-        Debug.Log("groundcheck");
+        //Debug.Log("groundcheck");
         groundCheckDistance = (GetComponent<CapsuleCollider>().height / 2) + bufferCheckDistance;
         if (Input.GetKeyDown(KeyCode.Space) && isGround)
         {
-            GetComponent<Rigidbody>().AddForce(transform.up * 3, ForceMode.Impulse);
+            GetComponent<Rigidbody>().AddForce(transform.up * 5, ForceMode.Impulse);
         }
         RaycastHit hit;
         if (Physics.Raycast(transform.position, -transform.up, out hit, groundCheckDistance, 1 << LayerMask.NameToLayer(LayerName)))

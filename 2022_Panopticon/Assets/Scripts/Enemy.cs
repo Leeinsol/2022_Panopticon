@@ -44,7 +44,8 @@ public class Enemy : MonoBehaviour
         //{
         //    GameObject.Find("CinemaCamera").GetComponent<cinema_moving>().isDoorOpen = true;
         //}
-        if (GameObject.Find("CinemaCamera").GetComponent<cinema_moving>().isDoorOpen)
+        if (GameObject.Find("CinemaCamera").GetComponent<cinema_moving>().isDoorOpen
+            || PlayerPrefs.GetInt("isCinemaEnd") == 1)
         {
             //Debug.Log("스페이스");
             agent.isStopped = false;
