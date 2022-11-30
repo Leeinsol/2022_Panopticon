@@ -105,6 +105,9 @@ public class player_shooting : MonoBehaviour
         animator.SetBool("isShoot", true);
         Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red,2f);
 
+        int layerMask = (1 << LayerMask.NameToLayer("JumpLayer"));
+        layerMask = ~layerMask;
+
         if (Physics.Raycast(ray, out hitInfo))
         {
             //if (hitInfo.collider.name == "Plane") return;
@@ -115,9 +118,12 @@ public class player_shooting : MonoBehaviour
             Instantiate(psBullet, bulletEffect.transform.position, Quaternion.Euler(bulletEffect.transform.forward));
             GameObject ob = hitInfo.collider.gameObject;
 
-            ob.GetComponent<Enemy>().hp--;
-            ob.GetComponent<Enemy>().playHurtAnim();
-            
+            if (ob.layer != 6)
+            {
+                ob.transform.parent.gameObject.GetComponent<Enemy>().hp--;
+                ob.transform.parent.gameObject.GetComponent<Enemy>().playHurtAnim();
+            }
+
             //Debug.Log(ob.GetComponent<Enemy>().hp);
             //Destroy(hitInfo.collider.gameObject);
         }

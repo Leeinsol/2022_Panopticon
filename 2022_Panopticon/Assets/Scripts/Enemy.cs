@@ -20,13 +20,15 @@ public class Enemy : MonoBehaviour
 
     Animator animator;
 
+    GameObject enemyModel;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        enemyModel = transform.GetChild(0).gameObject;
         hp = maxHp;
         agent = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>();
+        animator = enemyModel.GetComponent<Animator>();
         if (PlayerPrefs.GetInt("isCinemaEnd") == 1)
         {
             animator.runtimeAnimatorController = enemy_controller;
@@ -128,7 +130,8 @@ public class Enemy : MonoBehaviour
         {
             //Debug.Log("hp 0");
             agent.isStopped = true;
-            transform.GetComponent<CapsuleCollider>().enabled = false;
+            //enemyModel.GetComponent<CapsuleCollider>().isTrigger = true;
+            enemyModel.layer = 2;
             //Debug.Log(agent.isStopped);
             //animator.SetBool("isDie1", true);
             animator.SetTrigger("isDie");

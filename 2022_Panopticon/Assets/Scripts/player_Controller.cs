@@ -57,6 +57,9 @@ public class player_Controller : MonoBehaviour
 
     public float crouchHeight;
 
+    GameObject GunHandle;
+
+    public GameObject GunModel;
 
     // Start is called before the first frame update
     void Start()
@@ -64,12 +67,20 @@ public class player_Controller : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked; 
         myRigid = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+
         camHandle = transform.Find("CamHandle");
+        GunHandle = theCamera.transform.Find("GunHandle").gameObject;
+        //Debug.Log(GunHandle.transform.position);
+
         Pos = camHandle.localPosition;
         nowSpeed = walkSpeed;
 
         moveHeight = theCamera.transform.localPosition.y;
         nowHeight = moveHeight;
+
+        GameObject Gun = Instantiate(GunModel, GunHandle.transform) as GameObject;
+        //Gun.transform.SetParent(theCamera.transform, false);
+        Gun.transform.parent = this.transform;
     }
 
     // Update is called once per frame
