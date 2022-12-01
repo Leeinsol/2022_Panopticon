@@ -97,7 +97,7 @@ public class Enemy : MonoBehaviour
             if(ob.GetComponent<tower>().hp > 0)
             {
                 ob.GetComponent<tower>().hp--;
-                Debug.Log(ob.GetComponent<tower>().hp);
+                //Debug.Log(ob.GetComponent<tower>().hp);
             }
         }
 

@@ -24,7 +24,10 @@ public class player_shooting : MonoBehaviour
     float time;
     public float fireRate = 0.5f;
     float fireTimer;
-    
+
+    public float OneBulletReloadTime;
+
+    bool reload = false;
 
     //Transform firePos;
 
@@ -32,6 +35,7 @@ public class player_shooting : MonoBehaviour
     void Start()
     {
         bulletNum = maxBulletNum;
+        OneBulletReloadTime = maxReloadTime / maxBulletNum;
         cam = GameObject.Find("Main Camera").GetComponent<Camera>();
         //center = new Vector3(cam.pixelWidth / 2, cam.pixelHeight / 2, 0);
 
@@ -82,11 +86,24 @@ public class player_shooting : MonoBehaviour
             reloadBullet();
         }
 
-            //Instantiate(bullet, firePos.position, Quaternion.Euler(0,0,0));
-            //GameObject bullet_clone = Instantiate(bulletFactory);
-            //bulletFactory.transform.position=
+        //Instantiate(bullet, firePos.position, Quaternion.Euler(0,0,0));
+        //GameObject bullet_clone = Instantiate(bulletFactory);
+        //bulletFactory.transform.position=
 
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            reload = true;
+            timer.SetActive(true);
 
+            //Debug.Log("press R button");
+            time = OneBulletReloadTime * (maxBulletNum - bulletNum);
+            
+        }
+
+        if (reload)
+        {
+            reloadBullet2();
+        }
     }
     void Fire()
     {
@@ -120,8 +137,8 @@ public class player_shooting : MonoBehaviour
 
             if (ob.layer != 6)
             {
-                ob.transform.parent.gameObject.GetComponent<Enemy>().hp--;
-                ob.transform.parent.gameObject.GetComponent<Enemy>().playHurtAnim();
+                ob.GetComponent<Enemy>().hp--;
+                ob.GetComponent<Enemy>().playHurtAnim();
             }
 
             //Debug.Log(ob.GetComponent<Enemy>().hp);
@@ -134,7 +151,6 @@ public class player_shooting : MonoBehaviour
 
     void reloadBullet()
     {
- 
         time -= Time.deltaTime;
         //Debug.Log("time: " + time);
         timer.GetComponent<Slider>().value = time;
@@ -145,6 +161,23 @@ public class player_shooting : MonoBehaviour
             Debug.Log("reloadBullet");
             timer.SetActive(false);
             time = maxReloadTime;
+        }
+    }
+
+    void reloadBullet2()
+    {
+
+        //Debug.Log(reloadTime);
+        time -= Time.deltaTime;
+        timer.GetComponent<Slider>().value = maxReloadTime-time;
+
+        if (time < 0)
+        {
+            bulletNum = maxBulletNum;
+            Debug.Log("reloadBullet");
+            timer.SetActive(false);
+            time = maxReloadTime;
+            reload = false;
         }
     }
 }

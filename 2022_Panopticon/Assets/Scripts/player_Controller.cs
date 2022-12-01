@@ -61,6 +61,11 @@ public class player_Controller : MonoBehaviour
 
     public GameObject GunModel;
 
+    public float defaultFOV = 60f;
+    public float zoomSpeed = 2f;
+
+    float ZoomMultipleNum = 2;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -80,7 +85,7 @@ public class player_Controller : MonoBehaviour
 
         GameObject Gun = Instantiate(GunModel, GunHandle.transform) as GameObject;
         //Gun.transform.SetParent(theCamera.transform, false);
-        Gun.transform.parent = this.transform;
+        Gun.transform.parent = GunHandle.transform;
     }
 
     // Update is called once per frame
@@ -119,7 +124,7 @@ public class player_Controller : MonoBehaviour
         StaminaUI();
         Jump();
         //Jump();
-
+        ZoomCamera();
         //Debug.Log(stamina);
     }
 
@@ -266,7 +271,7 @@ public class player_Controller : MonoBehaviour
 
     void heightFOV()
     {
-        theCamera.fieldOfView = 60f + transform.position.y;
+        theCamera.fieldOfView = defaultFOV + transform.position.y;
     }
 
     void SetCameraFOV(float fov)
@@ -358,5 +363,18 @@ public class player_Controller : MonoBehaviour
 
     }
 
+    void ZoomCamera()
+    {
+        if (Input.GetMouseButton(1))
+        {
+            ZoomSmooth(defaultFOV / ZoomMultipleNum);
+        }
+    }
+
+    void ZoomSmooth(float target)
+    {
+        float angle = Mathf.Abs((defaultFOV / ZoomMultipleNum) - defaultFOV);
+        theCamera.fieldOfView = Mathf.MoveTowards(target, theCamera.fieldOfView, Time.deltaTime * (angle/0.15f));
+    }
 }
 
