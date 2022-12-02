@@ -21982,7 +21982,7 @@ MonoBehaviour:
   bulletText: {fileID: 1757667238}
   timer: {fileID: 782517736}
   maxBulletNum: 20
-  maxReloadTime: 20
+  maxReloadTime: 5
   fireRate: 0.5
   OneBulletReloadTime: 0
 --- !u!136 &1750834407

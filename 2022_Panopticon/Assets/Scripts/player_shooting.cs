@@ -26,9 +26,10 @@ public class player_shooting : MonoBehaviour
     float fireTimer;
 
     public float OneBulletReloadTime;
+    float nowReloadTime;
 
     bool reload = false;
-
+    bool increaseBullet = false;
     //Transform firePos;
 
     // Start is called before the first frame update
@@ -45,7 +46,9 @@ public class player_shooting : MonoBehaviour
      
         timer.SetActive(false);
         time = maxReloadTime;
+        nowReloadTime = time;
         timer.GetComponent<Slider>().maxValue = time;
+
     }
 
     // Update is called once per frame
@@ -83,7 +86,12 @@ public class player_shooting : MonoBehaviour
         {
             animator.SetBool("isShoot", false);
             timer.SetActive(true);
-            reloadBullet();
+            //time = OneBulletReloadTime * (maxBulletNum - bulletNum);
+            //Debug.Log(time);
+            //timer.GetComponent<Slider>().maxValue = time;
+            nowReloadTime = time;
+
+            reload = true;
         }
 
         //Instantiate(bullet, firePos.position, Quaternion.Euler(0,0,0));
@@ -97,13 +105,24 @@ public class player_shooting : MonoBehaviour
 
             //Debug.Log("press R button");
             time = OneBulletReloadTime * (maxBulletNum - bulletNum);
-            
+            nowReloadTime = time;
+            timer.GetComponent<Slider>().maxValue = time;
+
+
         }
 
         if (reload)
         {
             reloadBullet2();
         }
+
+        //if (increaseBullet)
+        //{
+        //    StartCoroutine(reloadIncreaseBullet());
+        //    //increase();
+        //}
+
+
     }
     void Fire()
     {
@@ -167,17 +186,63 @@ public class player_shooting : MonoBehaviour
     void reloadBullet2()
     {
 
-        //Debug.Log(reloadTime);
+        //Debug.Log(nowReloadTime);
+        //Debug.Log(OneBulletReloadTime);
+        //Debug.Log(bulletNum);
+        //Debug.Log(time);
         time -= Time.deltaTime;
-        timer.GetComponent<Slider>().value = maxReloadTime-time;
+        timer.GetComponent<Slider>().value = time;
+        increaseBullet = true;
 
+        //StartCoroutine(reloadIncreaseBullet());
+        //Invoke("increase",0f);
+        increase();
         if (time < 0)
         {
             bulletNum = maxBulletNum;
-            Debug.Log("reloadBullet");
+            //Debug.Log("reloadBullet2");
             timer.SetActive(false);
             time = maxReloadTime;
             reload = false;
+            timer.GetComponent<Slider>().maxValue = time;
+
+        }
+        increaseBullet = false;
+    }
+
+    void increase()
+    {
+        //Debug.Log("increase");
+        for (int i = 1; i < maxBulletNum - bulletNum + 1; i++)
+        {
+            //Debug.Log(i);
+            //StartCoroutine(reloadIncreaseBullet());
+            if (nowReloadTime - OneBulletReloadTime > time)
+            {
+                Debug.Log("¡ı∞°");
+                bulletNum++;
+                nowReloadTime -= OneBulletReloadTime;
+            }
         }
     }
+
+    IEnumerator reloadIncreaseBullet()
+    {
+        //Debug.Log("reloadIncreaseBullet");
+        //increase();
+
+        yield return new WaitForSeconds(5f);
+        increaseBullet = false;
+    }
+
+    //IEnumerator Test()
+    //{
+    //    int i = 1;
+    //    while (true)
+    //    {
+    //        yield return new WaitForSeconds(1.0f);
+    //        Debug.Log(i + "√ ");
+    //        i++;
+    //    }
+    //}
 }
