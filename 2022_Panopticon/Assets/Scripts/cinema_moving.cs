@@ -20,7 +20,7 @@ public class cinema_moving : MonoBehaviour
     float Maxtimer15 = 1.5f;
     float Maxtimer30 = 3f;
 
-    float maximum = 60.0F;
+    //float maximum = 60.0F;
     private float startTime;
 
     int cinemaNum = 0;

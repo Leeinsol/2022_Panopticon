@@ -5,66 +5,66 @@ using UnityEngine.UI;
 
 public class player_Controller : MonoBehaviour
 {
-    [SerializeField]
-    private float walkSpeed;
-    
-    [SerializeField]
-    private float sprintSpeed;
-    
-    [SerializeField]
-    private float crouchSpeed;
+    // Walk
+    [SerializeField] private float walkSpeed;
+    [SerializeField] Vector3 WalkShakeAmount = new Vector3(.15f, .05f, 0f);
+    private bool iswalking = false;
+    private float walkHeight;
 
+    // Sprint
+    [SerializeField] private float sprintSpeed;
+    private bool isSprinting = false;
 
-    [SerializeField]
-    private float lookSensitivity;
+    // Stamina
+    [SerializeField] Slider StaminaBar;
+    private float stamina = 5;
+    private float maxStamina = 5;
 
-    [SerializeField]
-    private float cameraRotationLimit;
-    private float currentCameraRotationX;
-
-    [SerializeField]
-    private Camera theCamera;
-    private Rigidbody myRigid;
-
-    Transform camHandle;
-    public Vector3 WalkShakeAmount = new Vector3(.15f, .05f, 0f);
-    Animator animator;
-    Vector3 Pos;
-    float Timer;
-
-    bool iswalking = false;
-    public bool isSprinting = false;
-    bool isCrouch = false;
-
-    float stamina = 5;
-    float maxStamina = 5;
-
-    public Slider StaminaBar;
-    RaycastHit Hit;
-
-    public bool isGround = false;
-
-    float jumpForce = 5f;
-
-    public float groundCheckDistance;
-    float bufferCheckDistance = 0.1f;
-
-    public string LayerName;
-
-    public float nowSpeed;
-    public float nowHeight;
-    float moveHeight;
-
+    // Crouch
+    [SerializeField] private float crouchSpeed;
+    private bool isCrouching = false;
     public float crouchHeight;
 
+    // Jump
+    [SerializeField] float jumpForce = 5f;
+    [SerializeField] float groundCheckDistance;
+    [SerializeField] string LayerName;
+    private bool isGround = false;
+    private float bufferCheckDistance = 0.1f;
+
+    // Camera
+    [SerializeField] private Camera theCamera;
+    [SerializeField] private float lookSensitivity;
+    [SerializeField] private float cameraRotationLimit;
+    private float currentCameraRotationX;
+    private Transform camHandle;
+    
+    // Rigidbody
+    private Rigidbody myRigid;
+    private Animator animator;
+    private Vector3 Pos;
+
+    // Timer
+    private float shakeTimer;
+    private float zoomTimer;
+
+    // RaycastHit
+    private RaycastHit Hit;
+
+    // current
+    float currentSpeed;
+    float currentHeight;
+
+    // Gun
+    [SerializeField] GameObject GunModel;
     GameObject GunHandle;
 
-    public GameObject GunModel;
-
-    public float defaultFOV = 60f;
-    public float zoomSpeed = 2f;
-
+    // Zoom
+    [SerializeField] float zoomSpeed = 2f;
+    float defaultFOV = 60f;
     float ZoomMultipleNum = 2;
+    bool isZooming = false;
+
 
     // Start is called before the first frame update
     void Start()
@@ -78,11 +78,11 @@ public class player_Controller : MonoBehaviour
         //Debug.Log(GunHandle.transform.position);
 
         Pos = camHandle.localPosition;
-        nowSpeed = walkSpeed;
+        currentSpeed = walkSpeed;
 
-        moveHeight = theCamera.transform.localPosition.y;
-        nowHeight = moveHeight;
-
+        walkHeight = theCamera.transform.localPosition.y;
+        currentHeight = walkHeight;
+        zoomTimer = zoomSpeed;
         GameObject Gun = Instantiate(GunModel, GunHandle.transform) as GameObject;
         //Gun.transform.SetParent(theCamera.transform, false);
         Gun.transform.parent = GunHandle.transform;
@@ -103,19 +103,20 @@ public class player_Controller : MonoBehaviour
         }
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            nowSpeed = walkSpeed;
+            currentSpeed = walkSpeed;
+            zoomTimer = zoomSpeed;
             isSprinting = false;
         }
 
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
-            nowSpeed = crouchSpeed;
-            isCrouch = true;
+            currentSpeed = crouchSpeed;
+            isCrouching = true;
         }
         if (Input.GetKeyUp(KeyCode.LeftControl))
         {
-            nowSpeed = walkSpeed;
-            isCrouch = false;
+            currentSpeed = walkSpeed;
+            isCrouching = false;
         }
        
 
@@ -123,9 +124,7 @@ public class player_Controller : MonoBehaviour
         Crouch();
         StaminaUI();
         Jump();
-        //Jump();
         ZoomCamera();
-        //Debug.Log(stamina);
     }
 
     private void Move()
@@ -134,14 +133,12 @@ public class player_Controller : MonoBehaviour
         float _moveDirZ = Input.GetAxisRaw("Vertical");
         Vector3 _moveHorizontal = transform.right * _moveDirX;
         Vector3 _moveVertical = transform.forward * _moveDirZ;
-
-
-
+        
         if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical")!=0)
         {
             Vector3 _velocity;
-            _velocity = (_moveHorizontal + _moveVertical).normalized * nowSpeed;
-            transform.localScale = new Vector3(transform.localScale.x, moveHeight, transform.localScale.z);
+            _velocity = (_moveHorizontal + _moveVertical).normalized * currentSpeed;
+            transform.localScale = new Vector3(transform.localScale.x, walkHeight, transform.localScale.z);
 
             //if (isSprinting)
             //{
@@ -175,7 +172,8 @@ public class player_Controller : MonoBehaviour
     {
         if (isSprinting)
         {
-            nowSpeed = sprintSpeed;
+            SetFOVSmooth(theCamera.fieldOfView + 5);
+            currentSpeed = sprintSpeed;
             stamina -= Time.deltaTime;
             if (stamina < 0)
             {
@@ -193,11 +191,11 @@ public class player_Controller : MonoBehaviour
 
     void Crouch()
     {
-        if (isCrouch)
+        if (isCrouching)
         {
             //nowSpeed = crouchSpeed;
-            nowHeight = crouchHeight;
-            transform.localScale = new Vector3(transform.localScale.x, nowHeight, transform.localScale.z);
+            currentHeight = crouchHeight;
+            transform.localScale = new Vector3(transform.localScale.x, currentHeight, transform.localScale.z);
             //float center = crouchHeight / 2;
             //GetComponent<CapsuleCollider>().height = Mathf.Lerp(GetComponent<CapsuleCollider>().height, crouchHeight, 0.1f);
             //GetComponent<CapsuleCollider>().center = Vector3.Lerp(GetComponent<CapsuleCollider>().center, new Vector3(0, center, 0), 0.3f);
@@ -206,10 +204,10 @@ public class player_Controller : MonoBehaviour
         else
         {
             //nowSpeed = walkSpeed;
-            nowHeight = moveHeight;
+            currentHeight = walkHeight;
             //Debug.Log("move: " + moveHeight);
             //Debug.Log("now: " + nowHeight);
-            transform.localScale = new Vector3(transform.localScale.x, nowHeight, transform.localScale.z);
+            transform.localScale = new Vector3(transform.localScale.x, currentHeight, transform.localScale.z);
             //float center = moveHeight;
             //GetComponent<CapsuleCollider>().height = Mathf.Lerp(GetComponent<CapsuleCollider>().height, nowHeight, 0.1f);
             //GetComponent<CapsuleCollider>().center = Vector3.Lerp(GetComponent<CapsuleCollider>().center, new Vector3(0, 0, 0), 0.3f);
@@ -245,11 +243,6 @@ public class player_Controller : MonoBehaviour
         // Debug.Log(myRigid.rotation.eulerAngles); // º¤ÅÍ
     }
 
-    private void CharacterRotation()  // ÁÂ¿ì Ä³¸¯ÅÍ È¸Àü
-    {
-        
-    }
-
     void MoveFloor()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -274,24 +267,18 @@ public class player_Controller : MonoBehaviour
         theCamera.fieldOfView = defaultFOV + transform.position.y;
     }
 
-    void SetCameraFOV(float fov)
-    {
-        //theCamera.fieldOfView = Mathf.Lerp(theCamera.fieldOfView, fov, 5f * Time.deltaTime);
-        theCamera.fieldOfView = fov;
-    }
-
     void walkshake()
     {
         if (iswalking)
         {
-            Timer += Time.deltaTime * 7f;
-            camHandle.localPosition = new Vector3(Pos.x + Mathf.Sin(Timer) * WalkShakeAmount.x,
-                Pos.y + Mathf.Sin(Timer) * WalkShakeAmount.y,
-                Pos.z + Mathf.Sin(Timer) * WalkShakeAmount.z);
+            shakeTimer += Time.deltaTime * 7f;
+            camHandle.localPosition = new Vector3(Pos.x + Mathf.Sin(shakeTimer) * WalkShakeAmount.x,
+                Pos.y + Mathf.Sin(shakeTimer) * WalkShakeAmount.y,
+                Pos.z + Mathf.Sin(shakeTimer) * WalkShakeAmount.z);
         }
         else
         {
-            Timer = 0;
+            shakeTimer = 0;
 
             camHandle.localPosition = new Vector3(Mathf.Lerp(camHandle.localPosition.x, Pos.x, Time.deltaTime * 7f),
                 Mathf.Lerp(camHandle.localPosition.y, Pos.y, Time.deltaTime * 10f),
@@ -349,7 +336,7 @@ public class player_Controller : MonoBehaviour
         groundCheckDistance = (GetComponent<CapsuleCollider>().height / 2) + bufferCheckDistance;
         if (Input.GetKeyDown(KeyCode.Space) && isGround)
         {
-            GetComponent<Rigidbody>().AddForce(transform.up * 5, ForceMode.Impulse);
+            GetComponent<Rigidbody>().AddForce(transform.up * jumpForce, ForceMode.Impulse);
         }
         RaycastHit hit;
         if (Physics.Raycast(transform.position, -transform.up, out hit, groundCheckDistance, 1 << LayerMask.NameToLayer(LayerName)))
@@ -367,14 +354,25 @@ public class player_Controller : MonoBehaviour
     {
         if (Input.GetMouseButton(1))
         {
-            ZoomSmooth(defaultFOV / ZoomMultipleNum);
+            SetFOVSmooth(defaultFOV / ZoomMultipleNum);
+        }
+        if (Input.GetMouseButtonUp(1))
+        {
+            zoomTimer = zoomSpeed;
+            //SetFOVSmooth(defaultFOV);
         }
     }
 
-    void ZoomSmooth(float target)
+    void SetFOVSmooth(float target)
     {
-        float angle = Mathf.Abs((defaultFOV / ZoomMultipleNum) - defaultFOV);
-        theCamera.fieldOfView = Mathf.MoveTowards(target, theCamera.fieldOfView, Time.deltaTime * (angle/0.15f));
+        Debug.Log(zoomTimer);
+        //float time = zoomSpeed;
+        zoomTimer -= Time.deltaTime;
+        //float angle = Mathf.Abs((defaultFOV / ZoomMultipleNum) - defaultFOV);
+        //theCamera.fieldOfView = Mathf.MoveTowards(target, theCamera.fieldOfView, Time.deltaTime * (angle/0.15f));
+        //theCamera.fieldOfView = Mathf.MoveTowards(target, theCamera.fieldOfView, Time.deltaTime * 0.15f);
+        //Debug.Log(theCamera.fieldOfView);
+        theCamera.fieldOfView = Mathf.Lerp(target, theCamera.fieldOfView, zoomTimer * 0.5f);
     }
 }
 

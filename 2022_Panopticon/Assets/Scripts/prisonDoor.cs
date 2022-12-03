@@ -7,7 +7,7 @@ public class prisonDoor : MonoBehaviour
     public float goalRotation = -75f;
     public float rotationSpeed= 1f;
 
-    bool isOpen = false;
+    //bool isOpen = false;
 
     // Start is called before the first frame update
     void Start()

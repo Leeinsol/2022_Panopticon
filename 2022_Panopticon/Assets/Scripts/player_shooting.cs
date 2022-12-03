@@ -26,11 +26,11 @@ public class player_shooting : MonoBehaviour
     float fireTimer;
 
     public float OneBulletReloadTime;
-    float nowReloadTime;
+    float currentReloadTime;
 
-    bool reload = false;
-    bool increaseBullet = false;
+    public bool isReload = false;
     //Transform firePos;
+    public bool isFire = false;
 
     // Start is called before the first frame update
     void Start()
@@ -46,7 +46,7 @@ public class player_shooting : MonoBehaviour
      
         timer.SetActive(false);
         time = maxReloadTime;
-        nowReloadTime = time;
+        currentReloadTime = time;
         timer.GetComponent<Slider>().maxValue = time;
 
     }
@@ -67,9 +67,21 @@ public class player_shooting : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
+            
+
             if (bulletNum > 0)
             {
-                Fire();
+                if (isReload)
+                {
+                    isFire = false;
+                    setReloadBulletUI(false);
+                    return;
+                }
+                else
+                {
+                    isFire = true;
+                    Fire();
+                }
             }
             if (fireTimer < fireRate)
             {
@@ -78,8 +90,13 @@ public class player_shooting : MonoBehaviour
         }
         if (Input.GetMouseButtonDown(0))
         {
+            
             fireTimer = fireRate;
 
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            isFire = false;
         }
 
         if (bulletNum == 0)
@@ -89,31 +106,36 @@ public class player_shooting : MonoBehaviour
             //time = OneBulletReloadTime * (maxBulletNum - bulletNum);
             //Debug.Log(time);
             //timer.GetComponent<Slider>().maxValue = time;
-            nowReloadTime = time;
+            currentReloadTime = time;
 
-            reload = true;
+            isReload = true;
         }
 
         //Instantiate(bullet, firePos.position, Quaternion.Euler(0,0,0));
         //GameObject bullet_clone = Instantiate(bulletFactory);
         //bulletFactory.transform.position=
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R) &&!isReload)
         {
-            reload = true;
+            isFire = false;
+            isReload = true;
             timer.SetActive(true);
 
             //Debug.Log("press R button");
             time = OneBulletReloadTime * (maxBulletNum - bulletNum);
-            nowReloadTime = time;
+            currentReloadTime = time;
             timer.GetComponent<Slider>().maxValue = time;
-
 
         }
 
-        if (reload)
+        if (isReload)
         {
-            reloadBullet2();
+            //if (Input.GetMouseButtonDown(0))
+            //{
+            //    setReloadBulletUI(false);
+            //    //isReload = false;
+            //}
+            reloadBullet();
         }
 
         //if (increaseBullet)
@@ -126,6 +148,7 @@ public class player_shooting : MonoBehaviour
     }
     void Fire()
     {
+        
         if (fireTimer < fireRate)
         {
             animator.SetBool("isShoot", false);
@@ -165,26 +188,35 @@ public class player_shooting : MonoBehaviour
         }
 
         fireTimer = 0f;
+
     }
 
+
+    //void reloadBullet()
+    //{
+    //    time -= Time.deltaTime;
+    //    //Debug.Log("time: " + time);
+    //    timer.GetComponent<Slider>().value = time;
+        
+    //    if (time < 0)
+    //    {
+    //        bulletNum = maxBulletNum;
+    //        Debug.Log("reloadBullet");
+    //        timer.SetActive(false);
+    //        time = maxReloadTime;
+    //    }
+    //}
 
     void reloadBullet()
     {
-        time -= Time.deltaTime;
-        //Debug.Log("time: " + time);
-        timer.GetComponent<Slider>().value = time;
-        
-        if (time < 0)
-        {
-            bulletNum = maxBulletNum;
-            Debug.Log("reloadBullet");
-            timer.SetActive(false);
-            time = maxReloadTime;
-        }
-    }
+        //if (isFire)
+        //{
+        //    setReloadBulletUI(false);
 
-    void reloadBullet2()
-    {
+        //    isReload = false;
+        //}
+
+
 
         //Debug.Log(nowReloadTime);
         //Debug.Log(OneBulletReloadTime);
@@ -192,48 +224,51 @@ public class player_shooting : MonoBehaviour
         //Debug.Log(time);
         time -= Time.deltaTime;
         timer.GetComponent<Slider>().value = time;
-        increaseBullet = true;
 
         //StartCoroutine(reloadIncreaseBullet());
         //Invoke("increase",0f);
-        increase();
+        increaseBullet();
         if (time < 0)
         {
             bulletNum = maxBulletNum;
             //Debug.Log("reloadBullet2");
-            timer.SetActive(false);
-            time = maxReloadTime;
-            reload = false;
-            timer.GetComponent<Slider>().maxValue = time;
 
+            setReloadBulletUI(false);
         }
-        increaseBullet = false;
     }
 
-    void increase()
+    void setReloadBulletUI(bool state)
+    {
+        timer.SetActive(state);
+        time = maxReloadTime;
+        isReload = state;
+        timer.GetComponent<Slider>().maxValue = time;
+    }
+
+    void increaseBullet()
     {
         //Debug.Log("increase");
         for (int i = 1; i < maxBulletNum - bulletNum + 1; i++)
         {
             //Debug.Log(i);
             //StartCoroutine(reloadIncreaseBullet());
-            if (nowReloadTime - OneBulletReloadTime > time)
+            if (currentReloadTime - OneBulletReloadTime > time)
             {
-                Debug.Log("증가");
+                //Debug.Log("증가");
                 bulletNum++;
-                nowReloadTime -= OneBulletReloadTime;
+                currentReloadTime -= OneBulletReloadTime;
             }
         }
     }
 
-    IEnumerator reloadIncreaseBullet()
-    {
-        //Debug.Log("reloadIncreaseBullet");
-        //increase();
+    //IEnumerator reloadIncreaseBullet()
+    //{
+    //    //Debug.Log("reloadIncreaseBullet");
+    //    //increase();
 
-        yield return new WaitForSeconds(5f);
-        increaseBullet = false;
-    }
+    //    yield return new WaitForSeconds(5f);
+    //    increaseBullet = false;
+    //}
 
     //IEnumerator Test()
     //{
