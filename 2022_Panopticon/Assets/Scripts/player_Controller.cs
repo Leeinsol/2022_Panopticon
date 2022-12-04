@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum CrossHairType
+{
+    cross, circle, dot
+}
+
 public class player_Controller : MonoBehaviour
 {
     // Walk
@@ -65,6 +70,9 @@ public class player_Controller : MonoBehaviour
     float ZoomMultipleNum = 2;
     bool isZooming = false;
 
+    // Canvas
+    [SerializeField] Text crossHair;
+    public CrossHairType crosshairtype;
 
     // Start is called before the first frame update
     void Start()
@@ -125,6 +133,23 @@ public class player_Controller : MonoBehaviour
         StaminaUI();
         Jump();
         ZoomCamera();
+        SetCrossHair();
+    }
+
+    void SetCrossHair()
+    {
+        if (crosshairtype == CrossHairType.cross)
+        {
+            crossHair.text = "+";
+        }
+        else if (crosshairtype == CrossHairType.circle)
+        {
+            crossHair.text = "O";
+        }
+        else if (crosshairtype == CrossHairType.dot)
+        {
+            crossHair.text = ".";
+        }
     }
 
     private void Move()
