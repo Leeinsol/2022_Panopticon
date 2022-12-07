@@ -17,11 +17,12 @@ public class player_Controller : MonoBehaviour
     private float walkHeight;
 
     // Sprint
+    [SerializeField] private bool useSprint = false;
     [SerializeField] private float sprintSpeed;
     private bool isSprinting = false;
 
     // Stamina
-    [SerializeField] Slider StaminaBar;
+    [SerializeField] GameObject StaminaBar;
     private float stamina = 5;
     private float maxStamina = 5;
 
@@ -43,11 +44,11 @@ public class player_Controller : MonoBehaviour
     [SerializeField] private float cameraRotationLimit;
     private float currentCameraRotationX;
     private Transform camHandle;
+    private Vector3 camHandlePos;
     
     // Rigidbody
     private Rigidbody myRigid;
     private Animator animator;
-    private Vector3 Pos;
 
     // Timer
     private float shakeTimer;
@@ -56,7 +57,7 @@ public class player_Controller : MonoBehaviour
     // RaycastHit
     private RaycastHit Hit;
 
-    // current
+    // current variable
     float currentSpeed;
     float currentHeight;
 
@@ -77,31 +78,45 @@ public class player_Controller : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // hide cursor
         Cursor.lockState = CursorLockMode.Locked; 
+        
         myRigid = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
-
         camHandle = transform.Find("CamHandle");
         GunHandle = theCamera.transform.Find("GunHandle").gameObject;
-        //Debug.Log(GunHandle.transform.position);
 
-        Pos = camHandle.localPosition;
-        currentSpeed = walkSpeed;
-
+        // initialize
+        camHandlePos = camHandle.localPosition;
         walkHeight = theCamera.transform.localPosition.y;
+        currentSpeed = walkSpeed;
         currentHeight = walkHeight;
         zoomTimer = zoomSpeed;
+
+        // gun instantiate
         GameObject Gun = Instantiate(GunModel, GunHandle.transform) as GameObject;
-        //Gun.transform.SetParent(theCamera.transform, false);
         Gun.transform.parent = GunHandle.transform;
+        //Gun.transform.SetParent(theCamera.transform, false);
+
+        if (useSprint)
+        {
+            StaminaBar.SetActive(true);
+        }
+        else
+        {
+            StaminaBar.SetActive(false);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        Move();             
-        CameraRotation();   
-        MoveFloor();
+        //StaminaBar.enabled = false;
+        Move();
+
+        CameraRotationVerticality();
+        CameraRotationHorizontality();
+        
         heightFOV();
         walkshake();
 
@@ -126,11 +141,13 @@ public class player_Controller : MonoBehaviour
             currentSpeed = walkSpeed;
             isCrouching = false;
         }
-       
 
-        Sprint();
+        if (useSprint)
+        {
+            Sprint();
+            StaminaUI();
+        }
         Crouch();
-        StaminaUI();
         Jump();
         ZoomCamera();
         SetCrossHair();
@@ -144,7 +161,7 @@ public class player_Controller : MonoBehaviour
         }
         else if (crosshairtype == CrossHairType.circle)
         {
-            crossHair.text = "O";
+            crossHair.text = "¡Û";
         }
         else if (crosshairtype == CrossHairType.dot)
         {
@@ -245,47 +262,34 @@ public class player_Controller : MonoBehaviour
     {
         float ratio = stamina / maxStamina;
 
-        StaminaBar.value = ratio;
+        StaminaBar.GetComponent<Slider>().value = ratio;
     }
 
 
 
-    private void CameraRotation()
+    private void CameraRotationVerticality()
     {
         float _xRotation = Input.GetAxisRaw("Mouse Y");
-        float _yRotation = Input.GetAxisRaw("Mouse X");
 
         float _cameraRotationX = _xRotation * lookSensitivity;
-        Vector3 _cameraRotationY = new Vector3(0f, _yRotation, 0f) * lookSensitivity;
         
         currentCameraRotationX -= _cameraRotationX;
         currentCameraRotationX = Mathf.Clamp(currentCameraRotationX, -cameraRotationLimit, cameraRotationLimit);
 
         theCamera.transform.localEulerAngles = new Vector3(currentCameraRotationX, 0f, 0f);
-        myRigid.MoveRotation(myRigid.rotation * Quaternion.Euler(_cameraRotationY)); // ÄõÅÍ´Ï¾ð * ÄõÅÍ´Ï¾ð
 
         // Debug.Log(myRigid.rotation);  // ÄõÅÍ´Ï¾ð
         // Debug.Log(myRigid.rotation.eulerAngles); // º¤ÅÍ
     }
 
-    void MoveFloor()
+    void CameraRotationHorizontality()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            transform.position = new Vector3(transform.position.x, 1.5f, transform.position.z);
-            //SetCameraFOV(60f);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            transform.position = new Vector3(transform.position.x, 9f, transform.position.z);
-            //SetCameraFOV(65f);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            transform.position = new Vector3(transform.position.x, 16.5f, transform.position.z);
-            //SetCameraFOV(70f);
-        }
-    } 
+        float _yRotation = Input.GetAxisRaw("Mouse X");
+        Vector3 _cameraRotationY = new Vector3(0f, _yRotation, 0f) * lookSensitivity;
+        myRigid.MoveRotation(myRigid.rotation * Quaternion.Euler(_cameraRotationY)); // ÄõÅÍ´Ï¾ð * ÄõÅÍ´Ï¾ð
+    }
+
+   
 
     void heightFOV()
     {
@@ -297,17 +301,17 @@ public class player_Controller : MonoBehaviour
         if (iswalking)
         {
             shakeTimer += Time.deltaTime * 7f;
-            camHandle.localPosition = new Vector3(Pos.x + Mathf.Sin(shakeTimer) * WalkShakeAmount.x,
-                Pos.y + Mathf.Sin(shakeTimer) * WalkShakeAmount.y,
-                Pos.z + Mathf.Sin(shakeTimer) * WalkShakeAmount.z);
+            camHandle.localPosition = new Vector3(camHandlePos.x + Mathf.Sin(shakeTimer) * WalkShakeAmount.x,
+                camHandlePos.y + Mathf.Sin(shakeTimer) * WalkShakeAmount.y,
+                camHandlePos.z + Mathf.Sin(shakeTimer) * WalkShakeAmount.z);
         }
         else
         {
             shakeTimer = 0;
 
-            camHandle.localPosition = new Vector3(Mathf.Lerp(camHandle.localPosition.x, Pos.x, Time.deltaTime * 7f),
-                Mathf.Lerp(camHandle.localPosition.y, Pos.y, Time.deltaTime * 10f),
-                Mathf.Lerp(camHandle.localPosition.z, Pos.z, Time.deltaTime * 10f));
+            camHandle.localPosition = new Vector3(Mathf.Lerp(camHandle.localPosition.x, camHandlePos.x, Time.deltaTime * 7f),
+                Mathf.Lerp(camHandle.localPosition.y, camHandlePos.y, Time.deltaTime * 10f),
+                Mathf.Lerp(camHandle.localPosition.z, camHandlePos.z, Time.deltaTime * 10f));
 
 
         }

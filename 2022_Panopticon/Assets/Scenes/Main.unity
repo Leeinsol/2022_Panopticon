@@ -5044,7 +5044,7 @@ GameObject:
   - component: {fileID: 501331792}
   - component: {fileID: 501331791}
   m_Layer: 0
-  m_Name: SprintCanvas
+  m_Name: PlayerCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9467,6 +9467,7 @@ GameObject:
   - component: {fileID: 1750834407}
   - component: {fileID: 1750834401}
   - component: {fileID: 1750834403}
+  - component: {fileID: 1750834408}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -21949,8 +21950,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 15
   WalkShakeAmount: {x: 0, y: 0.1, z: 0}
+  useSprint: 0
   sprintSpeed: 30
-  StaminaBar: {fileID: 1897006711}
+  StaminaBar: {fileID: 1897006709}
   crouchSpeed: 10
   crouchHeight: 0.6
   jumpForce: 5
@@ -21962,7 +21964,7 @@ MonoBehaviour:
   GunModel: {fileID: 5194338988698467188, guid: 094db35eee8299945ba5852bf6abf420, type: 3}
   zoomSpeed: 1
   crossHair: {fileID: 1930771229}
-  crosshairtype: 0
+  crosshairtype: 1
 --- !u!114 &1750834403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21999,6 +22001,18 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1750834408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 841906628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5fdcdaa6e8b8494d8f4bdf7f211a37a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1756206738
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -372,6 +372,7 @@
 "Assets/Scripts/Enemy.cs"
 "Assets/Scripts/player_camera.cs"
 "Assets/Scripts/player_Controller.cs"
+"Assets/Scripts/player_pacnopticon.cs"
 "Assets/Scripts/player_shooting.cs"
 "Assets/Scripts/prisonDoor.cs"
 "Assets/Scripts/SirenRotate.cs"
