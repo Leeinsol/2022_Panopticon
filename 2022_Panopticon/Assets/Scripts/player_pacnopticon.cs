@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class player_pacnopticon : MonoBehaviour
 {
+    [SerializeField] private Camera theCamera;
+    float defaultFOV = 60f;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -14,6 +18,9 @@ public class player_pacnopticon : MonoBehaviour
     void Update()
     {
         MoveFloor();
+
+        if(!transform.GetComponent<player_Controller>().isZooming)
+            heightFOV();
     }
 
     void MoveFloor()
@@ -33,5 +40,9 @@ public class player_pacnopticon : MonoBehaviour
             transform.position = new Vector3(transform.position.x, 16.5f, transform.position.z);
             //SetCameraFOV(70f);
         }
+    }
+    void heightFOV()
+    {
+        theCamera.fieldOfView = defaultFOV + transform.position.y;
     }
 }

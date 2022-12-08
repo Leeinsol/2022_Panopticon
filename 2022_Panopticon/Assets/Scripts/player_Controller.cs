@@ -12,12 +12,12 @@ public class player_Controller : MonoBehaviour
 {
     // Walk
     [SerializeField] private float walkSpeed;
-    [SerializeField] Vector3 WalkShakeAmount = new Vector3(.15f, .05f, 0f);
+    [SerializeField] Vector3 HeadBobAmount = new Vector3(.15f, .05f, 0f);
     private bool iswalking = false;
     private float walkHeight;
 
     // Sprint
-    [SerializeField] private bool useSprint = false;
+    [SerializeField] private bool useSprint = true;
     [SerializeField] private float sprintSpeed;
     private bool isSprinting = false;
 
@@ -27,11 +27,13 @@ public class player_Controller : MonoBehaviour
     private float maxStamina = 5;
 
     // Crouch
+    [SerializeField] bool useCrouch = true;
     [SerializeField] private float crouchSpeed;
     private bool isCrouching = false;
     public float crouchHeight;
 
     // Jump
+    [SerializeField] bool useJump = true;
     [SerializeField] float jumpForce = 5f;
     [SerializeField] float groundCheckDistance;
     [SerializeField] string LayerName;
@@ -39,13 +41,19 @@ public class player_Controller : MonoBehaviour
     private float bufferCheckDistance = 0.1f;
 
     // Camera
+    [SerializeField] bool useCameraRotationVerticality = true;
+    [SerializeField] bool useCameraRotationHorizontality = true;
     [SerializeField] private Camera theCamera;
     [SerializeField] private float lookSensitivity;
     [SerializeField] private float cameraRotationLimit;
     private float currentCameraRotationX;
-    private Transform camHandle;
-    private Vector3 camHandlePos;
-    
+    Transform camHandle;
+    Vector3 camHandlePos;
+
+    // Head Bob
+    [SerializeField] bool useHeadBob = true;
+    [SerializeField] float headBobSpeed = 10f;
+
     // Rigidbody
     private Rigidbody myRigid;
     private Animator animator;
@@ -66,10 +74,11 @@ public class player_Controller : MonoBehaviour
     GameObject GunHandle;
 
     // Zoom
+    [SerializeField] bool useCameraZoom = true;
     [SerializeField] float zoomSpeed = 2f;
     float defaultFOV = 60f;
     float ZoomMultipleNum = 2;
-    bool isZooming = false;
+    public bool isZooming = false;
 
     // Canvas
     [SerializeField] Text crossHair;
@@ -98,6 +107,7 @@ public class player_Controller : MonoBehaviour
         Gun.transform.parent = GunHandle.transform;
         //Gun.transform.SetParent(theCamera.transform, false);
 
+        // set SprintBar
         if (useSprint)
         {
             StaminaBar.SetActive(true);
@@ -112,15 +122,10 @@ public class player_Controller : MonoBehaviour
     void Update()
     {
         //StaminaBar.enabled = false;
+        // move
         Move();
 
-        CameraRotationVerticality();
-        CameraRotationHorizontality();
-        
-        heightFOV();
-        walkshake();
-
-        if(Input.GetKeyDown(KeyCode.LeftShift) && iswalking)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && iswalking)
         {
             isSprinting = true;
         }
@@ -129,6 +134,36 @@ public class player_Controller : MonoBehaviour
             currentSpeed = walkSpeed;
             zoomTimer = zoomSpeed;
             isSprinting = false;
+        }
+
+        if (useSprint)
+        {
+            Sprint();
+            StaminaUI();
+        }
+
+        if (useCameraRotationVerticality)
+        {
+            CameraRotationVerticality();
+        }
+        if (useCameraRotationHorizontality)
+        {
+            CameraRotationHorizontality();
+        }
+
+        if (useCrouch)
+        {
+            Crouch();
+        }
+
+        if (useJump)
+        {
+            Jump();
+        }
+
+        if (useHeadBob)
+        {
+            HeadBob();
         }
 
         if (Input.GetKeyDown(KeyCode.LeftControl))
@@ -142,14 +177,11 @@ public class player_Controller : MonoBehaviour
             isCrouching = false;
         }
 
-        if (useSprint)
+        if (useCameraZoom)
         {
-            Sprint();
-            StaminaUI();
+            ZoomCamera();
         }
-        Crouch();
-        Jump();
-        ZoomCamera();
+
         SetCrossHair();
     }
 
@@ -291,29 +323,23 @@ public class player_Controller : MonoBehaviour
 
    
 
-    void heightFOV()
-    {
-        theCamera.fieldOfView = defaultFOV + transform.position.y;
-    }
+    
 
-    void walkshake()
+    void HeadBob()
     {
         if (iswalking)
         {
-            shakeTimer += Time.deltaTime * 7f;
-            camHandle.localPosition = new Vector3(camHandlePos.x + Mathf.Sin(shakeTimer) * WalkShakeAmount.x,
-                camHandlePos.y + Mathf.Sin(shakeTimer) * WalkShakeAmount.y,
-                camHandlePos.z + Mathf.Sin(shakeTimer) * WalkShakeAmount.z);
+            shakeTimer += Time.deltaTime * headBobSpeed;
+            camHandle.localPosition = new Vector3(camHandlePos.x + Mathf.Sin(shakeTimer) * HeadBobAmount.x,
+                camHandlePos.y + Mathf.Sin(shakeTimer) * HeadBobAmount.y,
+                camHandlePos.z + Mathf.Sin(shakeTimer) * HeadBobAmount.z);
         }
         else
         {
             shakeTimer = 0;
-
             camHandle.localPosition = new Vector3(Mathf.Lerp(camHandle.localPosition.x, camHandlePos.x, Time.deltaTime * 7f),
-                Mathf.Lerp(camHandle.localPosition.y, camHandlePos.y, Time.deltaTime * 10f),
-                Mathf.Lerp(camHandle.localPosition.z, camHandlePos.z, Time.deltaTime * 10f));
-
-
+              Mathf.Lerp(camHandle.localPosition.y, camHandlePos.y, Time.deltaTime * 10f),
+              Mathf.Lerp(camHandle.localPosition.z, camHandlePos.z, Time.deltaTime * 10f));
         }
     }
 
@@ -383,10 +409,12 @@ public class player_Controller : MonoBehaviour
     {
         if (Input.GetMouseButton(1))
         {
+            isZooming = true;
             SetFOVSmooth(defaultFOV / ZoomMultipleNum);
         }
         if (Input.GetMouseButtonUp(1))
         {
+            isZooming = false;
             zoomTimer = zoomSpeed;
             //SetFOVSmooth(defaultFOV);
         }
@@ -394,7 +422,6 @@ public class player_Controller : MonoBehaviour
 
     void SetFOVSmooth(float target)
     {
-        Debug.Log(zoomTimer);
         //float time = zoomSpeed;
         zoomTimer -= Time.deltaTime;
         //float angle = Mathf.Abs((defaultFOV / ZoomMultipleNum) - defaultFOV);

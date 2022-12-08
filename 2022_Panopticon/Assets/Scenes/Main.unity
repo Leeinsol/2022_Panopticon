@@ -5065,7 +5065,7 @@ RectTransform:
   - {fileID: 1897006710}
   - {fileID: 1930771228}
   m_Father: {fileID: 841606564}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -8953,7 +8953,6 @@ Transform:
   - {fileID: 841606552}
   - {fileID: 841606566}
   - {fileID: 1140651613}
-  - {fileID: 963194228}
   - {fileID: 501331790}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -11623,13 +11622,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.022000074, y: 1, z: 0.32999992}
+  m_LocalPosition: {x: 0.022000313, y: 1, z: 0.32999992}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1350136340}
-  m_Father: {fileID: 841606564}
-  m_RootOrder: 3
+  m_Father: {fileID: 1140651613}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &963194229
 MonoBehaviour:
@@ -13494,7 +13493,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 963194228}
   m_Father: {fileID: 841606564}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -21948,23 +21948,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd8730bf27e73074183df4510ffe3fdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 15
-  WalkShakeAmount: {x: 0, y: 0.1, z: 0}
-  useSprint: 0
-  sprintSpeed: 30
+  walkSpeed: 30
+  HeadBobAmount: {x: 0, y: 0.15, z: 0}
+  useSprint: 1
+  sprintSpeed: 50
   StaminaBar: {fileID: 1897006709}
-  crouchSpeed: 10
-  crouchHeight: 0.6
+  useCrouch: 1
+  crouchSpeed: 15
+  crouchHeight: 0.5
+  useJump: 1
   jumpForce: 5
-  groundCheckDistance: 0
+  groundCheckDistance: 0.1
   LayerName: JumpLayer
+  useCameraRotationVerticality: 1
+  useCameraRotationHorizontality: 1
   theCamera: {fileID: 963194227}
   lookSensitivity: 2
   cameraRotationLimit: 60
+  useHeadBob: 1
+  headBobSpeed: 10
   GunModel: {fileID: 5194338988698467188, guid: 094db35eee8299945ba5852bf6abf420, type: 3}
-  zoomSpeed: 1
+  useCameraZoom: 1
+  zoomSpeed: 2
   crossHair: {fileID: 1930771229}
-  crosshairtype: 1
+  crosshairtype: 0
 --- !u!114 &1750834403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22013,6 +22020,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5fdcdaa6e8b8494d8f4bdf7f211a37a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  theCamera: {fileID: 963194227}
 --- !u!1001 &1756206738
 PrefabInstance:
   m_ObjectHideFlags: 0
