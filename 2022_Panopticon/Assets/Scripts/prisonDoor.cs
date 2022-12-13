@@ -15,6 +15,10 @@ public class prisonDoor : MonoBehaviour
         //isOpen=gameObject.Find("Camera").GetComponent<cinema_moving>().
         //isOpen = transform.Find("CinemaCamera").GetComponent<cinema_moving>().isDoorOpen;
         //isOpen = GameObject.Find("CinemaCamera").GetComponent<cinema_moving>().isDoorOpen;
+        if (PlayerPrefs.GetInt("isCinemaEnd") == 1)
+        {
+            
+        }
 
     }
 
@@ -28,6 +32,15 @@ public class prisonDoor : MonoBehaviour
             transform.localRotation = Quaternion.Slerp(transform.localRotation, rot, Time.deltaTime * rotationSpeed);
 
         }
+
+        if (PlayerPrefs.GetInt("isCinemaEnd") == 1)
+        {
+            Quaternion rot = Quaternion.Euler(0, goalRotation, 0);
+            //Debug.Log("Open door");
+            transform.localRotation = Quaternion.Slerp(transform.localRotation, rot, Time.deltaTime * rotationSpeed);
+
+        }
+
 
         //if (Input.GetKeyDown(KeyCode.Space))
         //{
