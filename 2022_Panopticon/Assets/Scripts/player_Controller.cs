@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor;
 
 public enum CrossHairType
 {
@@ -11,41 +12,46 @@ public enum CrossHairType
 public class player_Controller : MonoBehaviour
 {
     // Walk
-    [SerializeField] private float walkSpeed;
-    [SerializeField] Vector3 HeadBobAmount = new Vector3(.15f, .05f, 0f);
+    public float walkSpeed =30f;
+    [SerializeField] Vector3 HeadBobAmount = new Vector3(0f, .05f, 0f);
     private bool iswalking = false;
     private float walkHeight;
 
     // Sprint
     [SerializeField] private bool useSprint = true;
-    [SerializeField] private float sprintSpeed;
+    [SerializeField] private float sprintSpeed =50f;
     private bool isSprinting = false;
+    public KeyCode SprintKey = KeyCode.LeftShift;
 
     // Stamina
     [SerializeField] GameObject StaminaBar;
-    private float stamina = 5;
-    private float maxStamina = 5;
+    private float stamina = 5f;
+    private float maxStamina = 5f;
 
     // Crouch
     [SerializeField] bool useCrouch = true;
-    [SerializeField] private float crouchSpeed;
+    [SerializeField] private float crouchSpeed = 15f;
     private bool isCrouching = false;
-    public float crouchHeight;
+    public float crouchHeight=0.5f;
+    public KeyCode CrouchKey = KeyCode.LeftControl;
+
 
     // Jump
     [SerializeField] bool useJump = true;
     [SerializeField] float jumpForce = 5f;
-    [SerializeField] float groundCheckDistance;
-    [SerializeField] string LayerName;
+    [SerializeField] float groundCheckDistance=.1f;
+    [SerializeField] string LayerName="JumpLayer";
     private bool isGround = false;
     private float bufferCheckDistance = 0.1f;
+    public KeyCode JumpKey = KeyCode.Space;
+
 
     // Camera
     [SerializeField] bool useCameraRotationVerticality = true;
     [SerializeField] bool useCameraRotationHorizontality = true;
     [SerializeField] private Camera theCamera;
-    [SerializeField] private float lookSensitivity;
-    [SerializeField] private float cameraRotationLimit;
+    [SerializeField] private float lookSensitivity=2f;
+    [SerializeField] private float cameraRotationLimit=60f;
     private float currentCameraRotationX;
     Transform camHandle;
     Vector3 camHandlePos;
@@ -79,6 +85,7 @@ public class player_Controller : MonoBehaviour
     float defaultFOV = 60f;
     float ZoomMultipleNum = 2;
     public bool isZooming = false;
+    public KeyCode ZoomKey = KeyCode.Z;
 
     // Canvas
     [SerializeField] Text crossHair;
@@ -121,15 +128,22 @@ public class player_Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        //if (Input.GetKey(ZoomKey))
+        //{
+        //    Debug.Log("Mouse 1 down");
+
+        //}
+
         //StaminaBar.enabled = false;
         // move
         Move();
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) && iswalking)
+        if (Input.GetKeyDown(SprintKey) && iswalking)
         {
             isSprinting = true;
         }
-        if (Input.GetKeyUp(KeyCode.LeftShift))
+        if (Input.GetKeyUp(SprintKey))
         {
             currentSpeed = walkSpeed;
             zoomTimer = zoomSpeed;
@@ -166,12 +180,12 @@ public class player_Controller : MonoBehaviour
             HeadBob();
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftControl))
+        if (Input.GetKeyDown(CrouchKey))
         {
             currentSpeed = crouchSpeed;
             isCrouching = true;
         }
-        if (Input.GetKeyUp(KeyCode.LeftControl))
+        if (Input.GetKeyUp(CrouchKey))
         {
             currentSpeed = walkSpeed;
             isCrouching = false;
@@ -389,7 +403,7 @@ public class player_Controller : MonoBehaviour
 
         //Debug.Log("groundcheck");
         groundCheckDistance = (GetComponent<CapsuleCollider>().height / 2) + bufferCheckDistance;
-        if (Input.GetKeyDown(KeyCode.Space) && isGround)
+        if (Input.GetKeyDown(JumpKey) && isGround)
         {
             GetComponent<Rigidbody>().AddForce(transform.up * jumpForce, ForceMode.Impulse);
         }
@@ -407,12 +421,25 @@ public class player_Controller : MonoBehaviour
 
     void ZoomCamera()
     {
-        if (Input.GetMouseButton(1))
+        //if (Input.GetMouseButton(1))
+        //{
+        //    isZooming = true;
+        //    SetFOVSmooth(defaultFOV / ZoomMultipleNum);
+        //}
+        //if (Input.GetMouseButtonUp(1))
+        //{
+        //    isZooming = false;
+        //    zoomTimer = zoomSpeed;
+        //    //SetFOVSmooth(defaultFOV);
+        //}
+        if (Input.GetKey(ZoomKey))
         {
+            Debug.Log("Mouse 1 down");
             isZooming = true;
             SetFOVSmooth(defaultFOV / ZoomMultipleNum);
+
         }
-        if (Input.GetMouseButtonUp(1))
+        if (Input.GetKeyUp(ZoomKey))
         {
             isZooming = false;
             zoomTimer = zoomSpeed;
@@ -432,3 +459,18 @@ public class player_Controller : MonoBehaviour
     }
 }
 
+//[CustomEditor(typeof(player_Controller))]
+//public class player_Controller_Editor:Editor
+//{
+
+
+//    public override void OnInspectorGUI()
+//    {
+//        base.OnInspectorGUI();
+
+//        player_Controller test = (player_Controller)target;
+//        //EditorGUILayout.LabelField("Walk Speed", test.walkSpeed.ToString());
+//        //test.SprintKey = (KeyCode)EditorGUILayout.EnumPopup(new GUIContent("Sprint Key", "Determines what key is used to zoom."), test.SprintKey);
+
+//    }
+//}

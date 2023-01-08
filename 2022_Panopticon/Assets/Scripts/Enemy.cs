@@ -33,7 +33,8 @@ public class Enemy : MonoBehaviour
         {
             animator.runtimeAnimatorController = enemy_controller;
         }
-        
+        agent.enabled = false;
+        agent.enabled = true;
         agent.isStopped = true;
     }
 
