@@ -4961,6 +4961,8 @@ RectTransform:
   m_Children:
   - {fileID: 1897006710}
   - {fileID: 1930771228}
+  - {fileID: 1757667237}
+  - {fileID: 782517738}
   m_Father: {fileID: 841606564}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7536,7 +7538,7 @@ GameObject:
   - component: {fileID: 782517738}
   - component: {fileID: 782517737}
   m_Layer: 2
-  m_Name: Timer
+  m_Name: ReladTimerUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7600,7 +7602,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 782517736}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7609,12 +7611,12 @@ RectTransform:
   - {fileID: 1598313850}
   - {fileID: 1602263986}
   - {fileID: 1526388412}
-  m_Father: {fileID: 1159677239}
-  m_RootOrder: 1
+  m_Father: {fileID: 501331790}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 797, y: 374.2}
+  m_AnchoredPosition: {x: 796.99976, y: 374.2}
   m_SizeDelta: {x: 309.2, y: 42.2454}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &791376760
@@ -13670,8 +13672,6 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1757667237}
-  - {fileID: 782517738}
   - {fileID: 1241285849}
   m_Father: {fileID: 0}
   m_RootOrder: 6
@@ -15027,7 +15027,7 @@ RectTransform:
   - {fileID: 461038062}
   - {fileID: 266690431}
   m_Father: {fileID: 1159677239}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -20022,7 +20022,7 @@ GameObject:
   - component: {fileID: 1613103753}
   - component: {fileID: 1613103752}
   - component: {fileID: 1613103751}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Bottom
   m_TagString: ground
   m_Icon: {fileID: 0}
@@ -21864,21 +21864,20 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 841906628}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ae019ca15b167624db73b65dd2732d92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cam: {fileID: 963194227}
-  bulletEffect: {fileID: 100002, guid: e9391f622091e1449bdef4ef15af4948, type: 3}
+  theCamera: {fileID: 0}
   bulletText: {fileID: 1757667238}
-  timer: {fileID: 782517736}
+  bulletEffect: {fileID: 100002, guid: e9391f622091e1449bdef4ef15af4948, type: 3}
+  FireKey: 323
+  ReloadKey: 114
   maxBulletNum: 10
+  timer: {fileID: 782517736}
   maxReloadTime: 5
   fireRate: 0.5
-  OneBulletReloadTime: 0
-  isReload: 0
-  isFire: 0
 --- !u!136 &1750834407
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -21920,19 +21919,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 30
   HeadBobAmount: {x: 0, y: 0.05, z: 0}
+  SprintKey: 304
   useSprint: 1
   sprintSpeed: 50
-  SprintKey: 304
   StaminaBar: {fileID: 1897006709}
+  maxStamina: 5
+  CrouchKey: 306
   useCrouch: 1
   crouchSpeed: 15
   crouchHeight: 0.5
-  CrouchKey: 306
+  JumpKey: 32
   useJump: 1
   jumpForce: 5
   groundCheckDistance: 0.1
-  LayerName: JumpLayer
-  JumpKey: 32
   useCameraRotationVerticality: 1
   useCameraRotationHorizontality: 1
   theCamera: {fileID: 963194227}
@@ -21941,12 +21940,20 @@ MonoBehaviour:
   useHeadBob: 1
   headBobSpeed: 10
   GunModel: {fileID: 5194338988698467188, guid: 094db35eee8299945ba5852bf6abf420, type: 3}
+  ZoomKey: 324
   useCameraZoom: 1
   zoomSpeed: 2
   isZooming: 0
-  ZoomKey: 102
-  crossHair: {fileID: 1930771229}
+  crossHairText: {fileID: 1930771229}
   crosshairtype: 0
+  bulletText: {fileID: 1757667238}
+  ReladTimerUI: {fileID: 782517736}
+  FireKey: 323
+  bulletEffect: {fileID: 100002, guid: e9391f622091e1449bdef4ef15af4948, type: 3}
+  maxBulletNum: 10
+  fireRate: 0.5
+  ReloadKey: 114
+  maxReloadTime: 5
 --- !u!1001 &1756206738
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22038,17 +22045,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1757667236}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1159677239}
-  m_RootOrder: 0
+  m_Father: {fileID: 501331790}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -163, y: -36}
+  m_AnchoredPosition: {x: -163.00024, y: -36}
   m_SizeDelta: {x: 309.1982, y: 53.8564}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1757667238

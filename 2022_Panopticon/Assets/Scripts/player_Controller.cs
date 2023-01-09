@@ -13,54 +13,53 @@ public class player_Controller : MonoBehaviour
 {
     // Walk
     public float walkSpeed =30f;
-    [SerializeField] Vector3 HeadBobAmount = new Vector3(0f, .05f, 0f);
+    public Vector3 HeadBobAmount = new Vector3(0f, .05f, 0f);
     private bool iswalking = false;
     private float walkHeight;
 
     // Sprint
-    [SerializeField] private bool useSprint = true;
-    [SerializeField] private float sprintSpeed =50f;
-    private bool isSprinting = false;
     public KeyCode SprintKey = KeyCode.LeftShift;
+    public bool useSprint = true;
+    public float sprintSpeed =50f;
+    private bool isSprinting = false;
 
     // Stamina
-    [SerializeField] GameObject StaminaBar;
+    public GameObject StaminaBar;
+    public float maxStamina = 5f;
     private float stamina = 5f;
-    private float maxStamina = 5f;
 
     // Crouch
-    [SerializeField] bool useCrouch = true;
-    [SerializeField] private float crouchSpeed = 15f;
-    private bool isCrouching = false;
-    public float crouchHeight=0.5f;
     public KeyCode CrouchKey = KeyCode.LeftControl;
+    public bool useCrouch = true;
+    public float crouchSpeed = 15f;
+    public float crouchHeight= 0.5f;
+    private bool isCrouching = false;
 
 
     // Jump
-    [SerializeField] bool useJump = true;
-    [SerializeField] float jumpForce = 5f;
-    [SerializeField] float groundCheckDistance=.1f;
-    [SerializeField] string LayerName="JumpLayer";
+    public KeyCode JumpKey = KeyCode.Space;
+    public bool useJump = true;
+    public float jumpForce = 5f;
+    public float groundCheckDistance = .1f;
+    //public string LayerName = "JumpLayer";
     private bool isGround = false;
     private float bufferCheckDistance = 0.1f;
-    public KeyCode JumpKey = KeyCode.Space;
-
 
     // Camera
-    [SerializeField] bool useCameraRotationVerticality = true;
-    [SerializeField] bool useCameraRotationHorizontality = true;
-    [SerializeField] private Camera theCamera;
-    [SerializeField] private float lookSensitivity=2f;
-    [SerializeField] private float cameraRotationLimit=60f;
+    public bool useCameraRotationVerticality = true;
+    public bool useCameraRotationHorizontality = true;
+    public Camera theCamera;
+    public float lookSensitivity = 2f;
+    public float cameraRotationLimit = 60f;
     private float currentCameraRotationX;
     Transform camHandle;
     Vector3 camHandlePos;
 
     // Head Bob
-    [SerializeField] bool useHeadBob = true;
-    [SerializeField] float headBobSpeed = 10f;
+    public bool useHeadBob = true;
+    public float headBobSpeed = 10f;
 
-    // Rigidbody
+    // Rigidbody, Animator
     private Rigidbody myRigid;
     private Animator animator;
 
@@ -76,20 +75,40 @@ public class player_Controller : MonoBehaviour
     float currentHeight;
 
     // Gun
-    [SerializeField] GameObject GunModel;
+    public GameObject GunModel;
     GameObject GunHandle;
 
     // Zoom
-    [SerializeField] bool useCameraZoom = true;
-    [SerializeField] float zoomSpeed = 2f;
+    public KeyCode ZoomKey = KeyCode.Z;
+    public bool useCameraZoom = true;
+    public float zoomSpeed = 2f;
+    public bool isZooming = false;
     float defaultFOV = 60f;
     float ZoomMultipleNum = 2;
-    public bool isZooming = false;
-    public KeyCode ZoomKey = KeyCode.Z;
 
     // Canvas
-    [SerializeField] Text crossHair;
+    public Text crossHairText;
     public CrossHairType crosshairtype;
+    public Text bulletText;
+    public GameObject ReladTimerUI;
+
+    // Fire
+    public KeyCode FireKey = KeyCode.Mouse0;
+    public GameObject bulletEffect;
+    ParticleSystem psBullet;
+    public int maxBulletNum = 10;
+    int bulletNum;
+    public float fireRate = 0.5f;
+    float fireTimer;
+    bool isFire = false;
+
+    //Reload
+    public KeyCode ReloadKey = KeyCode.R;
+    public float maxReloadTime = 5f;
+    float ReloadTimer;
+    public float OneBulletReloadTime;
+    float currentReloadTime;
+    bool isReload = false;
 
     // Start is called before the first frame update
     void Start()
@@ -114,6 +133,17 @@ public class player_Controller : MonoBehaviour
         Gun.transform.parent = GunHandle.transform;
         //Gun.transform.SetParent(theCamera.transform, false);
 
+        // bullet instantiate
+        bulletNum = maxBulletNum;
+        OneBulletReloadTime = maxReloadTime / maxBulletNum;
+        psBullet = bulletEffect.GetComponent<ParticleSystem>();
+
+        // reload instantiate
+        ReladTimerUI.SetActive(false);
+        ReloadTimer = maxReloadTime;
+        currentReloadTime = ReloadTimer;
+        ReladTimerUI.GetComponent<Slider>().maxValue = ReloadTimer;
+
         // set SprintBar
         if (useSprint)
         {
@@ -123,19 +153,14 @@ public class player_Controller : MonoBehaviour
         {
             StaminaBar.SetActive(false);
         }
+
+        // cross hair instantiate
+        SetCrossHair();
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        //if (Input.GetKey(ZoomKey))
-        //{
-        //    Debug.Log("Mouse 1 down");
-
-        //}
-
-        //StaminaBar.enabled = false;
         // move
         Move();
 
@@ -150,36 +175,20 @@ public class player_Controller : MonoBehaviour
             isSprinting = false;
         }
 
+        // sprint
         if (useSprint)
         {
             Sprint();
             StaminaUI();
         }
 
-        if (useCameraRotationVerticality)
-        {
-            CameraRotationVerticality();
-        }
-        if (useCameraRotationHorizontality)
-        {
-            CameraRotationHorizontality();
-        }
-
+        // crouch
         if (useCrouch)
         {
             Crouch();
         }
 
-        if (useJump)
-        {
-            Jump();
-        }
-
-        if (useHeadBob)
-        {
-            HeadBob();
-        }
-
+        // set walk speed
         if (Input.GetKeyDown(CrouchKey))
         {
             currentSpeed = crouchSpeed;
@@ -191,27 +200,67 @@ public class player_Controller : MonoBehaviour
             isCrouching = false;
         }
 
+        // camera
+        if (useCameraRotationVerticality)
+        {
+            CameraRotationVerticality();
+        }
+        if (useCameraRotationHorizontality)
+        {
+            CameraRotationHorizontality();
+        }
+
+        // jump
+        if (useJump)
+        {
+            Jump();
+        }
+
+        // head bob
+        if (useHeadBob)
+        {
+            HeadBob();
+        }
+
+        // zoom camera
         if (useCameraZoom)
         {
             ZoomCamera();
         }
 
-        SetCrossHair();
+        
+        bulletUI();
+
+        // Fire
+        Fire();
+
+        // reload
+        //PressReloadKey();
+        if (Input.GetKeyDown(ReloadKey) && !isReload)
+        {
+            PressReloadKey();
+        }
+        if (isReload) {
+            reloadBullet();
+
+        }
+        //Debug.Log(bulletNum);
+        //Debug.Log(ReloadTimer);
     }
 
     void SetCrossHair()
     {
         if (crosshairtype == CrossHairType.cross)
         {
-            crossHair.text = "+";
+            crossHairText.text = "+";
         }
         else if (crosshairtype == CrossHairType.circle)
         {
-            crossHair.text = "○";
+            crossHairText.text = "○";
         }
         else if (crosshairtype == CrossHairType.dot)
         {
-            crossHair.text = ".";
+            crossHairText.text = ".";
         }
     }
 
@@ -359,48 +408,6 @@ public class player_Controller : MonoBehaviour
 
     void Jump()
     {
-
-        //CapsuleCollider capsuleCollider = transform.GetComponent<CapsuleCollider>();
-        ////Debug.Log(capsuleCollider.bounds.extents.y);
-        ////isGround = Physics.Raycast(transform.position, Vector3.down, capsuleCollider.bounds.extents.y+ 1.5f); ;
-        //isGround = Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 1f);
-        //Debug.Log(isGround);
-        //Debug.DrawRay(transform.position, Vector3.down, Color.red) ;
-
-
-        //Vector3 origin = new Vector3(transform.position.x, transform.position.y - (transform.localScale.y * .5f), transform.position.z);
-        //Vector3 direction = transform.TransformDirection(Vector3.down);
-        //float distance = .75f;
-
-        //if (Physics.Raycast(origin, direction, out RaycastHit hit, distance))
-        //{
-        //    Debug.DrawRay(origin, direction * distance, Color.red);
-        //    isGround = true;
-        //}
-        //else
-        //{
-        //    isGround = false;
-        //}
-
-        //RaycastHit hit;
-        //RaycastHit hitInfo = new RaycastHit();
-
-        //Ray landingRay = new Ray(transform.position, Vector3.down);
-        //Debug.DrawRay(landingRay.origin, landingRay.direction * 10f, Color.red);
-        //if (Physics.Raycast(landingRay, out hitInfo))
-        //{
-        //    Debug.Log(hitInfo.collider.name);
-        //    if (hitInfo.collider == null)
-        //    {
-        //        isGround = true;
-        //    }
-        //    else
-        //    {
-        //        isGround = false;
-        //    }
-        //}
-
-
         //Debug.Log("groundcheck");
         groundCheckDistance = (GetComponent<CapsuleCollider>().height / 2) + bufferCheckDistance;
         if (Input.GetKeyDown(JumpKey) && isGround)
@@ -408,7 +415,8 @@ public class player_Controller : MonoBehaviour
             GetComponent<Rigidbody>().AddForce(transform.up * jumpForce, ForceMode.Impulse);
         }
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, -transform.up, out hit, groundCheckDistance, 1 << LayerMask.NameToLayer(LayerName)))
+        //if (Physics.Raycast(transform.position, -transform.up, out hit, groundCheckDistance, 1 << LayerMask.NameToLayer(LayerName)))
+        if (Physics.Raycast(transform.position, -transform.up, out hit, groundCheckDistance))
         {
             isGround = true;
         }
@@ -418,20 +426,11 @@ public class player_Controller : MonoBehaviour
         }
 
     }
+    
+
 
     void ZoomCamera()
     {
-        //if (Input.GetMouseButton(1))
-        //{
-        //    isZooming = true;
-        //    SetFOVSmooth(defaultFOV / ZoomMultipleNum);
-        //}
-        //if (Input.GetMouseButtonUp(1))
-        //{
-        //    isZooming = false;
-        //    zoomTimer = zoomSpeed;
-        //    //SetFOVSmooth(defaultFOV);
-        //}
         if (Input.GetKey(ZoomKey))
         {
             Debug.Log("Mouse 1 down");
@@ -457,20 +456,165 @@ public class player_Controller : MonoBehaviour
         //Debug.Log(theCamera.fieldOfView);
         theCamera.fieldOfView = Mathf.Lerp(target, theCamera.fieldOfView, zoomTimer * 0.5f);
     }
+
+    void Fire()
+    {
+        if (Input.GetKey(FireKey)) // 연사
+        {
+            if (bulletNum > 0)  // 총알의 수가 0보다 클 때
+            {
+                if (isReload) // 재장전 중이면 재장전을 멈춘다
+                {
+                    isFire = false; // 발사 ㄴㄴ
+                    setReloadBulletUI(false);   // UI를 숨긴다
+                    return;
+                }
+                else // 재장전 중이 아니라면
+                {
+                    isFire = true;  // 발사
+                    ShootBullet(); // 발사
+                }
+            }
+            if (fireTimer < fireRate) // 연사 시간 체크
+            {
+                fireTimer += Time.deltaTime;
+            }
+        }
+        if (Input.GetKeyDown(FireKey)) // 눌렀을 때 연사 타이머 초기화
+        {
+
+            fireTimer = fireRate;
+
+        }
+
+        if (bulletNum == 0) // 총알을 다 썼을 때
+        {
+            //animator.SetBool("isShoot", false);
+            //isReload = true;
+            //ReladTimerUI.SetActive(true); // reload UI
+            //ReloadTimer = maxReloadTime;
+            //currentReloadTime = ReloadTimer; // 타이머
+
+            animator.SetBool("isShoot", false);
+            ReladTimerUI.SetActive(true);
+            currentReloadTime = ReloadTimer;
+
+            isReload = true;
+            //ReloadTimer = OneBulletReloadTime * (maxBulletNum - bulletNum);
+            //currentReloadTime = ReloadTimer;
+            //ReladTimerUI.GetComponent<Slider>().maxValue = ReloadTimer;
+
+            //isFire = false;
+            //isReload = true;
+            //ReladTimerUI.SetActive(true);
+
+            //ReloadTimer = OneBulletReloadTime * (maxBulletNum - bulletNum);
+            //currentReloadTime = ReloadTimer;
+            //ReladTimerUI.GetComponent<Slider>().maxValue = ReloadTimer;
+        }
+
+    }
+    void ShootBullet()
+    {
+
+        if (fireTimer < fireRate)
+        {
+            animator.SetBool("isShoot", false);
+            return;
+        }
+
+        Ray ray = new Ray(theCamera.transform.position, theCamera.transform.forward);
+        RaycastHit hitInfo = new RaycastHit();
+        bulletNum--;
+
+        animator.SetBool("isShoot", true);
+        Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 2f);
+
+        if (Physics.Raycast(ray, out hitInfo))
+        {
+            //if (hitInfo.collider.name == "Plane") return;
+            bulletEffect.transform.position = hitInfo.point;
+            bulletEffect.transform.forward = hitInfo.normal;
+            Debug.Log("총 맞음" + hitInfo.collider.gameObject.name);
+            Instantiate(psBullet, bulletEffect.transform.position, Quaternion.Euler(bulletEffect.transform.forward));
+            GameObject ob = hitInfo.collider.gameObject;
+
+            if (hitInfo.collider.gameObject.GetComponent<Enemy>())
+            {
+                ob.GetComponent<Enemy>().hp--;
+                ob.GetComponent<Enemy>().playHurtAnim();
+            }
+        }
+
+        fireTimer = 0f;
+
+    }
+
+    void PressReloadKey()
+    {
+        //if (Input.GetKeyDown(ReloadKey) && !isReload)
+        //{
+        //    isFire = false;
+        //    isReload = true;
+        //    ReladTimerUI.SetActive(true);
+
+        //    ReloadTimer = OneBulletReloadTime * (maxBulletNum - bulletNum);
+        //    currentReloadTime = ReloadTimer;
+        //    ReladTimerUI.GetComponent<Slider>().maxValue = ReloadTimer;
+        //}
+
+        isFire = false;
+        isReload = true;
+        ReladTimerUI.SetActive(true);
+
+        ReloadTimer = OneBulletReloadTime * (maxBulletNum - bulletNum);
+        currentReloadTime = ReloadTimer;
+        ReladTimerUI.GetComponent<Slider>().maxValue = ReloadTimer;
+    }
+    void reloadBullet()
+    {
+        //if (!isReload) return;
+        //Debug.Log("reload bullet");
+        ReloadTimer -= Time.deltaTime;
+        ReladTimerUI.GetComponent<Slider>().value = ReloadTimer;
+
+        increaseBullet();
+        if (ReloadTimer < 0)
+        {
+            bulletNum = maxBulletNum;
+
+            setReloadBulletUI(false);
+        }
+    }
+
+    void setReloadBulletUI(bool state)
+    {
+        ReladTimerUI.SetActive(state);
+        ReloadTimer = maxReloadTime;
+        isReload = state;
+        ReladTimerUI.GetComponent<Slider>().maxValue = ReloadTimer;
+    }
+
+    void increaseBullet()
+    {
+        //Debug.Log("increase bullet");
+
+        for (int i = 1; i < maxBulletNum - bulletNum + 1; i++)
+        {
+            //Debug.Log(i);
+            if (currentReloadTime - OneBulletReloadTime > ReloadTimer)
+            {
+                Debug.Log(currentReloadTime);
+                Debug.Log("증가");
+                bulletNum++;
+                currentReloadTime -= OneBulletReloadTime;
+            }
+        }
+    }
+    
+    void bulletUI()
+    {
+        bulletText.text = "총알 수: " + bulletNum;
+    }
 }
 
-//[CustomEditor(typeof(player_Controller))]
-//public class player_Controller_Editor:Editor
-//{
-
-
-//    public override void OnInspectorGUI()
-//    {
-//        base.OnInspectorGUI();
-
-//        player_Controller test = (player_Controller)target;
-//        //EditorGUILayout.LabelField("Walk Speed", test.walkSpeed.ToString());
-//        //test.SprintKey = (KeyCode)EditorGUILayout.EnumPopup(new GUIContent("Sprint Key", "Determines what key is used to zoom."), test.SprintKey);
-
-//    }
-//}
