@@ -21952,8 +21952,12 @@ MonoBehaviour:
   bulletEffect: {fileID: 100002, guid: e9391f622091e1449bdef4ef15af4948, type: 3}
   maxBulletNum: 10
   fireRate: 0.5
+  useFire: 1
   ReloadKey: 114
+  reloadType: 1
   maxReloadTime: 5
+  allReloadTime: 1
+  useReload: 1
 --- !u!1001 &1756206738
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22085,7 +22089,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 3
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 2
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
