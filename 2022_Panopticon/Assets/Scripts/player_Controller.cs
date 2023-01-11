@@ -1,4 +1,4 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -118,7 +118,8 @@ public class player_Controller : MonoBehaviour
     float currentReloadTime;
     bool isReload = false;
     public bool useReload = true;
-
+    public float reloadActionForce = 0.5f;
+    GameObject Gun;
     // Start is called before the first frame update
     void Start()
     {
@@ -138,7 +139,7 @@ public class player_Controller : MonoBehaviour
         zoomTimer = zoomSpeed;
 
         // gun instantiate
-        GameObject Gun = Instantiate(GunModel, GunHandle.transform) as GameObject;
+        Gun = Instantiate(GunModel, GunHandle.transform) as GameObject;
         Gun.transform.parent = GunHandle.transform;
         //Gun.transform.SetParent(theCamera.transform, false);
 
@@ -232,26 +233,29 @@ public class player_Controller : MonoBehaviour
                 reloadBullet();
             }
         }
-
-        // reload
+        //Fire();
+        //bulletUI();
+        //// reload
         //if (Input.GetKeyDown(ReloadKey) && !isReload)
         //{
         //    PressReloadKey();
         //}
-        //reloadAllBullet();
-        //if (isReload) {
+        ////reloadAllBullet();
+        //if (isReload)
+        //{
         //    reloadBullet();
 
         //}
         //Debug.Log(bulletNum);
         //Debug.Log(ReloadTimer);
+        //Debug.Log(fireTimer);
     }
 
     void SetCrossHair()
     {
         if (crosshairtype == CrossHairType.cross)       crossHairText.text = "+";
         
-        else if (crosshairtype == CrossHairType.circle) crossHairText.text = "°€";
+        else if (crosshairtype == CrossHairType.circle) crossHairText.text = "‚óã";
         
         else if (crosshairtype == CrossHairType.dot)    crossHairText.text = ".";
     }
@@ -346,15 +350,15 @@ public class player_Controller : MonoBehaviour
 
         theCamera.transform.localEulerAngles = new Vector3(currentCameraRotationX, 0f, 0f);
 
-        // Debug.Log(myRigid.rotation);  // ƒı≈Õ¥œæ
-        // Debug.Log(myRigid.rotation.eulerAngles); // ∫§≈Õ
+        // Debug.Log(myRigid.rotation);  // ÏøºÌÑ∞ÎãàÏñ∏
+        // Debug.Log(myRigid.rotation.eulerAngles); // Î≤°ÌÑ∞
     }
 
     void CameraRotationHorizontality()
     {
         float _yRotation = Input.GetAxisRaw("Mouse X");
         Vector3 _cameraRotationY = new Vector3(0f, _yRotation, 0f) * lookSensitivity;
-        rb.MoveRotation(rb.rotation * Quaternion.Euler(_cameraRotationY)); // ƒı≈Õ¥œæ * ƒı≈Õ¥œæ
+        rb.MoveRotation(rb.rotation * Quaternion.Euler(_cameraRotationY)); // ÏøºÌÑ∞ÎãàÏñ∏ * ÏøºÌÑ∞ÎãàÏñ∏
     }
 
     void HeadBob()
@@ -421,7 +425,7 @@ public class player_Controller : MonoBehaviour
         if (Input.GetKey(FireKey))
         {
             if (!useReload) ShootBullet();
-            
+
             if (bulletNum > 0 && useReload)
             {
                 if (isReload)
@@ -432,23 +436,22 @@ public class player_Controller : MonoBehaviour
                 }
                 else
                 {
-                    isFire = true; 
-                    ShootBullet(); 
+                    isFire = true;
+                    ShootBullet();
                 }
             }
             if (fireTimer < fireRate) fireTimer += Time.deltaTime;
         }
-        if (Input.GetKeyDown(FireKey))  fireTimer = fireRate;
+        if (Input.GetKeyDown(FireKey)) fireTimer = fireRate;
 
-        if (bulletNum == 0 && !isReload)    SetReload();
+        if (bulletNum == 0 && !isReload) SetReload();
     }
     void ShootBullet()
     {
-        //if (fireTimer < fireRate)
-        //{
-        //    //animator.SetBool("isShoot", false);
-        //    return;
-        //}
+        if (fireTimer < fireRate)
+        {
+            return;
+        }
 
         Ray ray = new Ray(theCamera.transform.position, theCamera.transform.forward);
         RaycastHit hitInfo = new RaycastHit();
@@ -457,16 +460,21 @@ public class player_Controller : MonoBehaviour
         //animator.SetBool("isShoot", true);
         //Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 2f);
 
+        StopAllCoroutines();
+        //StartCoroutine("reloadActionCoroutine");
+        StartCoroutine(reloadActionCoroutine());
+
+
         if (Physics.Raycast(ray, out hitInfo))
         {
             //if (hitInfo.collider.name == "Plane") return;
             bulletEffect.transform.position = hitInfo.point;
             bulletEffect.transform.forward = hitInfo.normal;
-            //Debug.Log("√— ∏¬¿Ω" + hitInfo.collider.gameObject.name);
+            //Debug.Log("Ï¥ù ÎßûÏùå" + hitInfo.collider.gameObject.name);
             Instantiate(psBullet, bulletEffect.transform.position, Quaternion.Euler(bulletEffect.transform.forward));
             GameObject ob = hitInfo.collider.gameObject;
 
-            // √— ∏¬æ“¿ª ∂ß
+            // Ï¥ù ÎßûÏïòÏùÑ Îïå
             if (ob.GetComponent<Enemy>())
             {
                 ob.GetComponent<Enemy>().hp--;
@@ -478,7 +486,7 @@ public class player_Controller : MonoBehaviour
 
     void PressReloadKey()
     {
-        if (Input.GetKeyDown(ReloadKey) && !isReload)
+        if (Input.GetKeyDown(ReloadKey) && !isReload && bulletNum != maxBulletNum)
         {
             SetReload();
         }
@@ -488,7 +496,7 @@ public class player_Controller : MonoBehaviour
     {
         isFire = false;
         isReload = true;
-        if(useReload) ReladTimerUI.SetActive(true);
+        if (useReload) ReladTimerUI.SetActive(true);
 
         //ReloadTimer = OneBulletReloadTime * (maxBulletNum - bulletNum);
         SetReloadTimer();
@@ -557,16 +565,34 @@ public class player_Controller : MonoBehaviour
             if (currentReloadTime - OneBulletReloadTime > ReloadTimer)
             {
                 //Debug.Log(currentReloadTime);
-                //Debug.Log("¡ı∞°");
+                //Debug.Log("Ï¶ùÍ∞Ä");
                 bulletNum++;
                 currentReloadTime -= OneBulletReloadTime;
             }
         }
     }
-    
+
     void bulletUI()
     {
         bulletText.text = bulletNum + " / " + maxBulletNum;
+    }
+
+
+    IEnumerator reloadActionCoroutine()
+    {
+        Vector3 reloadAction = new Vector3(reloadActionForce, Gun.transform.position.y, Gun.transform.position.z);
+        Debug.Log(reloadAction);
+        while (Gun.transform.localPosition.x <= reloadActionForce - 0.02f)
+        {
+            Gun.transform.localPosition = Vector3.Lerp(Gun.transform.localPosition, reloadAction, 0.4f);
+            yield return null;
+        }
+
+        //while (Gun.transform.localPosition != GunHandle.transform.position)
+        //{
+        //    Gun.transform.localPosition = Vector3.Lerp(Gun.transform.localPosition, GunHandle.transform.position, 0.1f);
+        //    yield return null;
+        //}
     }
 }
 
