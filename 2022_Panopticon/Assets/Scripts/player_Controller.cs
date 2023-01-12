@@ -82,6 +82,8 @@ public class player_Controller : MonoBehaviour
     // Gun
     public GameObject GunModel;
     GameObject GunHandle;
+    GameObject Gun;
+    public Vector3 GunOriginPos = new Vector3(0, 0, 0);
 
     // Zoom
     public KeyCode ZoomKey = KeyCode.Z;
@@ -105,7 +107,7 @@ public class player_Controller : MonoBehaviour
     int bulletNum;
     public float fireRate = 0.5f;
     float fireTimer;
-    bool isFire = false;
+    //bool isFire = false;
     public bool useFire = true;
 
     //Reload
@@ -119,7 +121,7 @@ public class player_Controller : MonoBehaviour
     bool isReload = false;
     public bool useReload = true;
     public float reloadActionForce = 0.5f;
-    GameObject Gun;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -141,7 +143,6 @@ public class player_Controller : MonoBehaviour
         // gun instantiate
         Gun = Instantiate(GunModel, GunHandle.transform) as GameObject;
         Gun.transform.parent = GunHandle.transform;
-        //Gun.transform.SetParent(theCamera.transform, false);
 
         // bullet instantiate
         bulletNum = maxBulletNum;
@@ -249,6 +250,7 @@ public class player_Controller : MonoBehaviour
         //Debug.Log(bulletNum);
         //Debug.Log(ReloadTimer);
         //Debug.Log(fireTimer);
+        //Debug.Log(Gun.transform.localPosition);
     }
 
     void SetCrossHair()
@@ -430,13 +432,13 @@ public class player_Controller : MonoBehaviour
             {
                 if (isReload)
                 {
-                    isFire = false;
+                    //isFire = false;
                     setReloadBulletUI(false);
                     return;
                 }
                 else
                 {
-                    isFire = true;
+                    //isFire = true;
                     ShootBullet();
                 }
             }
@@ -461,7 +463,6 @@ public class player_Controller : MonoBehaviour
         //Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 2f);
 
         StopAllCoroutines();
-        //StartCoroutine("reloadActionCoroutine");
         StartCoroutine(reloadActionCoroutine());
 
 
@@ -494,7 +495,7 @@ public class player_Controller : MonoBehaviour
 
     void SetReload()
     {
-        isFire = false;
+        //isFire = false;
         isReload = true;
         if (useReload) ReladTimerUI.SetActive(true);
 
@@ -580,19 +581,21 @@ public class player_Controller : MonoBehaviour
 
     IEnumerator reloadActionCoroutine()
     {
-        Vector3 reloadAction = new Vector3(reloadActionForce, Gun.transform.position.y, Gun.transform.position.z);
-        Debug.Log(reloadAction);
-        while (Gun.transform.localPosition.x <= reloadActionForce - 0.02f)
+        Vector3 reloadAction = new Vector3(GunOriginPos.x, GunOriginPos.y, reloadActionForce);
+        Gun.transform.localPosition = GunOriginPos;
+        //Debug.Log("reloadAction: "+reloadAction);
+
+        while (Gun.transform.localPosition.z <= reloadActionForce - 0.02f)
         {
             Gun.transform.localPosition = Vector3.Lerp(Gun.transform.localPosition, reloadAction, 0.4f);
             yield return null;
         }
 
-        //while (Gun.transform.localPosition != GunHandle.transform.position)
-        //{
-        //    Gun.transform.localPosition = Vector3.Lerp(Gun.transform.localPosition, GunHandle.transform.position, 0.1f);
-        //    yield return null;
-        //}
+        while (Gun.transform.localPosition != GunOriginPos)
+        {
+            Gun.transform.localPosition = Vector3.Lerp(Gun.transform.localPosition, GunOriginPos, 0.1f);
+            yield return null;
+        }
     }
 }
 

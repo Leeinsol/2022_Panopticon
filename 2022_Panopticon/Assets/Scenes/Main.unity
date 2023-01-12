@@ -21958,7 +21958,8 @@ MonoBehaviour:
   maxReloadTime: 5
   allReloadTime: 1
   useReload: 1
-  reloadActionForce: 0.5
+  reloadActionForce: 0.2
+  GunOriginPos: {x: 0, y: 0, z: 0}
 --- !u!1001 &1756206738
 PrefabInstance:
   m_ObjectHideFlags: 0
