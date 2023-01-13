@@ -122,6 +122,9 @@ public class player_Controller : MonoBehaviour
     public bool useReload = true;
     public float reloadActionForce = 0.5f;
 
+    public AudioClip FireSound, oneByOneReloadSound, allReloadSound;
+    AudioSource audioSource;
+   
     // Start is called before the first frame update
     void Start()
     {
@@ -169,6 +172,8 @@ public class player_Controller : MonoBehaviour
 
         // cross hair instantiate
         SetCrossHair();
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -448,6 +453,11 @@ public class player_Controller : MonoBehaviour
 
         if (bulletNum == 0 && !isReload) SetReload();
     }
+    void PlaySoundEffects(AudioClip audioClip)
+    {
+        audioSource.clip = audioClip;
+        audioSource.Play();
+    }
     void ShootBullet()
     {
         if (fireTimer < fireRate)
@@ -458,6 +468,7 @@ public class player_Controller : MonoBehaviour
         Ray ray = new Ray(theCamera.transform.position, theCamera.transform.forward);
         RaycastHit hitInfo = new RaycastHit();
         bulletNum--;
+        PlaySoundEffects(FireSound);
 
         //animator.SetBool("isShoot", true);
         //Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 2f);
@@ -472,7 +483,10 @@ public class player_Controller : MonoBehaviour
             bulletEffect.transform.position = hitInfo.point;
             bulletEffect.transform.forward = hitInfo.normal;
             //Debug.Log("총 맞음" + hitInfo.collider.gameObject.name);
+            
+            // 파티클의 Stop Action를 Destroy로 설정하기
             Instantiate(psBullet, bulletEffect.transform.position, Quaternion.Euler(bulletEffect.transform.forward));
+            psBullet.Play();
             GameObject ob = hitInfo.collider.gameObject;
 
             // 총 맞았을 때
@@ -525,9 +539,11 @@ public class player_Controller : MonoBehaviour
         ReladTimerUI.GetComponent<Slider>().value = ReloadTimer;
 
         if (reloadType == reloadBulletType.oneByOneReload) increaseBullet();
+  
         if (ReloadTimer < 0)
         {
             bulletNum = maxBulletNum;
+            if (reloadType == reloadBulletType.allReload) PlaySoundEffects(allReloadSound);
 
             setReloadBulletUI(false);
         }
@@ -568,6 +584,8 @@ public class player_Controller : MonoBehaviour
                 //Debug.Log(currentReloadTime);
                 //Debug.Log("증가");
                 bulletNum++;
+                if (reloadType == reloadBulletType.oneByOneReload) PlaySoundEffects(oneByOneReloadSound);
+
                 currentReloadTime -= OneBulletReloadTime;
             }
         }
