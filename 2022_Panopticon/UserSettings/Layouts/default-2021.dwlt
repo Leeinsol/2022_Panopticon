@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1920
     height: 997
   m_ShowMode: 4
-  m_Title: Scene
+  m_Title: Hierarchy
   m_RootView: {fileID: 6}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -68,8 +68,8 @@ MonoBehaviour:
     y: 0
     width: 454
     height: 947
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 276, y: 71}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 14}
   m_Panes:
   - {fileID: 14}
@@ -94,8 +94,8 @@ MonoBehaviour:
     y: 0
     width: 363
     height: 561
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 201, y: 221}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 15}
   m_Panes:
   - {fileID: 15}
@@ -382,22 +382,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Weapon Effects/Prefabs
+    - Assets/Scripts
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Weapon Effects/Prefabs
+  - Assets/Scripts
   m_LastFoldersGridSize: -1
   m_LastProjectPath: D:\UNITY\2022_Panopticon\2022_Panopticon\2022_Panopticon
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 359}
-    m_SelectedIDs: 7e700200
-    m_LastClickedID: 159870
-    m_ExpandedIDs: 000000007c9800007e9800003a990000d6d2010052d301008a70020000ca9a3b
+    scrollPos: {x: 0, y: 107}
+    m_SelectedIDs: 247b0000
+    m_LastClickedID: 31524
+    m_ExpandedIDs: 000000005e790000607900002a7b000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -425,7 +425,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000007c9800007e980000
+    m_ExpandedIDs: 000000005e79000060790000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -553,9 +553,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
-      m_LastClickedID: 0
-      m_ExpandedIDs: 54f3ffff04870000448800003489000054890000
+      m_SelectedIDs: de6c0000
+      m_LastClickedID: 27870
+      m_ExpandedIDs: 34fbffffd067000010690000206a0000146c0000de6c0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -837,9 +837,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -7.348567, y: 6.4420013, z: 1.6573853}
+    m_Target: {x: 755.8097, y: 204.90346, z: -533.13153}
     speed: 2
-    m_Value: {x: -7.348567, y: 6.4420013, z: 1.6573853}
+    m_Value: {x: 755.8097, y: 204.90346, z: -533.13153}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -886,13 +886,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.06366793, y: 0.93943566, z: -0.2663062, w: 0.20261341}
+    m_Target: {x: -0.021180853, y: -0.03686821, z: 0.005056187, w: 0.9983553}
     speed: 2
-    m_Value: {x: 0.06401859, y: 0.9397101, z: -0.26790726, w: 0.20266297}
+    m_Value: {x: -0.021196261, y: -0.03689503, z: 0.005059865, w: 0.99908155}
   m_Size:
-    m_Target: 3.0743945
+    m_Target: 233.20815
     speed: 2
-    m_Value: 2.9420042
+    m_Value: 233.20815
   m_Ortho:
     m_Target: 0
     speed: 2

@@ -32,6 +32,7 @@ public class player_Controller : MonoBehaviour
     public GameObject StaminaBar;
     public float maxStamina = 5f;
     private float stamina = 5f;
+    public bool useStaminaLimit = true;
 
     // Crouch
     public KeyCode CrouchKey = KeyCode.LeftControl;
@@ -46,9 +47,8 @@ public class player_Controller : MonoBehaviour
     public bool useJump = true;
     public float jumpForce = 5f;
     public float groundCheckDistance = .1f;
-    //public string LayerName = "JumpLayer";
+    private float bufferCheckDistance = .1f;
     private bool isGround = false;
-    private float bufferCheckDistance = 0.1f;
 
     // Camera
     public bool useCameraRotationVerticality = true;
@@ -96,7 +96,7 @@ public class player_Controller : MonoBehaviour
     // Canvas
     public Text crossHairText;
     public CrossHairType crosshairtype;
-    public Text bulletText;
+    public GameObject BulletNumUI;
     public GameObject ReladTimerUI;
 
     // Fire
@@ -122,8 +122,11 @@ public class player_Controller : MonoBehaviour
     public bool useReload = true;
     public float reloadActionForce = 0.5f;
 
+    // Sound
     public AudioClip FireSound, oneByOneReloadSound, allReloadSound;
     AudioSource audioSource;
+    public bool useFireSound = true;
+    public bool useReloadSound = true;
    
     // Start is called before the first frame update
     void Start()
@@ -158,7 +161,7 @@ public class player_Controller : MonoBehaviour
         currentReloadTime = ReloadTimer;
         ReladTimerUI.GetComponent<Slider>().maxValue = ReloadTimer;
 
-        if (!useReload || !useFire)  bulletText.enabled = false;
+        if (!useReload || !useFire) BulletNumUI.SetActive(false);
 
         if (!useFire)
         {
@@ -167,8 +170,8 @@ public class player_Controller : MonoBehaviour
         }
 
         // set SprintBar
-        if (useSprint)  StaminaBar.SetActive(true);
-        else            StaminaBar.SetActive(false);
+        if (useSprint && useStaminaLimit)  StaminaBar.SetActive(true);
+        else                               StaminaBar.SetActive(false);
 
         // cross hair instantiate
         SetCrossHair();
@@ -302,7 +305,7 @@ public class player_Controller : MonoBehaviour
         {
             SetFOVSmooth(theCamera.fieldOfView + 5);
             currentSpeed = sprintSpeed;
-            stamina -= Time.deltaTime;
+            if(useStaminaLimit) stamina -= Time.deltaTime;
             if (stamina < 0)
             {
                 stamina = 0;
@@ -468,7 +471,7 @@ public class player_Controller : MonoBehaviour
         Ray ray = new Ray(theCamera.transform.position, theCamera.transform.forward);
         RaycastHit hitInfo = new RaycastHit();
         bulletNum--;
-        PlaySoundEffects(FireSound);
+        if(useFireSound) PlaySoundEffects(FireSound);
 
         //animator.SetBool("isShoot", true);
         //Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 2f);
@@ -543,7 +546,7 @@ public class player_Controller : MonoBehaviour
         if (ReloadTimer < 0)
         {
             bulletNum = maxBulletNum;
-            if (reloadType == reloadBulletType.allReload) PlaySoundEffects(allReloadSound);
+            if (reloadType == reloadBulletType.allReload && useReloadSound) PlaySoundEffects(allReloadSound);
 
             setReloadBulletUI(false);
         }
@@ -584,7 +587,7 @@ public class player_Controller : MonoBehaviour
                 //Debug.Log(currentReloadTime);
                 //Debug.Log("증가");
                 bulletNum++;
-                if (reloadType == reloadBulletType.oneByOneReload) PlaySoundEffects(oneByOneReloadSound);
+                if (reloadType == reloadBulletType.oneByOneReload && useReloadSound) PlaySoundEffects(oneByOneReloadSound);
 
                 currentReloadTime -= OneBulletReloadTime;
             }
@@ -593,7 +596,8 @@ public class player_Controller : MonoBehaviour
 
     void bulletUI()
     {
-        bulletText.text = bulletNum + " / " + maxBulletNum;
+        BulletNumUI.transform.Find("bulletText").gameObject.GetComponent<Text>().text = bulletNum.ToString();
+        BulletNumUI.transform.Find("MaxBulletText").gameObject.GetComponent<Text>().text = maxBulletNum.ToString();
     }
 
 
