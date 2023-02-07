@@ -84,6 +84,10 @@ public class player_Controller : MonoBehaviour
     GameObject GunHandle;
     GameObject Gun;
     public Vector3 GunOriginPos = new Vector3(0, 0, 0);
+    Quaternion GunOriginRot = Quaternion.Euler(0, 180, 0);
+    Vector3 GunSprintPos = new Vector3(-0.271f, 0.001f, 0.135f);
+    Quaternion GunSprintRot = Quaternion.Euler(-0.133f, 123.826f, -0.249f);
+    public float GunRotationSpeed = 3f;
 
     // Zoom
     public KeyCode ZoomKey = KeyCode.Z;
@@ -192,6 +196,8 @@ public class player_Controller : MonoBehaviour
             currentSpeed = walkSpeed;
             zoomTimer = zoomSpeed;
             isSprinting = false;
+            Gun.transform.localPosition = GunOriginPos;
+            Gun.transform.localRotation = GunOriginRot;
         }
 
         // sprint
@@ -305,7 +311,11 @@ public class player_Controller : MonoBehaviour
         {
             SetFOVSmooth(theCamera.fieldOfView + 5);
             currentSpeed = sprintSpeed;
-            if(useStaminaLimit) stamina -= Time.deltaTime;
+
+            Gun.transform.localPosition= Vector3.Slerp(Gun.transform.localPosition, GunSprintPos, GunRotationSpeed * Time.deltaTime);
+            Gun.transform.localRotation = Quaternion.Slerp(Gun.transform.localRotation, GunSprintRot, GunRotationSpeed*Time.deltaTime);
+
+            if (useStaminaLimit) stamina -= Time.deltaTime;
             if (stamina < 0)
             {
                 stamina = 0;

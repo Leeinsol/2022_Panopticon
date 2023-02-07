@@ -22133,6 +22133,7 @@ MonoBehaviour:
   headBobSpeed: 10
   GunModel: {fileID: 5194338988698467188, guid: 094db35eee8299945ba5852bf6abf420, type: 3}
   GunOriginPos: {x: 0, y: 0, z: 0}
+  GunRotationSpeed: 10
   ZoomKey: 324
   useCameraZoom: 1
   zoomSpeed: 2
