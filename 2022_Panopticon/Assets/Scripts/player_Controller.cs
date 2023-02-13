@@ -23,28 +23,27 @@ public class player_Controller : MonoBehaviour
     private float walkHeight;
 
     // Sprint
-    public KeyCode SprintKey = KeyCode.LeftShift;
     public bool useSprint = true;
+    public KeyCode SprintKey = KeyCode.LeftShift;
     public float sprintSpeed =50f;
     private bool isSprinting = false;
 
     // Stamina
+    public bool useStaminaLimit = true;
     public GameObject StaminaBar;
     public float maxStamina = 5f;
     private float stamina = 5f;
-    public bool useStaminaLimit = true;
 
     // Crouch
-    public KeyCode CrouchKey = KeyCode.LeftControl;
     public bool useCrouch = true;
+    public KeyCode CrouchKey = KeyCode.LeftControl;
     public float crouchSpeed = 15f;
     public float crouchHeight= 0.5f;
     private bool isCrouching = false;
 
-
     // Jump
-    public KeyCode JumpKey = KeyCode.Space;
     public bool useJump = true;
+    public KeyCode JumpKey = KeyCode.Space;
     public float jumpForce = 5f;
     public float groundCheckDistance = .1f;
     private float bufferCheckDistance = .1f;
