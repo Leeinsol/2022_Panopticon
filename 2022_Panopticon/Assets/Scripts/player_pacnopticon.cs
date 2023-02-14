@@ -19,8 +19,8 @@ public class player_pacnopticon : MonoBehaviour
     {
         MoveFloor();
 
-        if(!transform.GetComponent<player_Controller>().isZooming)
-            heightFOV();
+        //if(!transform.GetComponent<player_Controller>().isZooming)
+        //    heightFOV();
     }
 
     void MoveFloor()

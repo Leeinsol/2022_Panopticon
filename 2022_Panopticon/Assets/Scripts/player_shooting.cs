@@ -54,7 +54,7 @@ public class player_shooting : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        bulletText.text = "ÃÑ¾Ë ¼ö: " + bulletNum;
+        bulletText.text = "ï¿½Ñ¾ï¿½ ï¿½ï¿½: " + bulletNum;
 
         if (Input.GetKey(FireKey))
         {
@@ -136,7 +136,7 @@ public class player_shooting : MonoBehaviour
             //if (hitInfo.collider.name == "Plane") return;
             bulletEffect.transform.position = hitInfo.point;
             bulletEffect.transform.forward = hitInfo.normal;
-            Debug.Log("ÃÑ ¸ÂÀ½" + hitInfo.collider.gameObject.name);
+            Debug.Log("ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½" + hitInfo.collider.gameObject.name);
             Instantiate(psBullet, bulletEffect.transform.position, Quaternion.Euler(bulletEffect.transform.forward));
             GameObject ob = hitInfo.collider.gameObject;
 
@@ -180,7 +180,7 @@ public class player_shooting : MonoBehaviour
         {
             if (currentReloadTime - OneBulletReloadTime > time)
             {
-                //Debug.Log("Áõ°¡");
+                //Debug.Log("ï¿½ï¿½ï¿½ï¿½");
                 bulletNum++;
                 currentReloadTime -= OneBulletReloadTime;
             }

@@ -50,7 +50,7 @@ public class Enemy : MonoBehaviour
         if (GameObject.Find("CinemaCamera").GetComponent<cinema_moving>().isDoorOpen
             || PlayerPrefs.GetInt("isCinemaEnd") == 1)
         {
-            //Debug.Log("½ºÆäÀÌ½º");
+            //Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½");
             agent.isStopped = false;
             animator.SetBool("isRun", true);
         }

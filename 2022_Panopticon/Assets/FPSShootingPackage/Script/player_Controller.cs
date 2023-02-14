@@ -38,14 +38,14 @@ public class player_Controller : MonoBehaviour
     public bool useCrouch = true;
     public KeyCode CrouchKey = KeyCode.LeftControl;
     public float crouchSpeed = 15f;
-    public float crouchHeight= 0.5f;
+    public float crouchHeight = 0.5f;
     private bool isCrouching = false;
 
     // Jump
     public bool useJump = true;
     public KeyCode JumpKey = KeyCode.Space;
     public float jumpForce = 5f;
-    public float groundCheckDistance = .1f;
+    float groundCheckDistance = .1f;
     private float bufferCheckDistance = .1f;
     private bool isGround = false;
 
@@ -79,18 +79,19 @@ public class player_Controller : MonoBehaviour
     float currentHeight;
 
     // Gun
+    public bool useGun = true;
     public GameObject GunModel;
+    public float GunRotationSpeed = 3f;
     GameObject GunHandle;
     GameObject Gun;
-    public Vector3 GunOriginPos = new Vector3(0, 0, 0);
+    Vector3 GunOriginPos = new Vector3(0, 0, 0);
     Quaternion GunOriginRot = Quaternion.Euler(0, 180, 0);
     Vector3 GunSprintPos = new Vector3(-0.271f, 0.001f, 0.135f);
     Quaternion GunSprintRot = Quaternion.Euler(-0.133f, 123.826f, -0.249f);
-    public float GunRotationSpeed = 3f;
 
     // Zoom
-    public KeyCode ZoomKey = KeyCode.Z;
     public bool useCameraZoom = true;
+    public KeyCode ZoomKey = KeyCode.Z;
     public float zoomSpeed = 2f;
     public bool isZooming = false;
     float defaultFOV = 60f;
@@ -111,25 +112,25 @@ public class player_Controller : MonoBehaviour
     public float fireRate = 0.5f;
     float fireTimer;
     //bool isFire = false;
-    public bool useFire = true;
+    //public bool useFire = true;
 
     //Reload
+    public bool useReload = true;
     public KeyCode ReloadKey = KeyCode.R;
     public reloadBulletType reloadType;
     public float maxReloadTime = 5f;
     public float allReloadTime = 1f;
+    public float reloadActionForce = 0.5f;
     float ReloadTimer;
     float OneBulletReloadTime;
     float currentReloadTime;
     bool isReload = false;
-    public bool useReload = true;
-    public float reloadActionForce = 0.5f;
 
     // Sound
-    public AudioClip FireSound, oneByOneReloadSound, allReloadSound;
-    AudioSource audioSource;
     public bool useFireSound = true;
     public bool useReloadSound = true;
+    public AudioClip FireSound, oneByOneReloadSound, allReloadSound;
+    AudioSource audioSource;
    
     // Start is called before the first frame update
     void Start()
@@ -150,8 +151,15 @@ public class player_Controller : MonoBehaviour
         zoomTimer = zoomSpeed;
 
         // gun instantiate
-        Gun = Instantiate(GunModel, GunHandle.transform) as GameObject;
-        Gun.transform.parent = GunHandle.transform;
+        if (useGun)
+        {
+            Gun = Instantiate(GunModel, GunHandle.transform) as GameObject;
+            Gun.transform.parent = GunHandle.transform;
+        }
+        else
+        {
+            crossHairText.enabled = false;
+        }
 
         // bullet instantiate
         bulletNum = maxBulletNum;
@@ -164,13 +172,7 @@ public class player_Controller : MonoBehaviour
         currentReloadTime = ReloadTimer;
         ReladTimerUI.GetComponent<Slider>().maxValue = ReloadTimer;
 
-        if (!useReload || !useFire) BulletNumUI.SetActive(false);
-
-        if (!useFire)
-        {
-            Gun.SetActive(false);
-            crossHairText.enabled = false;
-        }
+        if (!useReload || !useGun) BulletNumUI.SetActive(false);
 
         // set SprintBar
         if (useSprint && useStaminaLimit)  StaminaBar.SetActive(true);
@@ -195,8 +197,12 @@ public class player_Controller : MonoBehaviour
             currentSpeed = walkSpeed;
             zoomTimer = zoomSpeed;
             isSprinting = false;
-            Gun.transform.localPosition = GunOriginPos;
-            Gun.transform.localRotation = GunOriginRot;
+
+            if (useGun)
+            {
+                Gun.transform.localPosition = GunOriginPos;
+                Gun.transform.localRotation = GunOriginRot;
+            }
         }
 
         // sprint
@@ -234,9 +240,11 @@ public class player_Controller : MonoBehaviour
 
         // zoom camera
         if (useCameraZoom)  ZoomCamera();
- 
+
+        if (!isZooming && !isSprinting) theCamera.fieldOfView = defaultFOV;
+
         // Fire
-        if (useFire)
+        if (useGun)
         {
             Fire();
             if (useReload)
@@ -308,11 +316,16 @@ public class player_Controller : MonoBehaviour
     {
         if (isSprinting)
         {
-            SetFOVSmooth(theCamera.fieldOfView + 5);
+            SetFOVSmooth(65);
+            
             currentSpeed = sprintSpeed;
 
-            Gun.transform.localPosition= Vector3.Slerp(Gun.transform.localPosition, GunSprintPos, GunRotationSpeed * Time.deltaTime);
-            Gun.transform.localRotation = Quaternion.Slerp(Gun.transform.localRotation, GunSprintRot, GunRotationSpeed*Time.deltaTime);
+            if (useGun)
+            {
+                Gun.transform.localPosition = Vector3.Slerp(Gun.transform.localPosition, GunSprintPos, GunRotationSpeed * Time.deltaTime);
+                Gun.transform.localRotation = Quaternion.Slerp(Gun.transform.localRotation, GunSprintRot, GunRotationSpeed * Time.deltaTime);
+
+            }
 
             if (useStaminaLimit) stamina -= Time.deltaTime;
             if (stamina < 0)
@@ -331,9 +344,12 @@ public class player_Controller : MonoBehaviour
         if (isCrouching)
         {
             //nowSpeed = crouchSpeed;
-            currentHeight = crouchHeight;
-            transform.localScale = new Vector3(transform.localScale.x, currentHeight, transform.localScale.z);
+            //currentHeight = crouchHeight;
+            //transform.localScale = new Vector3(transform.localScale.x, currentHeight, transform.localScale.z);
             //float center = crouchHeight / 2;
+            GetComponent<CapsuleCollider>().height = crouchHeight;
+            //transform.position = new Vector3(transform.localPosition.x, 0.51f, transform.localPosition.z);
+            //GetComponent<CapsuleCollider>().center = new Vector3(0, -0.5f, 0);
             //GetComponent<CapsuleCollider>().height = Mathf.Lerp(GetComponent<CapsuleCollider>().height, crouchHeight, 0.1f);
             //GetComponent<CapsuleCollider>().center = Vector3.Lerp(GetComponent<CapsuleCollider>().center, new Vector3(0, center, 0), 0.3f);
         }
@@ -343,7 +359,13 @@ public class player_Controller : MonoBehaviour
             currentHeight = walkHeight;
             //Debug.Log("move: " + moveHeight);
             //Debug.Log("now: " + nowHeight);
-            transform.localScale = new Vector3(transform.localScale.x, currentHeight, transform.localScale.z);
+
+            GetComponent<CapsuleCollider>().height = 2f;
+            //transform.position = new Vector3(transform.position.x, 1.5f, transform.position.z);
+
+            //GetComponent<CapsuleCollider>().center = new Vector3(0, 0, 0);
+
+            //transform.localScale = new Vector3(transform.localScale.x, currentHeight, transform.localScale.z);
             //float center = moveHeight;
             //GetComponent<CapsuleCollider>().height = Mathf.Lerp(GetComponent<CapsuleCollider>().height, nowHeight, 0.1f);
             //GetComponent<CapsuleCollider>().center = Vector3.Lerp(GetComponent<CapsuleCollider>().center, new Vector3(0, 0, 0), 0.3f);
@@ -424,7 +446,8 @@ public class player_Controller : MonoBehaviour
         {
             isZooming = false;
             zoomTimer = zoomSpeed;
-            //SetFOVSmooth(defaultFOV);
+            SetFOVSmooth(defaultFOV);
+            Debug.Log(defaultFOV);
         }
     }
 
