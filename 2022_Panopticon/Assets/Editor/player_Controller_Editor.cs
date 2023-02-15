@@ -5,22 +5,23 @@ using UnityEngine.UI;
 using UnityEditor;
 
 
-[CustomEditor(typeof(player_Controller))]
+[CustomEditor(typeof(player_Controller)), InitializeOnLoadAttribute]
 public class player_Controller_Editor : Editor
 {
     player_Controller player_controller;
+    SerializedObject serializedObject;
 
     private void OnEnable()
     {
         player_controller = (player_Controller)target;
-
+        //player_controller = target as player_controller;
+        serializedObject = new SerializedObject(player_controller);
     }
 
     public override void OnInspectorGUI()
     {
-        //SerFPC.Update();
 
-        //SerFPC.Update();
+        serializedObject.Update();
 
         //EditorGUILayout.LabelField("Walk Speed", test.walkSpeed.ToString());
         //EditorGUILayout.LabelField("FPS SHOOTING PACKAGE", EditorStyles.boldLabel)
@@ -77,7 +78,7 @@ public class player_Controller_Editor : Editor
         EditorGUI.EndDisabledGroup();
         GUILayout.Space(15);
 
-        GUILayout.Label("Crouch", DivisionStyle);
+        GUILayout.Label("CROUCH", DivisionStyle);
         player_controller.useCrouch = EditorGUILayout.Toggle("Use Crouch", player_controller.useCrouch);
         EditorGUI.BeginDisabledGroup(!player_controller.useCrouch);
         player_controller.CrouchKey = (KeyCode)EditorGUILayout.EnumPopup("Crouch Key", player_controller.CrouchKey);
@@ -86,14 +87,14 @@ public class player_Controller_Editor : Editor
         EditorGUI.EndDisabledGroup();
         GUILayout.Space(15);
 
-        GUILayout.Label("Head Bob", DivisionStyle);
+        GUILayout.Label("HEAD BOB", DivisionStyle);
         player_controller.useHeadBob = EditorGUILayout.Toggle("Use Head Bob", player_controller.useHeadBob);
         EditorGUI.BeginDisabledGroup(!player_controller.useHeadBob);
         player_controller.headBobSpeed = EditorGUILayout.FloatField("Head Bob Speed", player_controller.headBobSpeed);
         EditorGUI.EndDisabledGroup();
         GUILayout.Space(15);
 
-        GUILayout.Label("Jump", DivisionStyle);
+        GUILayout.Label("JUMP", DivisionStyle);
         player_controller.useJump = EditorGUILayout.Toggle("Use Jump", player_controller.useJump);
         EditorGUI.BeginDisabledGroup(!player_controller.useJump);
         player_controller.JumpKey = (KeyCode)EditorGUILayout.EnumPopup("Jump Key", player_controller.JumpKey);
@@ -102,7 +103,7 @@ public class player_Controller_Editor : Editor
         EditorGUI.EndDisabledGroup();
         GUILayout.Space(15);
 
-        GUILayout.Label("Camera", DivisionStyle);
+        GUILayout.Label("CAMERA", DivisionStyle);
         player_controller.useCameraRotationVerticality = EditorGUILayout.Toggle("Use Camera Rotation Verticality", player_controller.useCameraRotationVerticality);
         player_controller.useCameraRotationHorizontality = EditorGUILayout.Toggle("Use Camera Rotation Horizontality", player_controller.useCameraRotationHorizontality);
         EditorGUI.BeginDisabledGroup(!player_controller.useCameraRotationVerticality && !player_controller.useCameraRotationHorizontality);
@@ -112,7 +113,7 @@ public class player_Controller_Editor : Editor
         EditorGUI.EndDisabledGroup();
         GUILayout.Space(15);
 
-        GUILayout.Label("Zoom", DivisionStyle);
+        GUILayout.Label("ZOOM", DivisionStyle);
         player_controller.useCameraZoom = EditorGUILayout.Toggle("use Camera Zoom", player_controller.useCameraZoom);
         EditorGUI.BeginDisabledGroup(!player_controller.useCameraZoom);
         player_controller.ZoomKey = (KeyCode)EditorGUILayout.EnumPopup("Zoom Key", player_controller.ZoomKey);
@@ -120,7 +121,7 @@ public class player_Controller_Editor : Editor
         EditorGUI.EndDisabledGroup();
         GUILayout.Space(15);
 
-        GUILayout.Label("Gun", DivisionStyle);
+        GUILayout.Label("GUN", DivisionStyle);
         player_controller.useGun = EditorGUILayout.Toggle("Use Gun", player_controller.useGun);
         EditorGUI.BeginDisabledGroup(!player_controller.useGun);
         player_controller.GunModel = EditorGUILayout.ObjectField("Gun Model", player_controller.GunModel, typeof(GameObject), true) as GameObject;
@@ -128,7 +129,7 @@ public class player_Controller_Editor : Editor
         EditorGUI.EndDisabledGroup();
         GUILayout.Space(15);
 
-        GUILayout.Label("Fire", DivisionStyle);
+        GUILayout.Label("FIRE", DivisionStyle);
         EditorGUI.BeginDisabledGroup(!player_controller.useGun);
         player_controller.FireKey = (KeyCode)EditorGUILayout.EnumPopup("Fire Key", player_controller.FireKey);
         player_controller.bulletEffect = EditorGUILayout.ObjectField("Bullet Effect", player_controller.bulletEffect, typeof(GameObject), true) as GameObject;
@@ -137,7 +138,7 @@ public class player_Controller_Editor : Editor
         EditorGUI.EndDisabledGroup();
         GUILayout.Space(15);
 
-        GUILayout.Label("Canvas", DivisionStyle);
+        GUILayout.Label("CANVAS", DivisionStyle);
         EditorGUI.BeginDisabledGroup(!player_controller.useGun);
         player_controller.crossHairText = EditorGUILayout.ObjectField("Cross Hair Text", player_controller.crossHairText, typeof(Text), true) as Text;
         player_controller.crosshairtype = (CrossHairType)EditorGUILayout.EnumPopup("Cross Hair Type", player_controller.crosshairtype);
@@ -146,7 +147,7 @@ public class player_Controller_Editor : Editor
         EditorGUI.EndDisabledGroup();
         GUILayout.Space(15);
 
-        GUILayout.Label("Reload", DivisionStyle);
+        GUILayout.Label("RELOAD", DivisionStyle);
         player_controller.useReload = EditorGUILayout.Toggle("Use Reload", player_controller.useReload);
         EditorGUI.BeginDisabledGroup(!player_controller.useReload);
         player_controller.ReloadKey = (KeyCode)EditorGUILayout.EnumPopup("Reload Key", player_controller.ReloadKey);
@@ -157,7 +158,7 @@ public class player_Controller_Editor : Editor
         EditorGUI.EndDisabledGroup();
         GUILayout.Space(15);
 
-        GUILayout.Label("Sound", DivisionStyle);
+        GUILayout.Label("SOUND", DivisionStyle);
         player_controller.useFireSound = EditorGUILayout.Toggle("Use Fire Sound", player_controller.useFireSound);
         EditorGUI.BeginDisabledGroup(!player_controller.useFireSound);
         player_controller.FireSound = EditorGUILayout.ObjectField("Fire Sound", player_controller.FireSound, typeof(AudioClip), true) as AudioClip;
@@ -169,5 +170,13 @@ public class player_Controller_Editor : Editor
         player_controller.oneByOneReloadSound = EditorGUILayout.ObjectField("One By One Reload Sound", player_controller.oneByOneReloadSound, typeof(AudioClip), true) as AudioClip;
         player_controller.allReloadSound = EditorGUILayout.ObjectField("All Reload Sound", player_controller.allReloadSound, typeof(AudioClip), true) as AudioClip;
         EditorGUI.EndDisabledGroup();
+
+        Undo.RecordObject(player_controller, "FPC Shooting Change");
+
+        if (GUI.changed)
+        {
+            EditorUtility.SetDirty(player_controller);
+            serializedObject.ApplyModifiedProperties();
+        }
     }
 }
