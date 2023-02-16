@@ -186,6 +186,7 @@ public class player_Controller : MonoBehaviour
             currentSpeed = walkSpeed;
             zoomTimer = zoomSpeed;
             isSprinting = false;
+            setGunOrigin();
         }
 
         // sprint
@@ -297,17 +298,17 @@ public class player_Controller : MonoBehaviour
             {
                 stamina = 0;
                 isSprinting = false;
+                setGunOrigin();
             }
         }
         else if(stamina < maxStamina)   stamina += Time.deltaTime;
-
-        if (!isSprinting && useGun)
-        {
-            Gun.transform.localPosition = GunOriginPos;
-            Gun.transform.localRotation = GunOriginRot;
-        }
     }
 
+    void setGunOrigin()
+    {
+        Gun.transform.localPosition = GunOriginPos;
+        Gun.transform.localRotation = GunOriginRot;
+    }
     void Crouch()
     {
         if (isCrouching)    GetComponent<CapsuleCollider>().height = crouchHeight;
