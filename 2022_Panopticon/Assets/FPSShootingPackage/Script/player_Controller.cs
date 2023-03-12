@@ -453,13 +453,26 @@ public class player_Controller : MonoBehaviour
             // Particle: Looping -> False / Stop Action -> Destroy
             Instantiate(psBullet, bulletEffect.transform.position, Quaternion.Euler(bulletEffect.transform.forward));
             psBullet.Play();
-            GameObject ob = hitInfo.collider.gameObject;
+            Collider collider = hitInfo.collider;
+
 
             // 총 맞았을 때
-            if (ob.GetComponent<Enemy>())
+            if (collider.gameObject.GetComponent<Enemy>())
             {
-                ob.GetComponent<Enemy>().hp--;
-                ob.GetComponent<Enemy>().playHurtAnim();
+                //if (collider is CapsuleCollider)
+                //{
+                //    collider.gameObject.GetComponent<Enemy>().hp--;
+                //}
+
+                if(collider.GetType() == typeof(SphereCollider))
+                {
+                    Debug.Log("맞음");
+                    collider.gameObject.GetComponent<Enemy>().hp -= 2;
+                }
+
+                Debug.Log(collider.name + collider.gameObject.GetComponent<Enemy>().hp);
+
+                collider.gameObject.GetComponent<Enemy>().playHurtAnim();
             }
         }
         fireTimer = 0f;

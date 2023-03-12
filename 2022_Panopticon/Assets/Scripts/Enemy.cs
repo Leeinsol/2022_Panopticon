@@ -17,7 +17,7 @@ public class Enemy : MonoBehaviour
     public int maxHp = 5;
     public int hp;
 
-
+    Rigidbody rb;
     Animator animator;
 
     GameObject enemyModel;
@@ -27,6 +27,7 @@ public class Enemy : MonoBehaviour
     {
         enemyModel = transform.GetChild(0).gameObject;
         hp = maxHp;
+        rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
         animator = enemyModel.GetComponent<Animator>();
         if (PlayerPrefs.GetInt("isCinemaEnd") == 1)
@@ -41,6 +42,7 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        rb.velocity = Vector3.zero;
         agent.SetDestination(targetPos);
 
         //if (Input.GetKeyDown(KeyCode.Space))
@@ -132,6 +134,7 @@ public class Enemy : MonoBehaviour
             //Debug.Log("hp 0");
             agent.isStopped = true;
             //enemyModel.GetComponent<CapsuleCollider>().isTrigger = true;
+            transform.GetComponent<CapsuleCollider>().enabled = false;
             enemyModel.layer = 2;
             //Debug.Log(agent.isStopped);
             //animator.SetBool("isDie1", true);
