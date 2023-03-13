@@ -129,7 +129,7 @@ public class Enemy : MonoBehaviour
 
     void deadCheck()
     {
-        if (hp == 0)
+        if (hp < 1)
         {
             //Debug.Log("hp 0");
             agent.isStopped = true;

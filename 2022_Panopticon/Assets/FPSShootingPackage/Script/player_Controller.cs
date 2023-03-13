@@ -388,7 +388,7 @@ public class player_Controller : MonoBehaviour
             isZooming = false;
             zoomTimer = zoomSpeed;
             SetFOVSmooth(defaultFOV);
-            Debug.Log(defaultFOV);
+            //Debug.Log(defaultFOV);
         }
     }
 
@@ -436,7 +436,7 @@ public class player_Controller : MonoBehaviour
 
         Ray ray = new Ray(theCamera.transform.position, theCamera.transform.forward);
         RaycastHit hitInfo = new RaycastHit();
-        
+        Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 2f); 
         bulletNum--;
         
         if(useFireSound) PlaySoundEffects(FireSound);
@@ -454,25 +454,39 @@ public class player_Controller : MonoBehaviour
             Instantiate(psBullet, bulletEffect.transform.position, Quaternion.Euler(bulletEffect.transform.forward));
             psBullet.Play();
             Collider collider = hitInfo.collider;
-
+            
 
             // 총 맞았을 때
-            if (collider.gameObject.GetComponent<Enemy>())
+            if (collider.gameObject.GetComponent<Enemy>() || collider.transform.parent.parent.gameObject.GetComponent<Enemy>())
             {
-                //if (collider is CapsuleCollider)
+
+                if (collider is BoxCollider)
+                {
+                    collider.transform.parent.parent.gameObject.GetComponent<Enemy>().hp--;
+
+                    Debug.Log(collider.transform.parent.parent.gameObject.GetComponent<Enemy>().hp);
+                    collider.transform.parent.parent.gameObject.GetComponent<Enemy>().playHurtAnim();
+                }
+
+                if (collider is SphereCollider)
+                {
+                    collider.gameObject.GetComponent<Enemy>().hp -= 2;
+
+                    Debug.Log(collider.gameObject.GetComponent<Enemy>().hp);
+                    collider.gameObject.GetComponent<Enemy>().playHurtAnim();
+                }
+
+                //else
                 //{
+                //    Debug.Log("다리맞음");
                 //    collider.gameObject.GetComponent<Enemy>().hp--;
                 //}
 
-                if(collider.GetType() == typeof(SphereCollider))
-                {
-                    Debug.Log("맞음");
-                    collider.gameObject.GetComponent<Enemy>().hp -= 2;
-                }
+                //if(collider.GetType() == typeof(SphereCollider))
 
-                Debug.Log(collider.name + collider.gameObject.GetComponent<Enemy>().hp);
 
-                collider.gameObject.GetComponent<Enemy>().playHurtAnim();
+                //Debug.Log(collider.name + collider.gameObject.GetComponent<Enemy>().hp);
+
             }
         }
         fireTimer = 0f;
