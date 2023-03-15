@@ -11,9 +11,13 @@ public class Enemy : MonoBehaviour
     //[SerializeField]
     //Transform target;
 
-    Vector3 targetPos = new Vector3(0, -6.5f, 0);
+    //Vector3 targetPos = new Vector3(0, -6.5f, 0);
     //public GameObject targetPos;
     Vector3 destination;
+    public Transform targetPos;
+    public float towerRadius = 8.0f;
+    private Vector3 currentDestination;
+    private bool hasReachedDestination = false;
 
     //public static int hp = 5;
     public int maxHp = 5;
@@ -31,25 +35,34 @@ public class Enemy : MonoBehaviour
         hp = maxHp;
         rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
-        destination = agent.destination;
+        //destination = agent.destination;
+        SetDestination();
         animator = enemyModel.GetComponent<Animator>();
         if (PlayerPrefs.GetInt("isCinemaEnd") == 1)
         {
             animator.runtimeAnimatorController = enemy_controller;
         }
-        agent.enabled = false;
+
         agent.enabled = true;
         agent.isStopped = true;
     }
-
     // Update is called once per frame
     void Update()
     {
-        rb.velocity = Vector3.zero;
+        //rb.velocity = Vector3.zero;
+        agent.isStopped = false;
+        //SetDestination();
+
+        if (!hasReachedDestination && agent.remainingDistance <= agent.stoppingDistance)
+        {
+            hasReachedDestination = true;
+            SetDestination();
+        }
+
         //agent.SetDestination(targetPos.transform.position);
         //agent.destination = destination;
         //agent.destination = targetPos.transform.position;
-        agent.destination = targetPos;
+        //agent.destination = targetPos;
 
         //if (Input.GetKeyDown(KeyCode.Space))
         //{
@@ -69,8 +82,22 @@ public class Enemy : MonoBehaviour
         }
         //animator.SetBool("isAttack", false);
         deadCheck();
+        checkAngryState();
 
-        
+
+    }
+
+    void SetDestination()
+    {
+        Vector3 directionToCenter = targetPos.position - transform.position;
+        directionToCenter.Normalize();
+
+        Vector3 destination = targetPos.position + directionToCenter * towerRadius;
+
+        agent.SetDestination(destination);
+
+        currentDestination = destination;
+        hasReachedDestination = false;
     }
 
     //private void OnTriggerEnter(Collider other)
@@ -146,6 +173,15 @@ public class Enemy : MonoBehaviour
             //animator.SetBool("isDie1", true);
             animator.SetTrigger("isDie");
             Destroy(this.gameObject, 2f);
+        }
+    }
+
+    void checkAngryState()
+    {
+        if (GameObject.Find("tower").GetComponent<tower>().isHalfHP)
+        {
+            agent.speed *= 2;
+            hp *= 2;
         }
     }
 }

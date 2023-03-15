@@ -1860,6 +1860,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy_controller: {fileID: 9100000, guid: 3c91e6a66b39456499c367f71de794c3, type: 2}
+  targetPos: {fileID: 2000492002949453874, guid: e1f5e3c53a6786f4aa3c978ffff1236e, type: 3}
+  towerRadius: 10
   maxHp: 5
   hp: 5
 --- !u!195 &5115912789076446619
@@ -1872,7 +1874,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 5
+  m_Speed: 1
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120

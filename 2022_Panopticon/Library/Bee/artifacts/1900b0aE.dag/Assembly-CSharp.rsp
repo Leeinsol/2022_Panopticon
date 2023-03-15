@@ -375,6 +375,7 @@
 "Assets/ModularFirstPersonController/FirstPersonController/FirstPersonController.cs"
 "Assets/PBS Materials Variety Pack/zzz/MaterialRandomizer.cs"
 "Assets/PBS Materials Variety Pack/zzz/MaterialRandomizerScript.cs"
+"Assets/Scripts/BlinkingText.cs"
 "Assets/Scripts/bullet.cs"
 "Assets/Scripts/cinema_controller.cs"
 "Assets/Scripts/cinema_moving.cs"
