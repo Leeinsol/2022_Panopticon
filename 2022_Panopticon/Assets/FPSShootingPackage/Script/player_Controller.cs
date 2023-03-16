@@ -76,9 +76,11 @@ public class player_Controller : MonoBehaviour
     // Gun
     public bool useGun = true;
     public GameObject GunModel;
+    public GameObject BombModel;
     public float GunRotationSpeed = 3f;
     GameObject GunHandle;
     GameObject Gun;
+    GameObject Bomb;
     Vector3 GunOriginPos = new Vector3(0, 0, 0);
     Quaternion GunOriginRot = Quaternion.Euler(0, 180, 0);
     Vector3 GunSprintPos = new Vector3(-0.271f, 0.001f, 0.135f);
@@ -146,6 +148,11 @@ public class player_Controller : MonoBehaviour
         {
             Gun = Instantiate(GunModel, GunHandle.transform) as GameObject;
             Gun.transform.parent = GunHandle.transform;
+
+            // bomb instantiate
+            Bomb = Instantiate(BombModel, GunHandle.transform) as GameObject;
+            Bomb.transform.parent = GunHandle.transform;
+            Bomb.SetActive(false);
         }
         else
         {
@@ -230,7 +237,7 @@ public class player_Controller : MonoBehaviour
         if (!isZooming && !isSprinting) theCamera.fieldOfView = defaultFOV;
 
         // Fire
-        if (useGun)
+        if (useGun && Gun.activeSelf)
         {
             Fire();
             if (useReload)
@@ -240,6 +247,50 @@ public class player_Controller : MonoBehaviour
                 reloadBullet();
             }
         }
+
+        if(useGun && Bomb.activeSelf)
+        {
+            bombFire();
+        }
+
+        changeWeapon();
+    }
+
+    void bombFire()
+    {
+        //bomb
+    }
+
+    void changeWeapon()
+    {
+        Vector2 scrollDelta = Input.mouseScrollDelta;
+
+        if (scrollDelta.y > 0 || scrollDelta.y < 0)
+        {
+            //Debug.Log("스크롤");
+
+            if (!Gun.activeSelf)
+            {
+                setGun();
+            }
+            
+            else if (!Bomb.activeSelf)
+            {
+                setBomb();
+            }
+        }
+    }
+
+    void setGun()
+    {
+        Gun.SetActive(true);
+        Bomb.SetActive(false);
+    }
+
+    void setBomb()
+    {
+        Bomb.SetActive(true);
+        Gun.SetActive(false);
     }
 
     void SetCrossHair()

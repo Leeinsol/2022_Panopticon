@@ -15,18 +15,24 @@ public class tower : MonoBehaviour
 
     public GameObject WarningText;
 
-    public NavMeshAgent[] navMeshAgents;
+    List<NavMeshAgent> navMeshAgents = new List<NavMeshAgent>();
+
     int enemyNum;
 
     // Start is called before the first frame update
     void Start()
     {
-        navMeshAgents = GameObject.FindObjectsOfType<NavMeshAgent>();
+        NavMeshAgent[] foundNavMeshAgents = FindObjectsOfType<NavMeshAgent>();
+        foreach (NavMeshAgent agent in foundNavMeshAgents)
+        {
+            navMeshAgents.Add(agent);
+        }
 
-        enemyNum = navMeshAgents.Length;
-        PlayerPrefs.SetInt("remainEnemy", enemyNum);
+        //enemyNum = navMeshAgents.Count;
+        Debug.Log(navMeshAgents.Count);
+        PlayerPrefs.SetInt("remainEnemy", navMeshAgents.Count);
 
-        Debug.Log("Number of NavMeshAgents: " + enemyNum);
+        //Debug.Log("Number of NavMeshAgents: " + enemyNum);
     }
 
     // Update is called once per frame
@@ -34,9 +40,18 @@ public class tower : MonoBehaviour
     {
         towerHp.GetComponent<Slider>().value = hp;
 
-        if (hp == 0)
+        if (hp <= 0)
         {
-            PlayerPrefs.GetInt("remainEnemy");
+            //PlayerPrefs.GetInt("remainEnemy");
+            for (int i = navMeshAgents.Count - 1; i >= 0; i--)
+            {
+                if (navMeshAgents[i] == null)
+                {
+                    navMeshAgents.RemoveAt(i);
+                }
+            }
+            PlayerPrefs.SetInt("remainEnemy", navMeshAgents.Count);
+
             SceneManager.LoadScene("GameOver");
             Debug.Log("Game Over");
         }

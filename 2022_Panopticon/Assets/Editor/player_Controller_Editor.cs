@@ -129,6 +129,10 @@ public class player_Controller_Editor : Editor
         EditorGUI.EndDisabledGroup();
         GUILayout.Space(15);
 
+        GUILayout.Label("BOMB", DivisionStyle);
+        player_controller.BombModel = EditorGUILayout.ObjectField("Bomb Model", player_controller.BombModel, typeof(GameObject), true) as GameObject;
+        GUILayout.Space(15);
+
         GUILayout.Label("FIRE", DivisionStyle);
         EditorGUI.BeginDisabledGroup(!player_controller.useGun);
         player_controller.FireKey = (KeyCode)EditorGUILayout.EnumPopup("Fire Key", player_controller.FireKey);
