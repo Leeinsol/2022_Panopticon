@@ -1864,6 +1864,8 @@ MonoBehaviour:
   towerRadius: 10
   maxHp: 5
   hp: 5
+  isAngry: 0
+  power: 1
 --- !u!195 &5115912789076446619
 NavMeshAgent:
   m_ObjectHideFlags: 0

@@ -21,7 +21,11 @@ public class Enemy : MonoBehaviour
 
     //public static int hp = 5;
     public int maxHp = 5;
-    public int hp;
+    public int hp= 5;
+
+    public bool isAngry = false;
+
+    public int power = 1;
 
     Rigidbody rb;
     Animator animator;
@@ -32,7 +36,7 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         enemyModel = transform.GetChild(0).gameObject;
-        hp = maxHp;
+        //hp = maxHp;
         rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
         //destination = agent.destination;
@@ -83,7 +87,8 @@ public class Enemy : MonoBehaviour
         //animator.SetBool("isAttack", false);
         deadCheck();
         checkAngryState();
-
+        //Debug.Log(agent.speed);
+        //Debug.Log(hp);
 
     }
 
@@ -110,16 +115,17 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Player" || (collision.gameObject.transform.parent != null
+            && collision.gameObject.transform.parent.name == "tower"))
         {
             animator.SetBool("isAttack", true);
         }
-
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Player" || (collision.gameObject.transform.parent != null
+            && collision.gameObject.transform.parent.name == "tower"))
         {
             animator.SetBool("isAttack", false);
         }
@@ -132,7 +138,7 @@ public class Enemy : MonoBehaviour
             GameObject ob = collision.gameObject.transform.parent.gameObject;
             if(ob.GetComponent<tower>().hp > 0)
             {
-                ob.GetComponent<tower>().hp--;
+                ob.GetComponent<tower>().hp-= power;
                 //Debug.Log(ob.GetComponent<tower>().hp);
             }
         }
@@ -172,16 +178,27 @@ public class Enemy : MonoBehaviour
             //Debug.Log(agent.isStopped);
             //animator.SetBool("isDie1", true);
             animator.SetTrigger("isDie");
+            //PlayerPrefs.SetInt("remainEnemy", PlayerPrefs.GetInt("remainEnemy")-1);
+
             Destroy(this.gameObject, 2f);
         }
     }
 
     void checkAngryState()
     {
-        if (GameObject.Find("tower").GetComponent<tower>().isHalfHP)
+
+        if (GameObject.Find("Canvas").GetComponent<BlinkingText>().hideWarning && !isAngry)
         {
-            agent.speed *= 2;
-            hp *= 2;
+            isAngry = true;
+            SetAngry();
+            //GameObject.Find("Canvas").GetComponent<BlinkingText>().hideWarning = false;
         }
+    }
+    void SetAngry()
+    {
+        //isCheck = true;
+        agent.speed *= 2;
+        hp *= 2;
+        power *= 2;
     }
 }

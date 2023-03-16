@@ -2228,7 +2228,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 396201856}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3163,12 +3163,12 @@ GameObject:
   - component: {fileID: 250422634}
   - component: {fileID: 250422633}
   m_Layer: 2
-  m_Name: Image
+  m_Name: warningBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &250422632
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3181,8 +3181,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 396201856}
-  m_RootOrder: 0
+  m_Father: {fileID: 1159677239}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3202,7 +3202,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.72156864}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.5058824}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4698,7 +4698,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &396201856
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4711,12 +4711,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 250422632}
   - {fileID: 152296587}
   - {fileID: 548181184}
   - {fileID: 479143266}
   m_Father: {fileID: 1159677239}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5525,11 +5524,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 396201856}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -187}
+  m_AnchoredPosition: {x: 0, y: -166.35}
   m_SizeDelta: {x: 752.4122, y: 211.0794}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &479143267
@@ -5545,7 +5544,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5565,7 +5564,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uC880\uBE44\uC758 \uC18D\uB3C4\uAC00 \uBE68\uB77C\uC9D1\uB2C8\uB2E4!\n\uC880\uBE44\uAC00
+  m_Text: "\uC880\uBE44\uC758 \uC18D\uB3C4\uAC00 \uBE68\uB77C\uC9C0\uACE0\n\uC880\uBE44\uAC00
     \uAC15\uD574\uC9D1\uB2C8\uB2E4!"
 --- !u!222 &479143268
 CanvasRenderer:
@@ -6213,7 +6212,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 396201856}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -13785,6 +13784,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1241285849}
+  - {fileID: 250422632}
   - {fileID: 396201856}
   m_Father: {fileID: 0}
   m_RootOrder: 11
@@ -13807,6 +13807,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BlinkText: {fileID: 396201855}
+  BlinkBackground: {fileID: 250422631}
+  count: 0
+  hideWarning: 0
 --- !u!1001 &1162064065
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14112,6 +14115,8 @@ MonoBehaviour:
   towerRadius: 8
   maxHp: 5
   hp: 5
+  isAngry: 0
+  power: 1
 --- !u!195 &1167803526
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -18680,6 +18685,10 @@ PrefabInstance:
     - target: {fileID: 469176021174875091, guid: 372b080f01d1a3047b074c0e51ddd945, type: 3}
       propertyPath: m_Layer
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6660112029796409823, guid: 372b080f01d1a3047b074c0e51ddd945, type: 3}
+      propertyPath: towerRadius
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6966071110253505845, guid: 372b080f01d1a3047b074c0e51ddd945, type: 3}
       propertyPath: m_Name
@@ -25236,6 +25245,8 @@ MonoBehaviour:
   towerRadius: 8
   maxHp: 5
   hp: 5
+  isAngry: 0
+  power: 1
 --- !u!195 &1891445862
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -29468,6 +29479,8 @@ MonoBehaviour:
   towerRadius: 8
   maxHp: 5
   hp: 5
+  isAngry: 0
+  power: 1
 --- !u!195 &1786425800796446737
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -29822,9 +29835,17 @@ PrefabInstance:
       value: tower
       objectReference: {fileID: 0}
     - target: {fileID: 2000492002949453877, guid: e1f5e3c53a6786f4aa3c978ffff1236e, type: 3}
+      propertyPath: hp
+      value: 10000
+      objectReference: {fileID: 0}
+    - target: {fileID: 2000492002949453877, guid: e1f5e3c53a6786f4aa3c978ffff1236e, type: 3}
       propertyPath: towerHp
       value: 
       objectReference: {fileID: 1241285848}
+    - target: {fileID: 2000492002949453877, guid: e1f5e3c53a6786f4aa3c978ffff1236e, type: 3}
+      propertyPath: WarningText
+      value: 
+      objectReference: {fileID: 396201855}
     - target: {fileID: 2000492003193403504, guid: e1f5e3c53a6786f4aa3c978ffff1236e, type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
@@ -32197,6 +32218,8 @@ MonoBehaviour:
   towerRadius: 8
   maxHp: 5
   hp: 5
+  isAngry: 0
+  power: 1
 --- !u!1 &5124667681567491272
 GameObject:
   m_ObjectHideFlags: 0

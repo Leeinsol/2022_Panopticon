@@ -454,11 +454,7 @@ public class player_Controller : MonoBehaviour
             Instantiate(psBullet, bulletEffect.transform.position, Quaternion.Euler(bulletEffect.transform.forward));
             psBullet.Play();
             Collider collider = hitInfo.collider;
-            if (collider.GetType() != typeof(MeshCollider))
-            {
-                Debug.Log(collider.GetType());
 
-            }
 
             //if (collider.transform.parent.parent != null)
             //{
@@ -505,15 +501,15 @@ public class player_Controller : MonoBehaviour
 
                 if (collider is CapsuleCollider)
                 {
-                    Debug.Log("캡슐");
+                    //Debug.Log("캡슐");
                     collider.gameObject.GetComponent<Enemy>().hp--;
 
-                    Debug.Log(collider.gameObject.GetComponent<Enemy>().hp);
+                    //Debug.Log(collider.gameObject.GetComponent<Enemy>().hp);
                     collider.gameObject.GetComponent<Enemy>().playHurtAnim();
                 }
                 if (collider is SphereCollider)
                 {
-                    Debug.Log("머리");
+                    //Debug.Log("머리");
                     //collider.gameObject.GetComponent<Enemy>().hp -= 2;
 
                     //Debug.Log(collider.gameObject.GetComponent<Enemy>().hp);

@@ -380,6 +380,7 @@
 "Assets/Scripts/cinema_controller.cs"
 "Assets/Scripts/cinema_moving.cs"
 "Assets/Scripts/Enemy.cs"
+"Assets/Scripts/gameOver.cs"
 "Assets/Scripts/player_camera.cs"
 "Assets/Scripts/player_pacnopticon.cs"
 "Assets/Scripts/player_shooting.cs"
