@@ -85,6 +85,7 @@ public class player_Controller : MonoBehaviour
     Quaternion GunOriginRot = Quaternion.Euler(0, 180, 0);
     Vector3 GunSprintPos = new Vector3(-0.271f, 0.001f, 0.135f);
     Quaternion GunSprintRot = Quaternion.Euler(-0.133f, 123.826f, -0.249f);
+    public Transform BombPostion;
 
     // Fire
     public KeyCode FireKey = KeyCode.Mouse0;
@@ -152,6 +153,8 @@ public class player_Controller : MonoBehaviour
             // bomb instantiate
             Bomb = Instantiate(BombModel, GunHandle.transform) as GameObject;
             Bomb.transform.parent = GunHandle.transform;
+            Destroy(Bomb.GetComponent<Rigidbody>());
+            Bomb.GetComponent<Rigidbody>().isKinematic = true;
             Bomb.SetActive(false);
         }
         else
@@ -259,6 +262,12 @@ public class player_Controller : MonoBehaviour
     void bombFire()
     {
         //bomb
+        if (Input.GetKeyDown(FireKey))
+        {
+            GameObject bomb = Instantiate(Bomb);
+            bomb.transform.position = GunHandle.transform.position;
+            bomb.transform.forward = GunHandle.transform.forward;
+        }
     }
 
     void changeWeapon()
