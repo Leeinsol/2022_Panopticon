@@ -54,7 +54,7 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         //rb.velocity = Vector3.zero;
-        agent.isStopped = false;
+        //agent.isStopped = false;
         //SetDestination();
 
         if (!hasReachedDestination && agent.remainingDistance <= agent.stoppingDistance)
@@ -72,18 +72,18 @@ public class Enemy : MonoBehaviour
         //{
         //    GameObject.Find("CinemaCamera").GetComponent<cinema_moving>().isDoorOpen = true;
         //}
-        if (GameObject.Find("CinemaCamera").GetComponent<cinema_moving>().isDoorOpen
-            || PlayerPrefs.GetInt("isCinemaEnd") == 1)
-        {
-            //Debug.Log("�����̽�");
-            agent.isStopped = false;
-            animator.SetBool("isRun", true);
-        }
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            agent.isStopped = true;
-            animator.SetBool("isRun", false);
-        }
+        //if (GameObject.Find("CinemaCamera").GetComponent<cinema_moving>().isDoorOpen
+        //    || PlayerPrefs.GetInt("isCinemaEnd") == 1)
+        //{
+        //    //Debug.Log("�����̽�");
+        //    agent.isStopped = false;
+        //    animator.SetBool("isRun", true);
+        //}
+        //if (Input.GetKeyDown(KeyCode.Q))
+        //{
+        //    agent.isStopped = true;
+        //    animator.SetBool("isRun", false);
+        //}
         //animator.SetBool("isAttack", false);
         deadCheck();
         checkAngryState();
@@ -200,5 +200,11 @@ public class Enemy : MonoBehaviour
         agent.speed *= 2;
         hp *= 2;
         power *= 2;
+    }
+
+    public void HitByBomb(Vector3 BombPos)
+    {
+        hp--;
+        Vector3 reactVector = transform.position - BombPos;
     }
 }

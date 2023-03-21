@@ -301,7 +301,7 @@ public class player_Controller : MonoBehaviour
             if (Physics.Raycast(ray, out hitInfo))
             {
                 Vector3 nextVector = hitInfo.point - transform.position;
-                nextVector.y = 0;
+                nextVector.y = 5;
 
                 GameObject bomb = Instantiate(BombModel,transform.position,transform.rotation);
                 Rigidbody rigidBomb = bomb.GetComponent<Rigidbody>();

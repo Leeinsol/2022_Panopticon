@@ -19697,6 +19697,9 @@ MonoBehaviour:
   BombModel: {fileID: 0}
   GunRotationSpeed: 3
   BombPostion: {fileID: 0}
+  BombRadius: 10
+  BombForce: 500
+  throwForce: 1000
   FireKey: 323
   bulletEffect: {fileID: 1743301284569550, guid: ad2ab49d0a2a17148bd51c93d977bdbc, type: 3}
   maxBulletNum: 10
@@ -22767,6 +22770,9 @@ MonoBehaviour:
   BombModel: {fileID: 0}
   GunRotationSpeed: 10
   BombPostion: {fileID: 0}
+  BombRadius: 10
+  BombForce: 500
+  throwForce: 1000
   FireKey: 323
   bulletEffect: {fileID: 1743301284569550, guid: ad2ab49d0a2a17148bd51c93d977bdbc, type: 3}
   maxBulletNum: 10
@@ -35150,7 +35156,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7448772975417041100, guid: d8729a0eb69c4c048a21934241c38f02, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 14.01
       objectReference: {fileID: 0}
     - target: {fileID: 7448772975417041100, guid: d8729a0eb69c4c048a21934241c38f02, type: 3}
       propertyPath: m_LocalRotation.w
