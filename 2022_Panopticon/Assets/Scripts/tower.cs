@@ -55,7 +55,7 @@ public class tower : MonoBehaviour
             SceneManager.LoadScene("GameOver");
             Debug.Log("Game Over");
         }
-        else if (hp < maXHP / 1.1f && count == 0)
+        else if (hp < maXHP / 2f && count == 0)
         {
             count++;
             isHalfHP = true;

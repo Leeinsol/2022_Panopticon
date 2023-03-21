@@ -86,6 +86,12 @@ public class player_Controller : MonoBehaviour
     Vector3 GunSprintPos = new Vector3(-0.271f, 0.001f, 0.135f);
     Quaternion GunSprintRot = Quaternion.Euler(-0.133f, 123.826f, -0.249f);
     public Transform BombPostion;
+    public float BombRadius = 10.0f;
+    public float BombForce = 500f;
+    public float throwForce = 1000f;
+
+    int BombDamage;
+    new Rigidbody rigidbody;
 
     // Fire
     public KeyCode FireKey = KeyCode.Mouse0;
@@ -153,8 +159,9 @@ public class player_Controller : MonoBehaviour
             // bomb instantiate
             Bomb = Instantiate(BombModel, GunHandle.transform) as GameObject;
             Bomb.transform.parent = GunHandle.transform;
+            Destroy(Bomb.GetComponent<Bomb>());
             Destroy(Bomb.GetComponent<Rigidbody>());
-            Bomb.GetComponent<Rigidbody>().isKinematic = true;
+
             Bomb.SetActive(false);
         }
         else
@@ -182,6 +189,25 @@ public class player_Controller : MonoBehaviour
         // cross hair instantiate
         SetCrossHair();
     }
+
+    public void setup(int damage, Vector3 rotation)
+    {
+        rigidbody = GetComponent<Rigidbody>();
+        rigidbody.AddForce(rotation * throwForce);
+
+        BombDamage = damage;
+    }
+
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    Instantiate(BombModel, transform.position, transform.rotation);
+
+    //    Collider[] colliders = Physics.OverlapSphere(transform.position, BombRadius);
+    //    foreach(Collider hit in colliders)
+    //    {
+    //        player_Controller
+    //    }
+    //}
 
     // Update is called once per frame
     void Update()
@@ -264,9 +290,27 @@ public class player_Controller : MonoBehaviour
         //bomb
         if (Input.GetKeyDown(FireKey))
         {
-            GameObject bomb = Instantiate(Bomb);
-            bomb.transform.position = GunHandle.transform.position;
-            bomb.transform.forward = GunHandle.transform.forward;
+            //GameObject bomb = Instantiate(BombModel);
+            //bomb.transform.position = GunHandle.transform.position;
+            //bomb.transform.forward = GunHandle.transform.forward;
+
+
+            Ray ray = new Ray(theCamera.transform.position, theCamera.transform.forward);
+            RaycastHit hitInfo = new RaycastHit();
+
+            if (Physics.Raycast(ray, out hitInfo))
+            {
+                Vector3 nextVector = hitInfo.point - transform.position;
+                nextVector.y = 0;
+
+                GameObject bomb = Instantiate(BombModel,transform.position,transform.rotation);
+                Rigidbody rigidBomb = bomb.GetComponent<Rigidbody>();
+                rigidBomb.AddForce(nextVector, ForceMode.Impulse);
+                rigidBomb.AddTorque(Vector3.back * 10, ForceMode.Impulse);
+
+                
+            }
+
         }
     }
 
