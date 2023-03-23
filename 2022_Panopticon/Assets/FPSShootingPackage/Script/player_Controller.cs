@@ -298,6 +298,7 @@ public class player_Controller : MonoBehaviour
             Ray ray = new Ray(theCamera.transform.position, theCamera.transform.forward);
             RaycastHit hitInfo = new RaycastHit();
 
+            // 건물에 던져도 던져지게 레이캐스트 변경 필요
             if (Physics.Raycast(ray, out hitInfo))
             {
                 Vector3 nextVector = hitInfo.point - transform.position;

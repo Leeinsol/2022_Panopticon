@@ -42,13 +42,14 @@ public class Bomb : MonoBehaviour
             hitObj.transform.GetComponent<Enemy>().HitByBomb(transform.position);
 
         }
+        Destroy(gameObject,1f);
     }
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    if (collision.gameObject.tag == "ground")
-    //    {
-    //        //rigidbody.constraints = RigidbodyConstraints.FreezeAll;
-    //        Destroy(gameObject, 1f);
-    //    }
-    //}
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "ground")
+        {
+            rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+            //Destroy(gameObject, 1f);
+        }
+    }
 }
