@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 853894180295625067}
   - component: {fileID: 7123631209131521263}
   - component: {fileID: 7962805260348254924}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bomb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,7 +79,7 @@ GameObject:
   - component: {fileID: 2118334999750987076}
   - component: {fileID: 3404547309871478496}
   - component: {fileID: 3603740446612484286}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -218,6 +218,10 @@ PrefabInstance:
     - target: {fileID: 8113555150066066957, guid: 736d4051ecb885141a32fa787e14a19b, type: 3}
       propertyPath: m_Name
       value: Particle System 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8113555150066066957, guid: 736d4051ecb885141a32fa787e14a19b, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8113555150066066957, guid: 736d4051ecb885141a32fa787e14a19b, type: 3}
       propertyPath: m_IsActive

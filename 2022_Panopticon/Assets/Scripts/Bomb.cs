@@ -35,7 +35,27 @@ public class Bomb : MonoBehaviour
         meshObj.SetActive(false);
         effectObj.SetActive(true);
 
-        RaycastHit[] rayHits = Physics.SphereCastAll(transform.position, 15, Vector3.up, 0f, LayerMask.GetMask("Enemy"));
+        GameObject blastRadiusObj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        blastRadiusObj.transform.position = transform.position;
+        blastRadiusObj.transform.localScale = Vector3.zero;
+        Destroy(blastRadiusObj.GetComponent<Collider>());
+        Material blastRadiusMat = new Material(Shader.Find("Standard"));
+        blastRadiusMat.color = new Color(1f, 0.5f, 0f, 0.5f);
+        blastRadiusObj.GetComponent<MeshRenderer>().material = blastRadiusMat;
+
+        float scaleTime = 0.5f;
+        float scaleStartTime = Time.time;
+        while (Time.time < scaleStartTime + scaleTime)
+        {
+            float t = (Time.time - scaleStartTime) / scaleTime;
+            float blastRadius = Mathf.Lerp(0f, 5f, t);
+            blastRadiusObj.transform.localScale = new Vector3(blastRadius, blastRadius, blastRadius);
+            yield return null;
+        }
+        blastRadiusObj.transform.localScale = new Vector3(5f, 5f, 5f);
+        Destroy(blastRadiusObj, 1f);
+
+        RaycastHit[] rayHits = Physics.SphereCastAll(transform.position, 5, Vector3.up, 0f, LayerMask.GetMask("Enemy"));
 
         foreach(RaycastHit hitObj in rayHits)
         {

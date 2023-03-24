@@ -298,20 +298,51 @@ public class player_Controller : MonoBehaviour
             Ray ray = new Ray(theCamera.transform.position, theCamera.transform.forward);
             RaycastHit hitInfo = new RaycastHit();
 
-            // 건물에 던져도 던져지게 레이캐스트 변경 필요
+            //if (Physics.Raycast(ray, out hitInfo))
+            //{
+            //    Vector3 direction = (hitInfo.point - transform.position).normalized;
+            //    //Vector3 nextVector = hitInfo.point;
+            //    direction.y = 0;
+
+            //    Vector3 spawnPosition = transform.position + direction * 2;
+
+            //    GameObject bomb = Instantiate(BombModel,spawnPosition,transform.rotation);
+            //    ////Debug.Log(transform.position +" " + transform.rotation);
+            //    Rigidbody rigidBomb = bomb.GetComponent<Rigidbody>();
+            //    //rigidBomb.AddForce(direction, ForceMode.Impulse);
+            //    //rigidBomb.AddTorque(Vector3.back * 10, ForceMode.Impulse);
+
+            //    float gravity = Physics.gravity.y;
+            //    float displacementY = hitInfo.point.y - transform.position.y;
+            //    float time = Mathf.Sqrt(-2 * displacementY / gravity);
+            //    float distance = Vector3.Distance(hitInfo.point, transform.position);
+            //    Vector3 velocityXZ = Vector3.zero;
+            //    if (distance > 0)
+            //    {
+            //        velocityXZ = direction * distance / time;
+            //    }
+
+            //    Vector3 velocityY = Vector3.up * Mathf.Abs(gravity) * time;
+            //    Vector3 initialVelocity = velocityXZ + velocityY;
+
+            //    rigidBomb.velocity = initialVelocity;
+            //}
             if (Physics.Raycast(ray, out hitInfo))
             {
+                Vector3 forwardPosition = theCamera.transform.position + theCamera.transform.forward * 2f;
                 Vector3 nextVector = hitInfo.point - transform.position;
                 nextVector.y = 5;
 
-                GameObject bomb = Instantiate(BombModel,transform.position,transform.rotation);
+                GameObject bomb = Instantiate(BombModel, forwardPosition, transform.rotation);
                 Rigidbody rigidBomb = bomb.GetComponent<Rigidbody>();
                 rigidBomb.AddForce(nextVector, ForceMode.Impulse);
                 rigidBomb.AddTorque(Vector3.back * 10, ForceMode.Impulse);
 
-                
-            }
+                //Collider playerCollider = GetComponent<Collider>();
+                //Collider bombCollider = bomb.transform.GetChild(0).GetComponent<Collider>();
+                //Physics.IgnoreCollision(playerCollider, bombCollider);
 
+            }
         }
     }
 
