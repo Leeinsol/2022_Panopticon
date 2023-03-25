@@ -54,7 +54,7 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         //rb.velocity = Vector3.zero;
-        //agent.isStopped = false;
+        agent.isStopped = false;
         //SetDestination();
 
         if (!hasReachedDestination && agent.remainingDistance <= agent.stoppingDistance)
@@ -68,22 +68,22 @@ public class Enemy : MonoBehaviour
         //agent.destination = targetPos.transform.position;
         //agent.destination = targetPos;
 
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    GameObject.Find("CinemaCamera").GetComponent<cinema_moving>().isDoorOpen = true;
-        //}
-        //if (GameObject.Find("CinemaCamera").GetComponent<cinema_moving>().isDoorOpen
-        //    || PlayerPrefs.GetInt("isCinemaEnd") == 1)
-        //{
-        //    //Debug.Log("�����̽�");
-        //    agent.isStopped = false;
-        //    animator.SetBool("isRun", true);
-        //}
-        //if (Input.GetKeyDown(KeyCode.Q))
-        //{
-        //    agent.isStopped = true;
-        //    animator.SetBool("isRun", false);
-        //}
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            GameObject.Find("CinemaCamera").GetComponent<cinema_moving>().isDoorOpen = true;
+        }
+        if (GameObject.Find("CinemaCamera").GetComponent<cinema_moving>().isDoorOpen
+            || PlayerPrefs.GetInt("isCinemaEnd") == 1)
+        {
+            //Debug.Log("�����̽�");
+            agent.isStopped = false;
+            animator.SetBool("isRun", true);
+        }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            agent.isStopped = true;
+            animator.SetBool("isRun", false);
+        }
         //animator.SetBool("isAttack", false);
         deadCheck();
         checkAngryState();
@@ -204,7 +204,29 @@ public class Enemy : MonoBehaviour
 
     public void HitByBomb(Vector3 BombPos)
     {
+        //Vector3 reactVector = transform.position - BombPos;
+        //rb.AddForce(reactVector.normalized * -1f * 5f);
+        //if (hp <= 0)
+        //{
+        //    Destroy(gameObject);
+        //}
+
+        //hp -= 1;
+
         hp--;
         Vector3 reactVector = transform.position - BombPos;
+        StartCoroutine(Damage(reactVector));
+    }
+
+    IEnumerator Damage(Vector3 reactVec)
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        reactVec = reactVec.normalized;
+        reactVec += Vector3.up * 3;
+
+        rb.freezeRotation = false;
+        rb.AddForce(reactVec * 2, ForceMode.Impulse);
+        rb.AddTorque(reactVec * 2, ForceMode.Impulse);
     }
 }

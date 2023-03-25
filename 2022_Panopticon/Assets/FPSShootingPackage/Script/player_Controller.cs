@@ -132,7 +132,12 @@ public class player_Controller : MonoBehaviour
 
     // current variable
     float currentSpeed;
-      
+
+    public float flightLengthFactor = 0f;
+    public float IncreaseAmount = 2f;
+
+    public Image BombGauge;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -189,7 +194,8 @@ public class player_Controller : MonoBehaviour
         // cross hair instantiate
         SetCrossHair();
     }
-
+    
+   
     public void setup(int damage, Vector3 rotation)
     {
         rigidbody = GetComponent<Rigidbody>();
@@ -285,10 +291,36 @@ public class player_Controller : MonoBehaviour
         changeWeapon();
     }
 
+    void BombUI()
+    {
+        BombGauge.fillAmount = flightLengthFactor;
+    }
+
     void bombFire()
     {
+
         //bomb
-        if (Input.GetKeyDown(FireKey))
+        if (Input.GetKey(FireKey)){
+            BombUI();
+            flightLengthFactor += IncreaseAmount * Time.deltaTime;
+            if (flightLengthFactor >= 1f)
+            {
+                flightLengthFactor = 1f;
+                IncreaseAmount = -IncreaseAmount;
+                //Debug.Log("check");
+            }
+            else if (flightLengthFactor <= 0f)
+            {
+                flightLengthFactor = 0f;
+                IncreaseAmount = -IncreaseAmount;
+            }
+
+            //Debug.Log(flightLengthFactor);
+
+        }
+
+
+        if (Input.GetKeyUp(FireKey))
         {
             //GameObject bomb = Instantiate(BombModel);
             //bomb.transform.position = GunHandle.transform.position;
@@ -335,13 +367,15 @@ public class player_Controller : MonoBehaviour
 
                 GameObject bomb = Instantiate(BombModel, forwardPosition, transform.rotation);
                 Rigidbody rigidBomb = bomb.GetComponent<Rigidbody>();
-                rigidBomb.AddForce(nextVector, ForceMode.Impulse);
+
+
+                rigidBomb.AddForce(nextVector * flightLengthFactor, ForceMode.Impulse);
                 rigidBomb.AddTorque(Vector3.back * 10, ForceMode.Impulse);
 
                 //Collider playerCollider = GetComponent<Collider>();
                 //Collider bombCollider = bomb.transform.GetChild(0).GetComponent<Collider>();
                 //Physics.IgnoreCollision(playerCollider, bombCollider);
-
+                flightLengthFactor = 0f;
             }
         }
     }

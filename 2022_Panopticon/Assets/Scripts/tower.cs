@@ -29,7 +29,7 @@ public class tower : MonoBehaviour
         }
 
         //enemyNum = navMeshAgents.Count;
-        Debug.Log(navMeshAgents.Count);
+        //Debug.Log(navMeshAgents.Count);
         PlayerPrefs.SetInt("remainEnemy", navMeshAgents.Count);
 
         //Debug.Log("Number of NavMeshAgents: " + enemyNum);

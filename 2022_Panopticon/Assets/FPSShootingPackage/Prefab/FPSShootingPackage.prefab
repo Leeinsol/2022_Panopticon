@@ -1,5 +1,118 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &837588751471740160
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2212794601110526764}
+  - component: {fileID: 3910688332561314716}
+  - component: {fileID: 3239186053205072132}
+  m_Layer: 0
+  m_Name: Image
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2212794601110526764
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837588751471740160}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5367030636064491464}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 791.17065, y: -509.6}
+  m_SizeDelta: {x: 313.6934, y: 29.1631}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &3910688332561314716
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837588751471740160}
+  m_CullTransparentMesh: 1
+--- !u!114 &3239186053205072132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837588751471740160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.7830189, g: 0.7830189, b: 0.7830189, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 8f0df2a551fdad24b97c6a6a3a728abe, type: 3}
+  m_Type: 3
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 0
+  m_FillAmount: 1
+  m_FillClockwise: 0
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!1 &922212797976255364
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5367030636064491464}
+  m_Layer: 0
+  m_Name: BombPowerUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &5367030636064491464
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 922212797976255364}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2212794601110526764}
+  m_Father: {fileID: 7448772975807656486}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7448772974347533414
 GameObject:
   m_ObjectHideFlags: 0
@@ -1074,6 +1187,8 @@ MonoBehaviour:
   CrouchKey: 306
   crouchSpeed: 15
   crouchHeight: 0.5
+  useHeadBob: 1
+  headBobSpeed: 10
   useJump: 1
   JumpKey: 32
   jumpForce: 5
@@ -1082,23 +1197,26 @@ MonoBehaviour:
   theCamera: {fileID: 8638261728659683853}
   lookSensitivity: 2
   cameraRotationLimit: 60
-  useHeadBob: 1
-  headBobSpeed: 10
-  useGun: 1
-  GunModel: {fileID: 5194338988698467188, guid: 094db35eee8299945ba5852bf6abf420, type: 3}
-  GunRotationSpeed: 10
   useCameraZoom: 1
   ZoomKey: 324
   zoomSpeed: 2
   isZooming: 0
-  crossHairText: {fileID: 7448772974364065397}
-  crosshairtype: 0
-  BulletNumUI: {fileID: 7448772974347533414}
-  ReladTimerUI: {fileID: 7448772975493283968}
+  useGun: 1
+  GunModel: {fileID: 5194338988698467188, guid: 094db35eee8299945ba5852bf6abf420, type: 3}
+  BombModel: {fileID: 0}
+  GunRotationSpeed: 10
+  BombPostion: {fileID: 0}
+  BombRadius: 10
+  BombForce: 500
+  throwForce: 1000
   FireKey: 323
   bulletEffect: {fileID: 1743301284569550, guid: ad2ab49d0a2a17148bd51c93d977bdbc, type: 3}
   maxBulletNum: 10
   fireRate: 0.5
+  crossHairText: {fileID: 7448772974364065397}
+  crosshairtype: 0
+  BulletNumUI: {fileID: 7448772974347533414}
+  ReladTimerUI: {fileID: 7448772975493283968}
   useReload: 1
   ReloadKey: 114
   reloadType: 0
@@ -1110,6 +1228,9 @@ MonoBehaviour:
   FireSound: {fileID: 8300000, guid: 89cde63b2e6110649a51f36fe9f4051d, type: 3}
   oneByOneReloadSound: {fileID: 8300000, guid: 95b58d0bdba85d94ea966ac40f4ad9d7, type: 3}
   allReloadSound: {fileID: 8300000, guid: a62c1178493053241a014b05dd221052, type: 3}
+  flightLengthFactor: 0
+  IncreaseAmount: 1.5
+  BombGauge: {fileID: 3239186053205072132}
 --- !u!1 &7448772975493283968
 GameObject:
   m_ObjectHideFlags: 0
@@ -1317,6 +1438,7 @@ RectTransform:
   - {fileID: 7448772974364065396}
   - {fileID: 7448772974347533415}
   - {fileID: 7448772975493283970}
+  - {fileID: 5367030636064491464}
   m_Father: {fileID: 7448772975417041100}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
