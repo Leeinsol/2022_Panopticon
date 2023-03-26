@@ -39,8 +39,8 @@ public class Bomb : MonoBehaviour
         blastRadiusObj.transform.position = transform.position;
         blastRadiusObj.transform.localScale = Vector3.zero;
         Destroy(blastRadiusObj.GetComponent<Collider>());
-        Material blastRadiusMat = new Material(Shader.Find("Standard"));
-        blastRadiusMat.color = new Color(1f, 0.5f, 0f, 0.5f);
+        Material blastRadiusMat = new Material(Shader.Find("UI/Unlit/Transparent"));
+        blastRadiusMat.color = new Color(.35f, .1f, .1f, 0.3f);
         blastRadiusObj.GetComponent<MeshRenderer>().material = blastRadiusMat;
 
         float scaleTime = 0.5f;

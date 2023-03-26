@@ -77,10 +77,19 @@ public class player_Controller : MonoBehaviour
     public bool useGun = true;
     public GameObject GunModel;
     public GameObject BombModel;
+    public GameObject EnergeDrinkModel;
+
     public float GunRotationSpeed = 3f;
     GameObject GunHandle;
-    GameObject Gun;
-    GameObject Bomb;
+
+    GameObject[] Weapon = new GameObject[3];
+
+    public bool useItem = true;
+
+    //GameObject Gun;
+    //GameObject Bomb;
+    //GameObject EnergeDrink;
+
     Vector3 GunOriginPos = new Vector3(0, 0, 0);
     Quaternion GunOriginRot = Quaternion.Euler(0, 180, 0);
     Vector3 GunSprintPos = new Vector3(-0.271f, 0.001f, 0.135f);
@@ -158,20 +167,26 @@ public class player_Controller : MonoBehaviour
         // gun instantiate
         if (useGun)
         {
-            Gun = Instantiate(GunModel, GunHandle.transform) as GameObject;
-            Gun.transform.parent = GunHandle.transform;
+            Weapon[0] = Instantiate(GunModel, GunHandle.transform) as GameObject;
+            Weapon[0].transform.parent = GunHandle.transform;
 
             // bomb instantiate
-            Bomb = Instantiate(BombModel, GunHandle.transform) as GameObject;
-            Bomb.transform.parent = GunHandle.transform;
-            Destroy(Bomb.GetComponent<Bomb>());
-            Destroy(Bomb.GetComponent<Rigidbody>());
+            Weapon[1] = Instantiate(BombModel, GunHandle.transform) as GameObject;
+            Weapon[1].transform.parent = GunHandle.transform;
+            Destroy(Weapon[1].GetComponent<Bomb>());
+            Destroy(Weapon[1].GetComponent<Rigidbody>());
 
-            Bomb.SetActive(false);
+            Weapon[1].SetActive(false);
         }
         else
         {
             crossHairText.enabled = false;
+        }
+
+        if (useItem)
+        {
+            Weapon[2] = Instantiate(EnergeDrinkModel, GunHandle.transform) as GameObject;
+            Weapon[2].transform.parent = GunHandle.transform;
         }
 
         // bullet instantiate
@@ -193,6 +208,7 @@ public class player_Controller : MonoBehaviour
 
         // cross hair instantiate
         SetCrossHair();
+        BombGauge.transform.parent.gameObject.SetActive(false);
     }
     
    
@@ -272,7 +288,7 @@ public class player_Controller : MonoBehaviour
         if (!isZooming && !isSprinting) theCamera.fieldOfView = defaultFOV;
 
         // Fire
-        if (useGun && Gun.activeSelf)
+        if (useGun && Weapon[0].activeSelf)
         {
             Fire();
             if (useReload)
@@ -283,9 +299,13 @@ public class player_Controller : MonoBehaviour
             }
         }
 
-        if(useGun && Bomb.activeSelf)
+        if(useGun && Weapon[1].activeSelf)
         {
             bombFire();
+            if (useReload)
+            {
+                reloadBomb();
+            }
         }
 
         changeWeapon();
@@ -293,14 +313,18 @@ public class player_Controller : MonoBehaviour
 
     void BombUI()
     {
+        BombGauge.transform.parent.gameObject.SetActive(true);
+
         BombGauge.fillAmount = flightLengthFactor;
     }
 
     void bombFire()
     {
+        //Debug.Log(ReloadTimer);
 
         //bomb
-        if (Input.GetKey(FireKey)){
+        if (Input.GetKey(FireKey) && !ReladTimerUI.activeSelf)
+        {
             BombUI();
             flightLengthFactor += IncreaseAmount * Time.deltaTime;
             if (flightLengthFactor >= 1f)
@@ -320,7 +344,7 @@ public class player_Controller : MonoBehaviour
         }
 
 
-        if (Input.GetKeyUp(FireKey))
+        if (Input.GetKeyUp(FireKey) && !ReladTimerUI.activeSelf)
         {
             //GameObject bomb = Instantiate(BombModel);
             //bomb.transform.position = GunHandle.transform.position;
@@ -330,35 +354,7 @@ public class player_Controller : MonoBehaviour
             Ray ray = new Ray(theCamera.transform.position, theCamera.transform.forward);
             RaycastHit hitInfo = new RaycastHit();
 
-            //if (Physics.Raycast(ray, out hitInfo))
-            //{
-            //    Vector3 direction = (hitInfo.point - transform.position).normalized;
-            //    //Vector3 nextVector = hitInfo.point;
-            //    direction.y = 0;
-
-            //    Vector3 spawnPosition = transform.position + direction * 2;
-
-            //    GameObject bomb = Instantiate(BombModel,spawnPosition,transform.rotation);
-            //    ////Debug.Log(transform.position +" " + transform.rotation);
-            //    Rigidbody rigidBomb = bomb.GetComponent<Rigidbody>();
-            //    //rigidBomb.AddForce(direction, ForceMode.Impulse);
-            //    //rigidBomb.AddTorque(Vector3.back * 10, ForceMode.Impulse);
-
-            //    float gravity = Physics.gravity.y;
-            //    float displacementY = hitInfo.point.y - transform.position.y;
-            //    float time = Mathf.Sqrt(-2 * displacementY / gravity);
-            //    float distance = Vector3.Distance(hitInfo.point, transform.position);
-            //    Vector3 velocityXZ = Vector3.zero;
-            //    if (distance > 0)
-            //    {
-            //        velocityXZ = direction * distance / time;
-            //    }
-
-            //    Vector3 velocityY = Vector3.up * Mathf.Abs(gravity) * time;
-            //    Vector3 initialVelocity = velocityXZ + velocityY;
-
-            //    rigidBomb.velocity = initialVelocity;
-            //}
+            
             if (Physics.Raycast(ray, out hitInfo))
             {
                 Vector3 forwardPosition = theCamera.transform.position + theCamera.transform.forward * 2f;
@@ -376,6 +372,10 @@ public class player_Controller : MonoBehaviour
                 //Collider bombCollider = bomb.transform.GetChild(0).GetComponent<Collider>();
                 //Physics.IgnoreCollision(playerCollider, bombCollider);
                 flightLengthFactor = 0f;
+                BombGauge.transform.parent.gameObject.SetActive(false);
+                //reloadBomb();
+                SetReload();
+                //reloadBomb();
             }
         }
     }
@@ -388,28 +388,32 @@ public class player_Controller : MonoBehaviour
         {
             //Debug.Log("스크롤");
 
-            if (!Gun.activeSelf)
+            if (!Weapon[0].activeSelf)
             {
                 setGun();
             }
             
-            else if (!Bomb.activeSelf)
+            else if (!Weapon[1].activeSelf)
             {
                 setBomb();
             }
         }
     }
 
+    void setWeapon()
+    {
+        
+    }
     void setGun()
     {
-        Gun.SetActive(true);
-        Bomb.SetActive(false);
+        Weapon[0].SetActive(true);
+        Weapon[1].SetActive(false);
     }
 
     void setBomb()
     {
-        Bomb.SetActive(true);
-        Gun.SetActive(false);
+        Weapon[1].SetActive(true);
+        Weapon[0].SetActive(false);
     }
 
     void SetCrossHair()
@@ -422,9 +426,12 @@ public class player_Controller : MonoBehaviour
     }
     void SetReloadTimer()
     {
-        if (reloadType == reloadBulletType.oneByOneReload)  ReloadTimer = OneBulletReloadTime * (maxBulletNum - bulletNum);
+        if (reloadType == reloadBulletType.oneByOneReload) ReloadTimer = OneBulletReloadTime * (maxBulletNum - bulletNum);
 
-        else if (reloadType == reloadBulletType.allReload)  ReloadTimer = allReloadTime;
+        else if (reloadType == reloadBulletType.allReload) ReloadTimer = allReloadTime;
+
+        if (Weapon[1].activeSelf) ReloadTimer = 2f;
+        //else ReloadTimer = 2f;
     }
 
     private void Move()
@@ -458,8 +465,8 @@ public class player_Controller : MonoBehaviour
 
             if (useGun)
             {
-                Gun.transform.localPosition = Vector3.Slerp(Gun.transform.localPosition, GunSprintPos, GunRotationSpeed * Time.deltaTime);
-                Gun.transform.localRotation = Quaternion.Slerp(Gun.transform.localRotation, GunSprintRot, GunRotationSpeed * Time.deltaTime);
+                Weapon[0].transform.localPosition = Vector3.Slerp(Weapon[0].transform.localPosition, GunSprintPos, GunRotationSpeed * Time.deltaTime);
+                Weapon[0].transform.localRotation = Quaternion.Slerp(Weapon[0].transform.localRotation, GunSprintRot, GunRotationSpeed * Time.deltaTime);
 
             }
 
@@ -476,8 +483,8 @@ public class player_Controller : MonoBehaviour
 
     void setGunOrigin()
     {
-        Gun.transform.localPosition = GunOriginPos;
-        Gun.transform.localRotation = GunOriginRot;
+        Weapon[0].transform.localPosition = GunOriginPos;
+        Weapon[0].transform.localRotation = GunOriginRot;
     }
     void Crouch()
     {
@@ -719,6 +726,7 @@ public class player_Controller : MonoBehaviour
 
         SetReloadTimer();
         currentReloadTime = ReloadTimer;
+        //Debug.Log(ReloadTimer);
         ReladTimerUI.GetComponent<Slider>().maxValue = ReloadTimer;
     }
 
@@ -740,6 +748,25 @@ public class player_Controller : MonoBehaviour
             setReloadBulletUI(false);
         }
     }
+
+    void reloadBomb()
+    {
+        if (!isReload) return;
+       
+        ReloadTimer -= Time.deltaTime;
+        ReladTimerUI.GetComponent<Slider>().value = ReloadTimer;
+
+        //Debug.Log("reload Time: " + ReloadTimer);
+
+        if (ReloadTimer < 0)
+        {
+            Debug.Log("reload Time: " + ReloadTimer);
+
+            PlaySoundEffects(allReloadSound);
+            setReloadBulletUI(false);
+        }
+    }
+
     void setReloadBulletUI(bool state)
     {
         ReladTimerUI.SetActive(state);
@@ -772,17 +799,17 @@ public class player_Controller : MonoBehaviour
     IEnumerator reloadActionCoroutine()
     {
         Vector3 reloadAction = new Vector3(GunOriginPos.x, GunOriginPos.y, reloadActionForce);
-        Gun.transform.localPosition = GunOriginPos;
+        Weapon[0].transform.localPosition = GunOriginPos;
 
-        while (Gun.transform.localPosition.z <= reloadActionForce - 0.02f)
+        while (Weapon[0].transform.localPosition.z <= reloadActionForce - 0.02f)
         {
-            Gun.transform.localPosition = Vector3.Lerp(Gun.transform.localPosition, reloadAction, 0.4f);
+            Weapon[0].transform.localPosition = Vector3.Lerp(Weapon[0].transform.localPosition, reloadAction, 0.4f);
             yield return null;
         }
 
-        while (Gun.transform.localPosition != GunOriginPos)
+        while (Weapon[0].transform.localPosition != GunOriginPos)
         {
-            Gun.transform.localPosition = Vector3.Lerp(Gun.transform.localPosition, GunOriginPos, 0.1f);
+            Weapon[0].transform.localPosition = Vector3.Lerp(Weapon[0].transform.localPosition, GunOriginPos, 0.1f);
             yield return null;
         }
     }

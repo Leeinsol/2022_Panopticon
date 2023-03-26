@@ -19695,7 +19695,9 @@ MonoBehaviour:
   useGun: 1
   GunModel: {fileID: 5194338988698467188, guid: 094db35eee8299945ba5852bf6abf420, type: 3}
   BombModel: {fileID: 0}
+  EnergeDrinkModel: {fileID: 0}
   GunRotationSpeed: 3
+  useItem: 1
   BombPostion: {fileID: 0}
   BombRadius: 10
   BombForce: 500
@@ -19721,6 +19723,7 @@ MonoBehaviour:
   allReloadSound: {fileID: 8300000, guid: a62c1178493053241a014b05dd221052, type: 3}
   flightLengthFactor: 0
   IncreaseAmount: 0.1
+  BombGauge: {fileID: 0}
 --- !u!82 &1520396107
 AudioSource:
   m_ObjectHideFlags: 0
@@ -22770,7 +22773,9 @@ MonoBehaviour:
   useGun: 1
   GunModel: {fileID: 5194338988698467188, guid: 094db35eee8299945ba5852bf6abf420, type: 3}
   BombModel: {fileID: 0}
+  EnergeDrinkModel: {fileID: 0}
   GunRotationSpeed: 10
+  useItem: 1
   BombPostion: {fileID: 0}
   BombRadius: 10
   BombForce: 500
@@ -22796,6 +22801,7 @@ MonoBehaviour:
   allReloadSound: {fileID: 8300000, guid: a62c1178493053241a014b05dd221052, type: 3}
   flightLengthFactor: 0
   IncreaseAmount: 0.1
+  BombGauge: {fileID: 0}
 --- !u!82 &1750834411
 AudioSource:
   m_ObjectHideFlags: 0
@@ -35162,6 +35168,10 @@ PrefabInstance:
       propertyPath: crosshairtype
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7448772974509906306, guid: d8729a0eb69c4c048a21934241c38f02, type: 3}
+      propertyPath: EnergeDrinkModel
+      value: 
+      objectReference: {fileID: 4817897515877180689, guid: 1dd39f3084286324c82dbd526d3eef3e, type: 3}
     - target: {fileID: 7448772974509906312, guid: d8729a0eb69c4c048a21934241c38f02, type: 3}
       propertyPath: m_Constraints
       value: 112
