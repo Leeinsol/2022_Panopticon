@@ -138,6 +138,7 @@ public class player_Controller : MonoBehaviour
     // Timer
     private float shakeTimer;
     private float zoomTimer;
+    float energyTimer;
 
     // current variable
     float currentSpeed;
@@ -146,6 +147,14 @@ public class player_Controller : MonoBehaviour
     public float IncreaseAmount = 2f;
 
     public Image BombGauge;
+
+    public int bulletPower = 1;
+    public int currentBulletPower = 1;
+    bool isPowerUp = false;
+
+    public int Item2Num = 0;
+    public int[] WeaponNum;
+    private int currentIndex = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -169,14 +178,17 @@ public class player_Controller : MonoBehaviour
         {
             Weapon[0] = Instantiate(GunModel, GunHandle.transform) as GameObject;
             Weapon[0].transform.parent = GunHandle.transform;
+            WeaponNum[0] = 1;
 
             // bomb instantiate
             Weapon[1] = Instantiate(BombModel, GunHandle.transform) as GameObject;
             Weapon[1].transform.parent = GunHandle.transform;
+            WeaponNum[1] = 1;
+
             Destroy(Weapon[1].GetComponent<Bomb>());
             Destroy(Weapon[1].GetComponent<Rigidbody>());
 
-            Weapon[1].SetActive(false);
+            //Weapon[1].SetActive(false);
         }
         else
         {
@@ -187,6 +199,8 @@ public class player_Controller : MonoBehaviour
         {
             Weapon[2] = Instantiate(EnergeDrinkModel, GunHandle.transform) as GameObject;
             Weapon[2].transform.parent = GunHandle.transform;
+            //Weapon[2].SetActive(false);
+            WeaponNum[2] = 0;
         }
 
         // bullet instantiate
@@ -209,6 +223,17 @@ public class player_Controller : MonoBehaviour
         // cross hair instantiate
         SetCrossHair();
         BombGauge.transform.parent.gameObject.SetActive(false);
+
+        for (int i = 0; i < Weapon.Length; i++)
+        {
+            if (WeaponNum[i] > 0)
+            {
+                currentIndex = i;
+                break;
+            }
+        }
+        offWeapon();
+        Weapon[currentIndex].SetActive(true);
     }
     
    
@@ -307,9 +332,52 @@ public class player_Controller : MonoBehaviour
                 reloadBomb();
             }
         }
+        
+        if(useGun && Weapon[2].activeSelf)
+        {
+            eatEnergyDrink();
+            powerUp();
+        }
 
         changeWeapon();
     }
+
+    void eatEnergyDrink()
+    {
+        if (Input.GetKeyDown(FireKey))
+        {
+            Debug.Log("에너지 드링크 사용");
+            currentBulletPower= Weapon[2].transform.GetChild(0).GetComponent<Item_energyDrink>().energyDrink.getPower();
+
+            Debug.Log("Time: " + Weapon[2].transform.GetChild(0).GetComponent<Item_energyDrink>().energyDrink.getTime());
+            isPowerUp = true;
+            energyTimer = Weapon[2].transform.GetChild(0).GetComponent<Item_energyDrink>().energyDrink.getTime();
+            //powerUp();
+        }
+    }
+
+    void powerUp()
+    {
+        if (!isPowerUp) return;
+        //Debug.Log("powerUP");
+
+        energyTimer -= Time.deltaTime;
+        //Debug.Log(energyTimer);
+        Debug.Log(currentBulletPower);
+
+
+        if (energyTimer < 0) 
+        {
+            Debug.Log("끝");
+
+            energyTimer = Weapon[2].transform.GetChild(0).GetComponent<Item_energyDrink>().energyDrink.getTime();
+            currentBulletPower = bulletPower;
+            Debug.Log(currentBulletPower);
+
+            isPowerUp = false;
+        }
+    }
+
 
     void BombUI()
     {
@@ -346,11 +414,6 @@ public class player_Controller : MonoBehaviour
 
         if (Input.GetKeyUp(FireKey) && !ReladTimerUI.activeSelf)
         {
-            //GameObject bomb = Instantiate(BombModel);
-            //bomb.transform.position = GunHandle.transform.position;
-            //bomb.transform.forward = GunHandle.transform.forward;
-
-
             Ray ray = new Ray(theCamera.transform.position, theCamera.transform.forward);
             RaycastHit hitInfo = new RaycastHit();
 
@@ -382,27 +445,166 @@ public class player_Controller : MonoBehaviour
 
     void changeWeapon()
     {
+
         Vector2 scrollDelta = Input.mouseScrollDelta;
 
-        if (scrollDelta.y > 0 || scrollDelta.y < 0)
+        if (scrollDelta.y > 0)
         {
-            //Debug.Log("스크롤");
-
-            if (!Weapon[0].activeSelf)
+            // Scroll up
+            currentIndex--;
+            if (currentIndex < 0)
             {
-                setGun();
-            }
-            
-            else if (!Weapon[1].activeSelf)
-            {
-                setBomb();
+                // Wrap around to the last weapon if currently on the first
+                currentIndex = Weapon.Length - 1;
             }
         }
-    }
+        else if (scrollDelta.y < 0)
+        {
+            // Scroll down
+            currentIndex++;
+            if (currentIndex >= Weapon.Length)
+            {
+                // Wrap around to the first weapon if currently on the last
+                currentIndex = 0;
+            }
+        }
 
-    void setWeapon()
+        // Skip over any weapons with 0 count
+        while (WeaponNum[currentIndex] == 0)
+        {
+            currentIndex++;
+            if (currentIndex >= Weapon.Length)
+            {
+                currentIndex = 0;
+            }
+        }
+
+        // Update the active weapon
+        offWeapon();
+        Weapon[currentIndex].SetActive(true);
+
+        //Vector2 scrollDelta = Input.mouseScrollDelta;
+
+        //if (scrollDelta.y != 0) 
+        //{
+        //    int size = WeaponNum.Length;
+
+        //    if (scrollDelta.y > 0)
+        //    {
+        //        // 스크롤 업
+        //        index--;
+        //        if (index < 0)
+        //        {
+        //            index = size - 1;
+        //        }
+        //    }
+        //    else if (scrollDelta.y < 0)
+        //    {
+        //        // 스크롤 다운
+        //        index++;
+        //        if (index >= size)
+        //        {
+        //            index = 0;
+        //        }
+        //    }
+
+        //    if (WeaponNum[index] == 0)
+        //    {
+        //        if (scrollDelta.y > 0)
+        //        {
+        //            // If scrolling up and current value is 0, set to 1
+        //            WeaponNum[index] = 1;
+        //        }
+        //        else if (scrollDelta.y < 0)
+        //        {
+        //            // If scrolling down and current value is 0, set to max value (assuming it's an int array)
+        //            WeaponNum[index] = int.MaxValue;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        // Check if current index is 0 and skip if necessary
+        //        if (index == 0)
+        //        {
+        //            index = size - 1;
+        //        }
+        //        // Skip over any 0 values
+        //        int j = index;
+        //        do
+        //        {
+        //            j--;
+        //            if (j < 0)
+        //            {
+        //                j = size - 1;
+        //            }
+        //        } while (WeaponNum[j] == 0 && j != index);
+        //        index = j;
+        //    }
+
+        //    offWeapon();
+        //    Weapon[index].SetActive(true);
+        //}
+        //if (scrollDelta.y > 0)
+        //{
+        //    //Debug.Log("스크롤 업");
+        //    for (int i = 0; i < Weapon.Length; i++)
+        //    {
+        //        if (Weapon[i].activeSelf) index = i;
+        //        //Debug.Log(index);
+        //    }
+        //    offWeapon();
+
+        //    index--;
+
+
+
+        //    if (index < 0 || WeaponNum[index] == 0)
+        //    {
+        //        index = Weapon.Length - 1;
+
+        //        if (WeaponNum[index] == 0)
+        //        {
+        //            index--;
+        //        }
+        //    }
+
+        //    Weapon[index].SetActive(true);
+
+        //}
+
+        //if (scrollDelta.y < 0)
+        //{
+        //    //Debug.Log("스크롤 다운");
+        //    for (int i = 0; i < Weapon.Length; i++)
+        //    {
+        //        if (Weapon[i].activeSelf) index = i;
+        //        //Debug.Log(index);
+        //    }
+        //    offWeapon();
+
+        //    index++;
+        //    //Debug.Log(index);
+        //    if (WeaponNum[index] == 0)
+        //    {
+        //        index++;
+
+        //        if (index > Weapon.Length - 1)
+        //        {
+        //            index = 0;
+        //        }
+        //    }
+
+
+        //    Weapon[index].SetActive(true);
+
+        //}
+    }
+    void offWeapon()
     {
-        
+        for (int i = 0; i < Weapon.Length; i++)
+        {
+            Weapon[i].SetActive(false);
+        }
     }
     void setGun()
     {
@@ -679,7 +881,7 @@ public class player_Controller : MonoBehaviour
                 if (collider is CapsuleCollider)
                 {
                     //Debug.Log("캡슐");
-                    collider.gameObject.GetComponent<Enemy>().hp--;
+                    collider.gameObject.GetComponent<Enemy>().hp -= currentBulletPower;
 
                     //Debug.Log(collider.gameObject.GetComponent<Enemy>().hp);
                     collider.gameObject.GetComponent<Enemy>().playHurtAnim();
@@ -692,7 +894,7 @@ public class player_Controller : MonoBehaviour
                     //Debug.Log(collider.gameObject.GetComponent<Enemy>().hp);
                     //collider.gameObject.GetComponent<Enemy>().playHurtAnim();
 
-                    collider.gameObject.GetComponent<Enemy>().hp -= 2;
+                    collider.gameObject.GetComponent<Enemy>().hp -= (currentBulletPower * 2);
 
                     Debug.Log(collider.gameObject.GetComponent<Enemy>().hp);
                     collider.gameObject.GetComponent<Enemy>().playHurtAnim();
