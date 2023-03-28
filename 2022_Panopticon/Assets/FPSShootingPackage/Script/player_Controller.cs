@@ -156,6 +156,8 @@ public class player_Controller : MonoBehaviour
     public int[] WeaponNum;
     private int currentIndex = 0;
 
+    public GameObject RemainItemNumUI;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -234,6 +236,8 @@ public class player_Controller : MonoBehaviour
         }
         offWeapon();
         Weapon[currentIndex].SetActive(true);
+
+        //setRemainEnergyDrinkUI(false);
     }
     
    
@@ -335,24 +339,64 @@ public class player_Controller : MonoBehaviour
         
         if(useGun && Weapon[2].activeSelf)
         {
+            setRemainEnergyDrinkUI(true);
             eatEnergyDrink();
-            powerUp();
+            RemainEnergyDrinkNum();
         }
-
+        powerUp();
         changeWeapon();
+
+        //Debug.Log(energyTimer);
+        //Debug.Log(isPowerUp);
+
     }
 
+    void setRemainEnergyDrinkUI(bool isShow)
+    {
+        RemainItemNumUI.SetActive(isShow);
+        //Debug.Log("실행 " + RemainItemNumUI.activeSelf);
+
+    } 
+
+    void RemainEnergyDrinkNum()
+    {
+        RemainItemNumUI.transform.GetChild(0).GetComponent<Text>().text = WeaponNum[2].ToString();
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        // get EnergyDrink
+        if (collision.transform.parent.gameObject.tag == "EnergyDrink")
+        {
+            WeaponNum[2]++;
+            Destroy(collision.gameObject);
+        }
+    }
     void eatEnergyDrink()
     {
         if (Input.GetKeyDown(FireKey))
         {
-            Debug.Log("에너지 드링크 사용");
-            currentBulletPower= Weapon[2].transform.GetChild(0).GetComponent<Item_energyDrink>().energyDrink.getPower();
+            //Debug.Log("에너지 드링크 사용");
+            currentBulletPower= Weapon[2].GetComponent<Item_energyDrink>().energyDrink.getPower();
 
-            Debug.Log("Time: " + Weapon[2].transform.GetChild(0).GetComponent<Item_energyDrink>().energyDrink.getTime());
+            //Debug.Log("Time: " + Weapon[2].GetComponent<Item_energyDrink>().energyDrink.getTime());
             isPowerUp = true;
-            energyTimer = Weapon[2].transform.GetChild(0).GetComponent<Item_energyDrink>().energyDrink.getTime();
+            energyTimer = Weapon[2].GetComponent<Item_energyDrink>().energyDrink.getTime();
             //powerUp();
+
+            WeaponNum[2]--;
+
+            if (WeaponNum[2] <= 0)
+            {
+                //Debug.Log("다 사용했어요" + currentIndex );
+                currentIndex++;
+                changeWeaponNext(currentIndex);
+                setRemainEnergyDrinkUI(false);
+
+                //changeWeaponNext(currentIndex, Input.mouseScrollDelta);
+                //offWeapon();
+                //Weapon[currentIndex].SetActive(true);
+            }
         }
     }
 
@@ -363,14 +407,14 @@ public class player_Controller : MonoBehaviour
 
         energyTimer -= Time.deltaTime;
         //Debug.Log(energyTimer);
-        Debug.Log(currentBulletPower);
+        //Debug.Log(currentBulletPower);
 
 
         if (energyTimer < 0) 
         {
-            Debug.Log("끝");
+            //Debug.Log("끝");
 
-            energyTimer = Weapon[2].transform.GetChild(0).GetComponent<Item_energyDrink>().energyDrink.getTime();
+            energyTimer = Weapon[2].GetComponent<Item_energyDrink>().energyDrink.getTime();
             currentBulletPower = bulletPower;
             Debug.Log(currentBulletPower);
 
@@ -445,159 +489,54 @@ public class player_Controller : MonoBehaviour
 
     void changeWeapon()
     {
+        int oldIndex = currentIndex;
 
         Vector2 scrollDelta = Input.mouseScrollDelta;
 
-        if (scrollDelta.y > 0)
+        //changeWeaponPrevious(oldIndex, scrollDelta);
+        //changeWeaponNext(oldIndex, scrollDelta);
+
+        if(scrollDelta.y != 0)
         {
-            // Scroll up
+            if (scrollDelta.y > 0)
+            {
+                // Scroll up
+                changeWeaponPrevious(oldIndex);
+            }
+            else if (scrollDelta.y < 0)
+            {
+                // Scroll down
+                changeWeaponNext(oldIndex);
+            }
+            //Debug.Log(currentIndex);
+
+        }
+        offWeapon();
+        Weapon[currentIndex].SetActive(true);
+    }
+
+    void changeWeaponPrevious(int oldIndex)
+    {
+        do
+        {
             currentIndex--;
             if (currentIndex < 0)
             {
-                // Wrap around to the last weapon if currently on the first
-                currentIndex = Weapon.Length - 1;
+                currentIndex = WeaponNum.Length - 1;
             }
-        }
-        else if (scrollDelta.y < 0)
-        {
-            // Scroll down
-            currentIndex++;
-            if (currentIndex >= Weapon.Length)
-            {
-                // Wrap around to the first weapon if currently on the last
-                currentIndex = 0;
-            }
-        }
+        } while (WeaponNum[currentIndex] == 0 && currentIndex != oldIndex);
+    }
 
-        // Skip over any weapons with 0 count
-        while (WeaponNum[currentIndex] == 0)
+    void changeWeaponNext(int oldIndex)
+    {
+        do
         {
             currentIndex++;
-            if (currentIndex >= Weapon.Length)
+            if (currentIndex >= WeaponNum.Length)
             {
                 currentIndex = 0;
             }
-        }
-
-        // Update the active weapon
-        offWeapon();
-        Weapon[currentIndex].SetActive(true);
-
-        //Vector2 scrollDelta = Input.mouseScrollDelta;
-
-        //if (scrollDelta.y != 0) 
-        //{
-        //    int size = WeaponNum.Length;
-
-        //    if (scrollDelta.y > 0)
-        //    {
-        //        // 스크롤 업
-        //        index--;
-        //        if (index < 0)
-        //        {
-        //            index = size - 1;
-        //        }
-        //    }
-        //    else if (scrollDelta.y < 0)
-        //    {
-        //        // 스크롤 다운
-        //        index++;
-        //        if (index >= size)
-        //        {
-        //            index = 0;
-        //        }
-        //    }
-
-        //    if (WeaponNum[index] == 0)
-        //    {
-        //        if (scrollDelta.y > 0)
-        //        {
-        //            // If scrolling up and current value is 0, set to 1
-        //            WeaponNum[index] = 1;
-        //        }
-        //        else if (scrollDelta.y < 0)
-        //        {
-        //            // If scrolling down and current value is 0, set to max value (assuming it's an int array)
-        //            WeaponNum[index] = int.MaxValue;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        // Check if current index is 0 and skip if necessary
-        //        if (index == 0)
-        //        {
-        //            index = size - 1;
-        //        }
-        //        // Skip over any 0 values
-        //        int j = index;
-        //        do
-        //        {
-        //            j--;
-        //            if (j < 0)
-        //            {
-        //                j = size - 1;
-        //            }
-        //        } while (WeaponNum[j] == 0 && j != index);
-        //        index = j;
-        //    }
-
-        //    offWeapon();
-        //    Weapon[index].SetActive(true);
-        //}
-        //if (scrollDelta.y > 0)
-        //{
-        //    //Debug.Log("스크롤 업");
-        //    for (int i = 0; i < Weapon.Length; i++)
-        //    {
-        //        if (Weapon[i].activeSelf) index = i;
-        //        //Debug.Log(index);
-        //    }
-        //    offWeapon();
-
-        //    index--;
-
-
-
-        //    if (index < 0 || WeaponNum[index] == 0)
-        //    {
-        //        index = Weapon.Length - 1;
-
-        //        if (WeaponNum[index] == 0)
-        //        {
-        //            index--;
-        //        }
-        //    }
-
-        //    Weapon[index].SetActive(true);
-
-        //}
-
-        //if (scrollDelta.y < 0)
-        //{
-        //    //Debug.Log("스크롤 다운");
-        //    for (int i = 0; i < Weapon.Length; i++)
-        //    {
-        //        if (Weapon[i].activeSelf) index = i;
-        //        //Debug.Log(index);
-        //    }
-        //    offWeapon();
-
-        //    index++;
-        //    //Debug.Log(index);
-        //    if (WeaponNum[index] == 0)
-        //    {
-        //        index++;
-
-        //        if (index > Weapon.Length - 1)
-        //        {
-        //            index = 0;
-        //        }
-        //    }
-
-
-        //    Weapon[index].SetActive(true);
-
-        //}
+        } while (WeaponNum[currentIndex] == 0 && currentIndex != oldIndex);
     }
     void offWeapon()
     {
@@ -605,18 +544,10 @@ public class player_Controller : MonoBehaviour
         {
             Weapon[i].SetActive(false);
         }
-    }
-    void setGun()
-    {
-        Weapon[0].SetActive(true);
-        Weapon[1].SetActive(false);
+
+        
     }
 
-    void setBomb()
-    {
-        Weapon[1].SetActive(true);
-        Weapon[0].SetActive(false);
-    }
 
     void SetCrossHair()
     {
@@ -962,7 +893,7 @@ public class player_Controller : MonoBehaviour
 
         if (ReloadTimer < 0)
         {
-            Debug.Log("reload Time: " + ReloadTimer);
+            //Debug.Log("reload Time: " + ReloadTimer);
 
             PlaySoundEffects(allReloadSound);
             setReloadBulletUI(false);

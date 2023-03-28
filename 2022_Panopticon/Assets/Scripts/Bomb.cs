@@ -35,9 +35,10 @@ public class Bomb : MonoBehaviour
         meshObj.SetActive(false);
         effectObj.SetActive(true);
 
+        float blastRadius = 3f;
         GameObject blastRadiusObj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         blastRadiusObj.transform.position = transform.position;
-        blastRadiusObj.transform.localScale = Vector3.zero;
+        blastRadiusObj.transform.localScale = new Vector3(blastRadius * 2f, blastRadius * 2f, blastRadius * 2f);
         Destroy(blastRadiusObj.GetComponent<Collider>());
         Material blastRadiusMat = new Material(Shader.Find("UI/Unlit/Transparent"));
         blastRadiusMat.color = new Color(.35f, .1f, .1f, 0.3f);
@@ -48,18 +49,27 @@ public class Bomb : MonoBehaviour
         while (Time.time < scaleStartTime + scaleTime)
         {
             float t = (Time.time - scaleStartTime) / scaleTime;
-            float blastRadius = Mathf.Lerp(0f, 5f, t);
-            blastRadiusObj.transform.localScale = new Vector3(blastRadius, blastRadius, blastRadius);
+            //blastRadius = Mathf.Lerp(0f, 5f, t);
+            //blastRadiusObj.transform.localScale = new Vector3(blastRadius, blastRadius, blastRadius);
+            Vector3.Lerp(Vector3.zero, new Vector3(blastRadius * 2f, blastRadius * 2f, blastRadius * 2f), t);
             yield return null;
         }
-        blastRadiusObj.transform.localScale = new Vector3(5f, 5f, 5f);
+        //blastRadiusObj.transform.localScale = new Vector3(5f, 5f, 5f);
+        blastRadiusObj.transform.localScale = new Vector3(blastRadius * 2f, blastRadius * 2f, blastRadius * 2f);
+
         Destroy(blastRadiusObj, 1f);
 
-        RaycastHit[] rayHits = Physics.SphereCastAll(transform.position, 5, Vector3.up, 0f, LayerMask.GetMask("Enemy"));
+        RaycastHit[] rayHits = Physics.SphereCastAll(transform.position, blastRadius, Vector3.up, 0f, LayerMask.GetMask("Enemy"));
 
         foreach(RaycastHit hitObj in rayHits)
         {
-            hitObj.transform.GetComponent<Enemy>().HitByBomb(transform.position);
+            Enemy enemy = hitObj.transform.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                enemy.HitByBomb(transform.position);
+            }
+
+            //hitObj.transform.GetComponent<Enemy>().HitByBomb(transform.position);
 
         }
         Destroy(gameObject,1f);

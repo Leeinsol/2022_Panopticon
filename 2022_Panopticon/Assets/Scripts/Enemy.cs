@@ -24,7 +24,7 @@ public class Enemy : MonoBehaviour
     public int hp= 5;
 
     public bool isAngry = false;
-
+    public bool isDamaged = false;
     public int power = 1;
 
     Rigidbody rb;
@@ -212,6 +212,11 @@ public class Enemy : MonoBehaviour
         //}
 
         //hp -= 1;
+
+        if (isDamaged) return;
+        isDamaged = true;
+        
+        Debug.Log(transform.parent.gameObject.name + "HitByBomb");
 
         hp--;
         Vector3 reactVector = transform.position - BombPos;
