@@ -173,7 +173,8 @@ public class Enemy : MonoBehaviour
             //Debug.Log("hp 0");
             agent.isStopped = true;
             //enemyModel.GetComponent<CapsuleCollider>().isTrigger = true;
-            //transform.GetComponent<CapsuleCollider>().enabled = false;
+            transform.GetComponent<CapsuleCollider>().enabled = false;
+            transform.GetComponent<SphereCollider>().enabled = false;
             enemyModel.layer = 2;
             //Debug.Log(agent.isStopped);
             //animator.SetBool("isDie1", true);

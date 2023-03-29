@@ -82,7 +82,7 @@ public class player_Controller : MonoBehaviour
     public float GunRotationSpeed = 3f;
     GameObject GunHandle;
 
-    GameObject[] Weapon = new GameObject[3];
+    GameObject[] Weapon = new GameObject[4];
 
     public bool useItem = true;
 
@@ -157,6 +157,10 @@ public class player_Controller : MonoBehaviour
     private int currentIndex = 0;
 
     public GameObject RemainItemNumUI;
+    public GameObject PowerTimeUI;
+    public GameObject getItemModel;
+
+    bool isPulling = false;
 
     // Start is called before the first frame update
     void Start()
@@ -174,6 +178,8 @@ public class player_Controller : MonoBehaviour
         walkHeight = GetComponent<CapsuleCollider>().height;
         currentSpeed = walkSpeed;
         zoomTimer = zoomSpeed;
+
+        WeaponNum = new int[Weapon.Length]; 
 
         // gun instantiate
         if (useGun)
@@ -234,10 +240,18 @@ public class player_Controller : MonoBehaviour
                 break;
             }
         }
+        //아이템 획득 도구
+        Weapon[3] = Instantiate(getItemModel, GunHandle.transform) as GameObject;
+        Weapon[3].transform.parent = GunHandle.transform;
+
+        WeaponNum[3] = 1;
+        
+        
         offWeapon();
         Weapon[currentIndex].SetActive(true);
 
-        //setRemainEnergyDrinkUI(false);
+        setRemainEnergyDrinkUI(false);
+
     }
     
    
@@ -266,8 +280,8 @@ public class player_Controller : MonoBehaviour
         // move
         Move();
 
-        if (Input.GetKeyDown(SprintKey) && iswalking)   isSprinting = true;
- 
+        if (Input.GetKeyDown(SprintKey) && iswalking) isSprinting = true;
+
         if (Input.GetKeyUp(SprintKey))
         {
             currentSpeed = walkSpeed;
@@ -284,7 +298,7 @@ public class player_Controller : MonoBehaviour
         }
 
         // crouch
-        if (useCrouch)  Crouch();
+        if (useCrouch) Crouch();
 
         // set walk speed
         if (Input.GetKeyDown(CrouchKey))
@@ -301,18 +315,18 @@ public class player_Controller : MonoBehaviour
         }
 
         // camera
-        if (useCameraRotationVerticality)   CameraRotationVerticality();
+        if (useCameraRotationVerticality) CameraRotationVerticality();
 
         if (useCameraRotationHorizontality) CameraRotationHorizontality();
 
         // jump
-        if (useJump)    Jump();
-    
+        if (useJump) Jump();
+
         // head bob
         if (useHeadBob) HeadBob();
 
         // zoom camera
-        if (useCameraZoom)  ZoomCamera();
+        if (useCameraZoom) ZoomCamera();
 
         if (!isZooming && !isSprinting) theCamera.fieldOfView = defaultFOV;
 
@@ -328,7 +342,7 @@ public class player_Controller : MonoBehaviour
             }
         }
 
-        if(useGun && Weapon[1].activeSelf)
+        if (useGun && Weapon[1].activeSelf)
         {
             bombFire();
             if (useReload)
@@ -336,8 +350,8 @@ public class player_Controller : MonoBehaviour
                 reloadBomb();
             }
         }
-        
-        if(useGun && Weapon[2].activeSelf)
+
+        if (useGun && Weapon[2].activeSelf)
         {
             setRemainEnergyDrinkUI(true);
             eatEnergyDrink();
@@ -349,6 +363,49 @@ public class player_Controller : MonoBehaviour
         //Debug.Log(energyTimer);
         //Debug.Log(isPowerUp);
 
+        if (Weapon[3].activeSelf)
+        {
+            getItem();
+        }
+
+    }
+
+    void getItem()
+    { 
+        if (Input.GetKeyDown(FireKey)){
+            Ray ray = new Ray(theCamera.transform.position, theCamera.transform.forward);
+
+            //RaycastHit hitInfo = new RaycastHit();
+            RaycastHit[] hits = Physics.RaycastAll(ray);
+
+            for(int i=0; i<hits.Length; i++)
+            {
+                RaycastHit hit = hits[i];
+                if (hit.transform.parent.gameObject.tag == "EnergyDrink")
+                {
+                    //Debug.Log("에너지 드링크");
+                    isPulling = true;
+                    StartCoroutine(PullEnergyDrink(hit.transform.parent.gameObject));
+                    break;
+                }
+            }
+        }
+
+        if (Input.GetKeyUp(FireKey))
+        {
+            isPulling = false;
+        }
+    }
+    IEnumerator PullEnergyDrink(GameObject drinkObject)
+    {
+        float t = 0;
+        Vector3 originalPosition = drinkObject.transform.position;
+        while (isPulling)
+        {
+            t += Time.deltaTime * 1f;
+            drinkObject.transform.position = Vector3.Lerp(originalPosition, transform.position, t);
+            yield return null;
+        }
     }
 
     void setRemainEnergyDrinkUI(bool isShow)
@@ -405,6 +462,7 @@ public class player_Controller : MonoBehaviour
         if (!isPowerUp) return;
         //Debug.Log("powerUP");
 
+        PowerTimeUI.transform.GetChild(0).GetComponent<Text>().text = energyTimer.ToString();
         energyTimer -= Time.deltaTime;
         //Debug.Log(energyTimer);
         //Debug.Log(currentBulletPower);
@@ -544,8 +602,6 @@ public class player_Controller : MonoBehaviour
         {
             Weapon[i].SetActive(false);
         }
-
-        
     }
 
 
