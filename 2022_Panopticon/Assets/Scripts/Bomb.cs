@@ -5,8 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Bomb : MonoBehaviour
 {
-    public Rigidbody rigidbody;
-    public float bombSpeed;
+    Rigidbody rigidbody;
+    //public float bombSpeed;
 
     public GameObject meshObj;
     public GameObject effectObj;
@@ -15,7 +15,7 @@ public class Bomb : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //rigidbody = GetComponent<Rigidbody>();
+        rigidbody = GetComponent<Rigidbody>();
         //rigidbody.velocity = transform.position * bombSpeed;
         //rigidbody.AddForce(transform.forward * bombSpeed);
         StartCoroutine(Explosion());

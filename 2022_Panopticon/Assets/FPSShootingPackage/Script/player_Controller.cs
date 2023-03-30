@@ -160,6 +160,8 @@ public class player_Controller : MonoBehaviour
     public GameObject PowerTimeUI;
     public GameObject getItemModel;
 
+    public GameObject BombInstantiate;
+
     bool isPulling = false;
 
     // Start is called before the first frame update
@@ -526,7 +528,7 @@ public class player_Controller : MonoBehaviour
                 Vector3 nextVector = hitInfo.point - transform.position;
                 nextVector.y = 5;
 
-                GameObject bomb = Instantiate(BombModel, forwardPosition, transform.rotation);
+                GameObject bomb = Instantiate(BombInstantiate, forwardPosition, transform.rotation);
                 Rigidbody rigidBomb = bomb.GetComponent<Rigidbody>();
 
 

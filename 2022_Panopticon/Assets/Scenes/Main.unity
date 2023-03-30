@@ -19846,6 +19846,7 @@ MonoBehaviour:
   RemainItemNumUI: {fileID: 0}
   PowerTimeUI: {fileID: 0}
   getItemModel: {fileID: 0}
+  BombInstantiate: {fileID: 0}
 --- !u!82 &1520396107
 AudioSource:
   m_ObjectHideFlags: 0
@@ -22931,6 +22932,7 @@ MonoBehaviour:
   RemainItemNumUI: {fileID: 0}
   PowerTimeUI: {fileID: 0}
   getItemModel: {fileID: 0}
+  BombInstantiate: {fileID: 0}
 --- !u!82 &1750834411
 AudioSource:
   m_ObjectHideFlags: 0
@@ -35281,9 +35283,13 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7448772974509906306, guid: d8729a0eb69c4c048a21934241c38f02, type: 3}
+      propertyPath: GunModel
+      value: 
+      objectReference: {fileID: 919132149155446097, guid: 6bea03a7115c5d748b18a7573d0d4d2b, type: 3}
+    - target: {fileID: 7448772974509906306, guid: d8729a0eb69c4c048a21934241c38f02, type: 3}
       propertyPath: BombModel
       value: 
-      objectReference: {fileID: 675474478765364045, guid: 016089fd852789f479f12625aacc4e76, type: 3}
+      objectReference: {fileID: 3396139144155364053, guid: 3f4cb44f8ffeba149b051d052f551402, type: 3}
     - target: {fileID: 7448772974509906306, guid: d8729a0eb69c4c048a21934241c38f02, type: 3}
       propertyPath: walkSpeed
       value: 10
@@ -35308,6 +35314,10 @@ PrefabInstance:
       propertyPath: crosshairtype
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7448772974509906306, guid: d8729a0eb69c4c048a21934241c38f02, type: 3}
+      propertyPath: BombInstantiate
+      value: 
+      objectReference: {fileID: 2595720090088871617, guid: 395c6673f01388947a1ff7ccdbb1bd60, type: 3}
     - target: {fileID: 7448772974509906306, guid: d8729a0eb69c4c048a21934241c38f02, type: 3}
       propertyPath: EnergeDrinkModel
       value: 
@@ -35355,6 +35365,10 @@ PrefabInstance:
     - target: {fileID: 7448772974910617467, guid: d8729a0eb69c4c048a21934241c38f02, type: 3}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7448772974910617468, guid: d8729a0eb69c4c048a21934241c38f02, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 7448772975139311064, guid: d8729a0eb69c4c048a21934241c38f02, type: 3}
       propertyPath: m_Layer
