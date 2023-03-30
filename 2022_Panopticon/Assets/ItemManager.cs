@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class ItemManager : MonoBehaviour
 {
+    public GameObject Bomb;
+
     bool isInstantiate = false;
+    float circleRadius = 2f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +29,11 @@ public class ItemManager : MonoBehaviour
 
             //Gizmos.color = Color.white;
             //Gizmos.DrawWireSphere(position, 2f);
+
+            Vector2 randomPoint = Random.insideUnitCircle * circleRadius;
+
+            Instantiate(Bomb, position + new Vector3(randomPoint.x, 0f, randomPoint.y), Quaternion.identity);
+
 
             isInstantiate = true;
         }

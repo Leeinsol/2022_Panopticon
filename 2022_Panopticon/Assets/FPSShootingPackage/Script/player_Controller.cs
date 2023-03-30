@@ -163,6 +163,7 @@ public class player_Controller : MonoBehaviour
     public GameObject BombInstantiate;
 
     bool isPulling = false;
+    float distanceThreshold = 1f;
 
     // Start is called before the first frame update
     void Start()
@@ -193,7 +194,7 @@ public class player_Controller : MonoBehaviour
             // bomb instantiate
             Weapon[1] = Instantiate(BombModel, GunHandle.transform) as GameObject;
             Weapon[1].transform.parent = GunHandle.transform;
-            WeaponNum[1] = 1;
+            WeaponNum[1] = 0;
 
             Destroy(Weapon[1].GetComponent<Bomb>());
             Destroy(Weapon[1].GetComponent<Rigidbody>());
@@ -341,6 +342,7 @@ public class player_Controller : MonoBehaviour
                 bulletUI();
                 PressReloadKey();
                 reloadBullet();
+
             }
         }
 
@@ -350,6 +352,9 @@ public class player_Controller : MonoBehaviour
             if (useReload)
             {
                 reloadBomb();
+                Debug.Log("실행");
+                setRemainEnergyDrinkUI(true);
+                RemainBombNum();
             }
         }
 
@@ -368,6 +373,8 @@ public class player_Controller : MonoBehaviour
         if (Weapon[3].activeSelf)
         {
             getItem();
+            setRemainEnergyDrinkUI(false);
+
         }
 
     }
@@ -383,11 +390,17 @@ public class player_Controller : MonoBehaviour
             for(int i=0; i<hits.Length; i++)
             {
                 RaycastHit hit = hits[i];
-                if (hit.transform.parent.gameObject.tag == "EnergyDrink")
+                if (hit.transform.parent != null && hit.transform.parent.gameObject.tag == "EnergyDrink")
                 {
                     //Debug.Log("에너지 드링크");
                     isPulling = true;
-                    StartCoroutine(PullEnergyDrink(hit.transform.parent.gameObject));
+                    StartCoroutine(PullItem(hit.transform.parent.gameObject));
+                    break;
+                }
+                if (hit.transform.gameObject.tag == "Bomb")
+                {
+                    isPulling = true;
+                    StartCoroutine(PullItem(hit.transform.gameObject));
                     break;
                 }
             }
@@ -398,14 +411,24 @@ public class player_Controller : MonoBehaviour
             isPulling = false;
         }
     }
-    IEnumerator PullEnergyDrink(GameObject drinkObject)
+    IEnumerator PullItem(GameObject Object)
     {
         float t = 0;
-        Vector3 originalPosition = drinkObject.transform.position;
+        Vector3 originalPosition = Object.transform.position;
+
         while (isPulling)
         {
             t += Time.deltaTime * 1f;
-            drinkObject.transform.position = Vector3.Lerp(originalPosition, transform.position, t);
+            Object.transform.position = Vector3.Lerp(originalPosition, transform.position, t);
+
+            float distance = Vector3.Distance(Object.transform.position, transform.position);
+            if (distance < distanceThreshold)
+            {
+                WeaponNum[1]++;
+                Destroy(Object);
+                yield break;
+            }
+
             yield return null;
         }
     }
@@ -422,15 +445,27 @@ public class player_Controller : MonoBehaviour
         RemainItemNumUI.transform.GetChild(0).GetComponent<Text>().text = WeaponNum[2].ToString();
     }
 
-    private void OnCollisionEnter(Collision collision)
+    void RemainBombNum()
     {
-        // get EnergyDrink
-        if (collision.transform.parent.gameObject.tag == "EnergyDrink")
-        {
-            WeaponNum[2]++;
-            Destroy(collision.gameObject);
-        }
+        RemainItemNumUI.transform.GetChild(0).GetComponent<Text>().text = WeaponNum[1].ToString();
     }
+
+
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    // get EnergyDrink
+    //    if (collision.transform.parent != null && collision.transform.parent.gameObject.tag == "EnergyDrink")
+    //    {
+    //        WeaponNum[2]++;
+    //        Destroy(collision.gameObject);
+    //    }
+
+    //    if(collision.transform.gameObject.tag == "Bomb")
+    //    {
+    //        WeaponNum[1]++;
+    //        Destroy(collision.gameObject);
+    //    }
+    //}
     void eatEnergyDrink()
     {
         if (Input.GetKeyDown(FireKey))
@@ -511,6 +546,8 @@ public class player_Controller : MonoBehaviour
                 IncreaseAmount = -IncreaseAmount;
             }
 
+            
+
             //Debug.Log(flightLengthFactor);
 
         }
@@ -541,8 +578,22 @@ public class player_Controller : MonoBehaviour
                 flightLengthFactor = 0f;
                 BombGauge.transform.parent.gameObject.SetActive(false);
                 //reloadBomb();
-                SetReload();
+                
                 //reloadBomb();
+
+                WeaponNum[1]--;
+
+                if (WeaponNum[1] <= 0)
+                {
+                    Debug.Log("다 사용했어요" + currentIndex );
+                    currentIndex++;
+                    changeWeaponNext(currentIndex);
+                    setRemainEnergyDrinkUI(false);
+                }
+                else
+                {
+                    SetReload();
+                }
             }
         }
     }
@@ -568,9 +619,18 @@ public class player_Controller : MonoBehaviour
                 // Scroll down
                 changeWeaponNext(oldIndex);
             }
+            setRemainEnergyDrinkUI(false);
+
             //Debug.Log(currentIndex);
 
+            if (isReload)
+            {
+                //isReload = false;
+                setReloadBulletUI(false);
+            }
         }
+
+
         offWeapon();
         Weapon[currentIndex].SetActive(true);
     }
@@ -943,6 +1003,7 @@ public class player_Controller : MonoBehaviour
     void reloadBomb()
     {
         if (!isReload) return;
+        if (WeaponNum[1] <= 0) return;
        
         ReloadTimer -= Time.deltaTime;
         ReladTimerUI.GetComponent<Slider>().value = ReloadTimer;
