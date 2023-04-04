@@ -35296,7 +35296,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7448772974509906306, guid: d8729a0eb69c4c048a21934241c38f02, type: 3}
       propertyPath: reloadType
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7448772974509906306, guid: d8729a0eb69c4c048a21934241c38f02, type: 3}
       propertyPath: crouchSpeed

@@ -218,8 +218,9 @@ public class Enemy : MonoBehaviour
 
         if (isDamaged) return;
         isDamaged = true;
-        
+        GameObject.FindWithTag("Player").GetComponent<player_Controller>().ultimateGauge++;
         Debug.Log(transform.parent.gameObject.name + "HitByBomb");
+        Debug.Log(GameObject.FindWithTag("Player").GetComponent<player_Controller>().ultimateGauge);
 
         hp--;
         Vector3 reactVector = transform.position - BombPos;

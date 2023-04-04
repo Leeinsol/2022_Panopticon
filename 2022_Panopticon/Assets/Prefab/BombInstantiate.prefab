@@ -14799,7 +14799,7 @@ GameObject:
   - component: {fileID: 5830794085472444084}
   - component: {fileID: 7334897590129256857}
   - component: {fileID: 2463110720667512017}
-  - component: {fileID: 8536919648532204986}
+  - component: {fileID: 8948712711539776720}
   m_Layer: 0
   m_Name: BombInstantiate
   m_TagString: Untagged
@@ -14854,7 +14854,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &8536919648532204986
+--- !u!114 &8948712711539776720
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

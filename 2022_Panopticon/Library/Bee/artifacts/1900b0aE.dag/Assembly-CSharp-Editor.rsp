@@ -455,6 +455,7 @@
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEditor.UI.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEngine.TestRunner.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEngine.UI.ref.dll"
+"Assets/Editor/BombEditor.cs"
 "Assets/Editor/player_Controller_Editor.cs"
 "Assets/JMO Assets/Cartoon FX Easy Editor/Editor/CFXEasyEditor.cs"
 "Assets/PlayerPrefs/Editor/PlayerPrefsEditor/PlayerPrefsEditorUtility.cs"

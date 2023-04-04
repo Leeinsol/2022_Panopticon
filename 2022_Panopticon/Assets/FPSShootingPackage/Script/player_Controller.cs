@@ -165,6 +165,8 @@ public class player_Controller : MonoBehaviour
     bool isPulling = false;
     float distanceThreshold = 1f;
 
+    public int ultimateGauge = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -352,7 +354,7 @@ public class player_Controller : MonoBehaviour
             if (useReload)
             {
                 reloadBomb();
-                Debug.Log("실행");
+                //Debug.Log("실행");
                 setRemainEnergyDrinkUI(true);
                 RemainBombNum();
             }
@@ -883,46 +885,6 @@ public class player_Controller : MonoBehaviour
             psBullet.Play();
             Collider collider = hitInfo.collider;
 
-
-            //if (collider.transform.parent.parent != null)
-            //{
-            //    if (collider.transform.parent.parent.gameObject.GetComponent<Enemy>())
-            //    {
-
-            //        //if (collider is BoxCollider)
-            //        //{
-            //        //    Debug.Log("박스");
-            //        //    collider.transform.parent.parent.gameObject.GetComponent<Enemy>().hp--;
-
-            //        //    Debug.Log(collider.transform.parent.parent.gameObject.GetComponent<Enemy>().hp);
-            //        //    collider.transform.parent.parent.gameObject.GetComponent<Enemy>().playHurtAnim();
-            //        //}
-            //        if (collider is BoxCollider)
-            //        {
-            //            Debug.Log("박스");
-            //            collider.transform.parent.parent.gameObject.GetComponent<Enemy>().hp--;
-
-            //            Debug.Log(collider.transform.parent.parent.gameObject.GetComponent<Enemy>().hp);
-            //            collider.transform.parent.parent.gameObject.GetComponent<Enemy>().playHurtAnim();
-            //        }
-            //        if (collider is SphereCollider)
-            //        {
-            //            Debug.Log("머리");
-            //            //collider.gameObject.GetComponent<Enemy>().hp -= 2;
-
-            //            //Debug.Log(collider.gameObject.GetComponent<Enemy>().hp);
-            //            //collider.gameObject.GetComponent<Enemy>().playHurtAnim();
-
-            //            collider.transform.parent.parent.gameObject.GetComponent<Enemy>().hp -= 2;
-
-            //            Debug.Log(collider.transform.parent.parent.gameObject.GetComponent<Enemy>().hp);
-            //            collider.transform.parent.parent.gameObject.GetComponent<Enemy>().playHurtAnim();
-            //        }
-            //    }
-            //}
-
-
-
             // 총 맞았을 때
             if (collider.gameObject.GetComponent<Enemy>())
             {
@@ -934,6 +896,8 @@ public class player_Controller : MonoBehaviour
 
                     //Debug.Log(collider.gameObject.GetComponent<Enemy>().hp);
                     collider.gameObject.GetComponent<Enemy>().playHurtAnim();
+                    ultimateGauge++;
+                    Debug.Log(ultimateGauge);
                 }
                 if (collider is SphereCollider)
                 {
@@ -945,8 +909,11 @@ public class player_Controller : MonoBehaviour
 
                     collider.gameObject.GetComponent<Enemy>().hp -= (currentBulletPower * 2);
 
-                    Debug.Log(collider.gameObject.GetComponent<Enemy>().hp);
+                    //Debug.Log(collider.gameObject.GetComponent<Enemy>().hp);
                     collider.gameObject.GetComponent<Enemy>().playHurtAnim();
+
+                    ultimateGauge += 2;
+                    Debug.Log(ultimateGauge);
                 }
 
                 //else

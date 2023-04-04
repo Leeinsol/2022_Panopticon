@@ -10,8 +10,8 @@ public class Bomb : MonoBehaviour
 
     public GameObject meshObj;
     public GameObject effectObj;
-    
 
+    public RaycastHit[] rayHits = new RaycastHit[0];
     // Start is called before the first frame update
     void Start()
     {
@@ -59,13 +59,17 @@ public class Bomb : MonoBehaviour
 
         Destroy(blastRadiusObj, 1f);
 
-        RaycastHit[] rayHits = Physics.SphereCastAll(transform.position, blastRadius, Vector3.up, 0f, LayerMask.GetMask("Enemy"));
+        rayHits = Physics.SphereCastAll(transform.position, blastRadius, Vector3.up, 0f, LayerMask.GetMask("Enemy"));
+        //Debug.Log("rayHits: " + rayHits.Length);
+        
 
-        foreach(RaycastHit hitObj in rayHits)
+        foreach (RaycastHit hitObj in rayHits)
         {
             Enemy enemy = hitObj.transform.GetComponent<Enemy>();
             if (enemy != null)
             {
+                
+
                 enemy.HitByBomb(transform.position);
             }
 
