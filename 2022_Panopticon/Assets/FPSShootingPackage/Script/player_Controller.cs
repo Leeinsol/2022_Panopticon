@@ -139,7 +139,7 @@ public class player_Controller : MonoBehaviour
     private float shakeTimer;
     private float zoomTimer;
     float energyTimer;
-
+    float ultimateTimer;
     // current variable
     float currentSpeed;
 
@@ -256,7 +256,7 @@ public class player_Controller : MonoBehaviour
         Weapon[currentIndex].SetActive(true);
 
         setRemainEnergyDrinkUI(false);
-
+        ultimateTimer = 10f;
     }
     
    
@@ -378,9 +378,25 @@ public class player_Controller : MonoBehaviour
             setRemainEnergyDrinkUI(false);
 
         }
-
+        checkUltimate();
     }
 
+
+    void checkUltimate()
+    {
+        if (ultimateGauge >= 100)
+        {
+            ultimateTimer -= Time.deltaTime;
+            Debug.Log(ultimateTimer);
+
+            if (ultimateTimer < 0)
+            {
+                ultimateTimer = 10f;
+                currentBulletPower = bulletPower;
+                ultimateGauge = 0;
+            }
+        }
+    }
     void getItem()
     { 
         if (Input.GetKeyDown(FireKey)){
@@ -478,6 +494,7 @@ public class player_Controller : MonoBehaviour
             //Debug.Log("Time: " + Weapon[2].GetComponent<Item_energyDrink>().energyDrink.getTime());
             isPowerUp = true;
             energyTimer = Weapon[2].GetComponent<Item_energyDrink>().energyDrink.getTime();
+            
             //powerUp();
 
             WeaponNum[2]--;
