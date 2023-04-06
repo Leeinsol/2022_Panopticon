@@ -166,6 +166,9 @@ public class player_Controller : MonoBehaviour
     float distanceThreshold = 1f;
 
     public int ultimateGauge = 0;
+    public float radius = 1f;
+    public Transform middleAimPoint;
+    List<Collider> colliders = new List<Collider>();
 
     // Start is called before the first frame update
     void Start()
@@ -389,6 +392,18 @@ public class player_Controller : MonoBehaviour
             ultimateTimer -= Time.deltaTime;
             Debug.Log(ultimateTimer);
 
+            //fire
+
+            if (Input.GetKey(FireKey))
+            {
+                shootUltimateBullet();
+
+                if (fireTimer < fireRate) fireTimer += Time.deltaTime;
+            }
+            if (Input.GetKeyDown(FireKey)) fireTimer = fireRate;
+
+
+
             if (ultimateTimer < 0)
             {
                 ultimateTimer = 10f;
@@ -396,6 +411,88 @@ public class player_Controller : MonoBehaviour
                 ultimateGauge = 0;
             }
         }
+    }
+
+    void shootUltimateBullet()
+    {
+        if (fireTimer < fireRate)
+        {
+            return;
+        }
+
+        Ray ray = new Ray(theCamera.transform.position, theCamera.transform.forward);
+        RaycastHit hitInfo = new RaycastHit();
+        Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 2f);
+        if(Physics.Raycast(ray, out hitInfo))
+        {
+            Collider[] collidersInRange = Physics.OverlapSphere(hitInfo.point, radius);
+            for(int i=0; i < collidersInRange.Length; i++)
+            {
+                Debug.Log(collidersInRange[i]);
+            }
+
+            Collider closestCollider = null;
+            float closestDistance = Mathf.Infinity;
+            foreach(Collider collider in collidersInRange)
+            {
+                if (collider.name == "ZombiePrefab")
+                {
+                    float distance = Vector3.Distance(collider.transform.position, hitInfo.point);
+                    if (distance < closestDistance)
+                    {
+                        closestCollider = collider;
+                        closestDistance = distance;
+                    }
+                }
+            }
+            if (closestCollider != null)
+            {
+                Debug.Log("closestCollider: " + closestCollider);
+                //Vector3 direction = (closestCollider.transform.position - Camera.main.transform.position).normalized;
+                //Camera.main.transform.rotation = Quaternion.LookRotation(direction);
+            }
+        }
+
+
+        if (useFireSound) PlaySoundEffects(FireSound);
+
+        StopAllCoroutines();
+        StartCoroutine(reloadActionCoroutine());
+
+
+        if (Physics.Raycast(ray, out hitInfo))
+        {
+            bulletEffect.transform.position = hitInfo.point;
+            bulletEffect.transform.forward = hitInfo.normal;
+
+            Instantiate(psBullet, bulletEffect.transform.position, Quaternion.Euler(bulletEffect.transform.forward));
+            psBullet.Play();
+            Collider collider = hitInfo.collider;
+
+            // 총 맞았을 때
+            if (collider.gameObject.GetComponent<Enemy>())
+            {
+
+                if (collider is CapsuleCollider)
+                {
+                    collider.gameObject.GetComponent<Enemy>().hp -= currentBulletPower;
+
+                    collider.gameObject.GetComponent<Enemy>().playHurtAnim();
+                    ultimateGauge++;
+                    Debug.Log(ultimateGauge);
+                }
+                if (collider is SphereCollider)
+                {
+                    collider.gameObject.GetComponent<Enemy>().hp -= (currentBulletPower * 2);
+
+                    collider.gameObject.GetComponent<Enemy>().playHurtAnim();
+
+                    ultimateGauge += 2;
+                    Debug.Log(ultimateGauge);
+                }
+            }
+        }
+        fireTimer = 0f;
     }
     void getItem()
     { 
@@ -860,7 +957,8 @@ public class player_Controller : MonoBehaviour
                 }
                 else
                 {
-                    ShootBullet();
+                    //ShootBullet();
+                    shootUltimateBullet();
                 }
             }
             if (fireTimer < fireRate) fireTimer += Time.deltaTime;
