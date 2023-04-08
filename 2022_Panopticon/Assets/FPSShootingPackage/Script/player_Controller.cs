@@ -426,10 +426,12 @@ public class player_Controller : MonoBehaviour
         if(Physics.Raycast(ray, out hitInfo))
         {
             Collider[] collidersInRange = Physics.OverlapSphere(hitInfo.point, radius);
-            for(int i=0; i < collidersInRange.Length; i++)
-            {
-                Debug.Log(collidersInRange[i]);
-            }
+
+
+            //for(int i=0; i < collidersInRange.Length; i++)
+            //{
+            //    Debug.Log(collidersInRange[i]);
+            //}
 
             Collider closestCollider = null;
             float closestDistance = Mathf.Infinity;
@@ -445,11 +447,15 @@ public class player_Controller : MonoBehaviour
                     }
                 }
             }
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawSphere(hitInfo.point, radius);
+            
             if (closestCollider != null)
             {
                 Debug.Log("closestCollider: " + closestCollider);
                 //Vector3 direction = (closestCollider.transform.position - Camera.main.transform.position).normalized;
                 //Camera.main.transform.rotation = Quaternion.LookRotation(direction);
+                closestCollider.gameObject.GetComponent<Enemy>().hp--;
             }
         }
 
