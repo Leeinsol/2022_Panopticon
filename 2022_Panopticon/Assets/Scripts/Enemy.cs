@@ -181,7 +181,8 @@ public class Enemy : MonoBehaviour
             animator.SetTrigger("isDie");
             //PlayerPrefs.SetInt("remainEnemy", PlayerPrefs.GetInt("remainEnemy")-1);
 
-            transform.GetComponent<ItemManager>().instantiateItem(transform.position);
+            GameObject.Find("GameManager").GetComponent<ItemManager>().instantiateItem(transform.position);
+            //transform.GetComponent<ItemManager>().instantiateItem(transform.position);
 
             Destroy(this.gameObject, 2f);
         }

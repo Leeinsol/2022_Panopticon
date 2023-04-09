@@ -40,16 +40,18 @@ public class tower : MonoBehaviour
     {
         towerHp.GetComponent<Slider>().value = hp;
 
-        if (hp <= 0)
+        for (int i = navMeshAgents.Count - 1; i >= 0; i--)
+        {
+            if (navMeshAgents[i] == null)
+            {
+                navMeshAgents.RemoveAt(i);
+            }
+        }
+        
+        if (hp <= 0 || navMeshAgents.Count==0)
         {
             //PlayerPrefs.GetInt("remainEnemy");
-            for (int i = navMeshAgents.Count - 1; i >= 0; i--)
-            {
-                if (navMeshAgents[i] == null)
-                {
-                    navMeshAgents.RemoveAt(i);
-                }
-            }
+            
             PlayerPrefs.SetInt("remainEnemy", navMeshAgents.Count);
 
             SceneManager.LoadScene("GameOver");

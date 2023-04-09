@@ -382,6 +382,8 @@ public class player_Controller : MonoBehaviour
 
         }
         checkUltimate();
+
+        Debug.Log("energy: " + WeaponNum[2]);
     }
 
 
@@ -439,6 +441,9 @@ public class player_Controller : MonoBehaviour
             {
                 if (collider.name == "ZombiePrefab")
                 {
+                    //Gizmos.color = Color.yellow;
+                    //Gizmos.DrawSphere(hitInfo.point, radius);
+
                     float distance = Vector3.Distance(collider.transform.position, hitInfo.point);
                     if (distance < closestDistance)
                     {
@@ -447,9 +452,9 @@ public class player_Controller : MonoBehaviour
                     }
                 }
             }
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawSphere(hitInfo.point, radius);
-            
+            //OnDrawGizmos();
+
+
             if (closestCollider != null)
             {
                 Debug.Log("closestCollider: " + closestCollider);
@@ -500,6 +505,8 @@ public class player_Controller : MonoBehaviour
         //}
         //fireTimer = 0f;
     }
+
+   
     void getItem()
     { 
         if (Input.GetKeyDown(FireKey)){
@@ -545,7 +552,15 @@ public class player_Controller : MonoBehaviour
             float distance = Vector3.Distance(Object.transform.position, transform.position);
             if (distance < distanceThreshold)
             {
-                WeaponNum[1]++;
+                if (Object.gameObject.tag == "Bomb")
+                {
+                    WeaponNum[1]++;
+                }
+
+                if (Object.gameObject.tag == "EnergyDrink")
+                {
+                    WeaponNum[2]++;
+                }
                 Destroy(Object);
                 yield break;
             }
@@ -581,12 +596,13 @@ public class player_Controller : MonoBehaviour
     //        Destroy(collision.gameObject);
     //    }
 
-    //    if(collision.transform.gameObject.tag == "Bomb")
+    //    if (collision.transform.gameObject.tag == "Bomb")
     //    {
     //        WeaponNum[1]++;
     //        Destroy(collision.gameObject);
     //    }
     //}
+
     void eatEnergyDrink()
     {
         if (Input.GetKeyDown(FireKey))

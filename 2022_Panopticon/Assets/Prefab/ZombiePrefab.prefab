@@ -1820,7 +1820,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5115912789076446621}
   - component: {fileID: 5115912789076446618}
-  - component: {fileID: -8249822552359249082}
   - component: {fileID: 5115912789076446619}
   - component: {fileID: 8193284363071038426}
   - component: {fileID: -303622152407371649}
@@ -1868,19 +1867,6 @@ MonoBehaviour:
   isAngry: 0
   isDamaged: 0
   power: 1
---- !u!114 &-8249822552359249082
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5115912789076446620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ccccb37c82c3924ca8118e79c537c5a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Bomb: {fileID: 3396139144155364053, guid: 3f4cb44f8ffeba149b051d052f551402, type: 3}
 --- !u!195 &5115912789076446619
 NavMeshAgent:
   m_ObjectHideFlags: 0

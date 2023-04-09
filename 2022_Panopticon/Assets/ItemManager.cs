@@ -5,18 +5,35 @@ using UnityEngine;
 public class ItemManager : MonoBehaviour
 {
     public GameObject Bomb;
+    public GameObject energyDrink;
 
     bool isInstantiate = false;
     float circleRadius = 5f;
-    float gravity = 9.8f;
-    float minLaunchAngle = 30f;
-    float maxLaunchAngle = 60f;
-    float launchSpeed = 10f;
+    //float gravity = 9.8f;
+    //float minLaunchAngle = 30f;
+    //float maxLaunchAngle = 60f;
+    //float launchSpeed = 10f;
+
+    float maxRadius = 23f;
+    float minRadius = 7f;
 
     // Start is called before the first frame update
     void Start()
-    {   
-        
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            //Debug.Log(i);
+            Vector2 randomPoint = Random.insideUnitCircle.normalized * Random.Range(minRadius, maxRadius);
+            //Debug.Log(randomPoint);
+            //Vector2 towerPoint = Random.insideUnitCircle * 7f;
+
+            while(randomPoint.magnitude <= minRadius)
+            {
+                randomPoint = Random.insideUnitCircle.normalized * Random.Range(minRadius, maxRadius);
+            }
+
+            Instantiate(energyDrink, new Vector3(randomPoint.x, 0 ,randomPoint.y), Quaternion.identity);
+        }
     }
 
     // Update is called once per frame
@@ -81,4 +98,23 @@ public class ItemManager : MonoBehaviour
             isInstantiate = true;
         }
     }
+
+    Vector3 GetRandomPosition()
+    {
+        float radius = 3f;
+        Vector3 playerPosition = transform.position;
+
+        float a = playerPosition.x;
+        float b = playerPosition.y;
+
+        float x = Random.Range(-radius + a, radius + a);
+        float y_b = Mathf.Sqrt(Mathf.Pow(radius, 2) - Mathf.Pow(x - a, 2));
+        y_b *= Random.Range(0, 2) == 0 ? -1 : 1;
+        float y = y_b + b;
+
+        Vector3 randomPosition = new Vector3(x, y, 0);
+
+        return randomPosition;
+    }
+
 }
