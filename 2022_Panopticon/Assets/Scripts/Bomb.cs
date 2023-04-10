@@ -36,13 +36,13 @@ public class Bomb : MonoBehaviour
         effectObj.SetActive(true);
 
         float blastRadius = 3f;
-        GameObject blastRadiusObj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        blastRadiusObj.transform.position = transform.position;
-        blastRadiusObj.transform.localScale = new Vector3(blastRadius * 2f, blastRadius * 2f, blastRadius * 2f);
-        Destroy(blastRadiusObj.GetComponent<Collider>());
-        Material blastRadiusMat = new Material(Shader.Find("UI/Unlit/Transparent"));
-        blastRadiusMat.color = new Color(.35f, .1f, .1f, 0.3f);
-        blastRadiusObj.GetComponent<MeshRenderer>().material = blastRadiusMat;
+        //GameObject blastRadiusObj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        //blastRadiusObj.transform.position = transform.position;
+        //blastRadiusObj.transform.localScale = new Vector3(blastRadius * 2f, blastRadius * 2f, blastRadius * 2f);
+        //Destroy(blastRadiusObj.GetComponent<Collider>());
+        //Material blastRadiusMat = new Material(Shader.Find("UI/Unlit/Transparent"));
+        //blastRadiusMat.color = new Color(.35f, .1f, .1f, 0.3f);
+        //blastRadiusObj.GetComponent<MeshRenderer>().material = blastRadiusMat;
 
         float scaleTime = 0.5f;
         float scaleStartTime = Time.time;
@@ -55,9 +55,9 @@ public class Bomb : MonoBehaviour
             yield return null;
         }
         //blastRadiusObj.transform.localScale = new Vector3(5f, 5f, 5f);
-        blastRadiusObj.transform.localScale = new Vector3(blastRadius * 2f, blastRadius * 2f, blastRadius * 2f);
+        //blastRadiusObj.transform.localScale = new Vector3(blastRadius * 2f, blastRadius * 2f, blastRadius * 2f);
 
-        Destroy(blastRadiusObj, 1f);
+        //Destroy(blastRadiusObj, 1f);
 
         rayHits = Physics.SphereCastAll(transform.position, blastRadius, Vector3.up, 0f, LayerMask.GetMask("Enemy"));
         //Debug.Log("rayHits: " + rayHits.Length);
@@ -68,7 +68,8 @@ public class Bomb : MonoBehaviour
             Enemy enemy = hitObj.transform.GetComponent<Enemy>();
             if (enemy != null)
             {
-                
+
+                effectObj.gameObject.transform.Find("ExplosionEffect").gameObject.SetActive(true);
 
                 enemy.HitByBomb(transform.position);
             }
@@ -76,8 +77,19 @@ public class Bomb : MonoBehaviour
             //hitObj.transform.GetComponent<Enemy>().HitByBomb(transform.position);
 
         }
+
+        Destroy(gameObject, 1f);
+
+        //Invoke("DestroyBomb", 1f);
+    }
+
+    void DestroyBomb()
+    {
+        effectObj.gameObject.transform.Find("ExplosionEffect").gameObject.SetActive(true);
+        Debug.Log(effectObj.gameObject.transform.Find("ExplosionEffect").gameObject.activeSelf);
         Destroy(gameObject,1f);
     }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "ground")

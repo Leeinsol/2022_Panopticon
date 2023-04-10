@@ -7,7 +7,6 @@ public class ItemManager : MonoBehaviour
     public GameObject Bomb;
     public GameObject energyDrink;
 
-    bool isInstantiate = false;
     float circleRadius = 5f;
     //float gravity = 9.8f;
     //float minLaunchAngle = 30f;
@@ -44,8 +43,7 @@ public class ItemManager : MonoBehaviour
 
     public void instantiateItem(Vector3 position)
     {
-        if (!isInstantiate)
-        {
+        
             //Debug.Log("instantiateItem");
 
             //Gizmos.color = Color.white;
@@ -90,13 +88,10 @@ public class ItemManager : MonoBehaviour
 
             //Debug.Log("instantiateItem");
 
-            Vector2 randomPoint = Random.insideUnitCircle * circleRadius;
+        Vector2 randomPoint = Random.insideUnitCircle * circleRadius;
 
-            Instantiate(Bomb, position + new Vector3(randomPoint.x, 0f, randomPoint.y), Quaternion.identity);
+        Instantiate(Bomb, position + new Vector3(randomPoint.x, 0f, randomPoint.y), Quaternion.identity);
 
-
-            isInstantiate = true;
-        }
     }
 
     Vector3 GetRandomPosition()

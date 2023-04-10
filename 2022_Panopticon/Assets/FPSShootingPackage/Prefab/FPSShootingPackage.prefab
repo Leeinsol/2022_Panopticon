@@ -1372,17 +1372,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd8730bf27e73074183df4510ffe3fdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 30
+  walkSpeed: 10
   HeadBobAmount: {x: 0, y: 0.05, z: 0}
   useSprint: 1
   SprintKey: 304
-  sprintSpeed: 50
+  sprintSpeed: 20
   useStaminaLimit: 1
   StaminaBar: {fileID: 7448772974397145885}
   maxStamina: 5
   useCrouch: 1
   CrouchKey: 306
-  crouchSpeed: 15
+  crouchSpeed: 5
   crouchHeight: 0.5
   useHeadBob: 1
   headBobSpeed: 10
@@ -1399,9 +1399,9 @@ MonoBehaviour:
   zoomSpeed: 2
   isZooming: 0
   useGun: 1
-  GunModel: {fileID: 5194338988698467188, guid: 094db35eee8299945ba5852bf6abf420, type: 3}
-  BombModel: {fileID: 0}
-  EnergeDrinkModel: {fileID: 0}
+  GunModel: {fileID: 919132149155446097, guid: 6bea03a7115c5d748b18a7573d0d4d2b, type: 3}
+  BombModel: {fileID: 3396139144155364053, guid: 3f4cb44f8ffeba149b051d052f551402, type: 3}
+  EnergeDrinkModel: {fileID: 8275866744537830725, guid: b6fcd5cceba30094fbf98d9f730ab7d6, type: 3}
   GunRotationSpeed: 10
   useItem: 1
   BombPostion: {fileID: 0}
@@ -1418,7 +1418,7 @@ MonoBehaviour:
   ReladTimerUI: {fileID: 7448772975493283968}
   useReload: 1
   ReloadKey: 114
-  reloadType: 0
+  reloadType: 1
   maxReloadTime: 5
   allReloadTime: 1
   reloadActionForce: 0.2
@@ -1433,9 +1433,14 @@ MonoBehaviour:
   bulletPower: 1
   currentBulletPower: 1
   Item2Num: 0
-  WeaponNum: 
+  WeaponNum: 00000000000000000000000000000000
   RemainItemNumUI: {fileID: 8993991700403000583}
   PowerTimeUI: {fileID: 875738236982807627}
+  getItemModel: {fileID: 8264214418804695021, guid: 3da1ed1e4c5f9bf488a083f96dda5ce5, type: 3}
+  BombInstantiate: {fileID: 2595720090088871617, guid: 395c6673f01388947a1ff7ccdbb1bd60, type: 3}
+  ultimateGauge: 0
+  radius: 1
+  middleAimPoint: {fileID: 0}
 --- !u!1 &7448772975493283968
 GameObject:
   m_ObjectHideFlags: 0

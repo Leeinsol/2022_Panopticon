@@ -170,6 +170,9 @@ public class player_Controller : MonoBehaviour
     public Transform middleAimPoint;
     List<Collider> colliders = new List<Collider>();
 
+    public GameObject ultimateCrossHair;
+    public Canvas playerCanvas;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -382,23 +385,23 @@ public class player_Controller : MonoBehaviour
 
         }
         checkUltimate();
-
-        Debug.Log("energy: " + WeaponNum[2]);
+        shootUltimateBullet();
+        //Debug.Log("energy: " + WeaponNum[2]);
     }
 
 
     void checkUltimate()
     {
-        if (ultimateGauge >= 10)
+        if (ultimateGauge >= 4)
         {
             ultimateTimer -= Time.deltaTime;
             //Debug.Log(ultimateTimer);
 
             //fire
-            //shootUltimateBullet();
+            shootUltimateBullet();
             if (Input.GetKey(FireKey))
             {
-                shootUltimateBullet();
+                //shootUltimateBullet();
 
                 if (fireTimer < fireRate) fireTimer += Time.deltaTime;
             }
@@ -422,9 +425,11 @@ public class player_Controller : MonoBehaviour
         //    return;
         //}
         //Debug.Log("shootUltimateBullet");
+
+        ultimateCrossHair.SetActive(true);
         Ray ray = new Ray(theCamera.transform.position, theCamera.transform.forward);
         RaycastHit hitInfo = new RaycastHit();
-        Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 2f);
+        //Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 2f);
         if(Physics.Raycast(ray, out hitInfo))
         {
             Collider[] collidersInRange = Physics.OverlapSphere(hitInfo.point, radius);
@@ -460,7 +465,19 @@ public class player_Controller : MonoBehaviour
                 Debug.Log("closestCollider: " + closestCollider);
                 //Vector3 direction = (closestCollider.transform.position - Camera.main.transform.position).normalized;
                 //Camera.main.transform.rotation = Quaternion.LookRotation(direction);
-                closestCollider.gameObject.GetComponent<Enemy>().hp--;
+                //closestCollider.gameObject.GetComponent<Enemy>().hp--;
+
+                Vector3 screenPosition = Camera.main.WorldToScreenPoint(closestCollider.transform.position);
+
+                Vector2 localPosition;
+
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(playerCanvas.transform as RectTransform, screenPosition, playerCanvas.worldCamera, out localPosition);
+                ultimateCrossHair.GetComponent<RectTransform>().anchoredPosition = localPosition;
+            }
+            else
+            {
+                //ultimateCrossHair.GetComponent<RectTransform>().anchoredPosition = Vector2.zero; ;
+
             }
         }
 

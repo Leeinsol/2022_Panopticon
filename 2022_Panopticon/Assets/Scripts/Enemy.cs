@@ -32,6 +32,9 @@ public class Enemy : MonoBehaviour
 
     GameObject enemyModel;
 
+    bool isInstantiate = false;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -180,13 +183,20 @@ public class Enemy : MonoBehaviour
             //animator.SetBool("isDie1", true);
             animator.SetTrigger("isDie");
             //PlayerPrefs.SetInt("remainEnemy", PlayerPrefs.GetInt("remainEnemy")-1);
+            if (!isInstantiate)
+            {
+                GameObject.Find("GameManager").GetComponent<ItemManager>().instantiateItem(transform.position);
+                isInstantiate = true;
+            }
+            //GameObject.Find("GameManager").GetComponent<ItemManager>().isInstantiate = false;
 
-            GameObject.Find("GameManager").GetComponent<ItemManager>().instantiateItem(transform.position);
             //transform.GetComponent<ItemManager>().instantiateItem(transform.position);
 
             Destroy(this.gameObject, 2f);
         }
     }
+    
+    
 
     void checkAngryState()
     {
