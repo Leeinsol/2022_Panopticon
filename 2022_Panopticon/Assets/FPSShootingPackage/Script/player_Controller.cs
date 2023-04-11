@@ -399,12 +399,7 @@ public class player_Controller : MonoBehaviour
 
             //fire
             shootUltimateBullet();
-            if (Input.GetKey(FireKey))
-            {
-                //shootUltimateBullet();
-
-                if (fireTimer < fireRate) fireTimer += Time.deltaTime;
-            }
+            
             if (Input.GetKeyDown(FireKey)) fireTimer = fireRate;
 
 
@@ -474,53 +469,28 @@ public class player_Controller : MonoBehaviour
                 RectTransformUtility.ScreenPointToLocalPointInRectangle(playerCanvas.transform as RectTransform, screenPosition, playerCanvas.worldCamera, out localPosition);
                 ultimateCrossHair.GetComponent<RectTransform>().anchoredPosition = localPosition;
             }
+
             else
             {
                 //ultimateCrossHair.GetComponent<RectTransform>().anchoredPosition = Vector2.zero; ;
 
             }
+            if (Input.GetKey(FireKey))
+            {
+                if (closestCollider != null)
+                {
+                    closestCollider.GetComponent<Enemy>().hp--;
+                    closestCollider.gameObject.GetComponent<Enemy>().playHurtAnim();
+
+                }
+
+                if (fireTimer < fireRate) fireTimer += Time.deltaTime;
+            }
+
         }
 
 
-        //if (useFireSound) PlaySoundEffects(FireSound);
-
-        //StopAllCoroutines();
-        //StartCoroutine(reloadActionCoroutine());
-
-
-        //if (Physics.Raycast(ray, out hitInfo))
-        //{
-        //    bulletEffect.transform.position = hitInfo.point;
-        //    bulletEffect.transform.forward = hitInfo.normal;
-
-        //    Instantiate(psBullet, bulletEffect.transform.position, Quaternion.Euler(bulletEffect.transform.forward));
-        //    psBullet.Play();
-        //    Collider collider = hitInfo.collider;
-
-        //    // 총 맞았을 때
-        //    if (collider.gameObject.GetComponent<Enemy>())
-        //    {
-
-        //        if (collider is CapsuleCollider)
-        //        {
-        //            collider.gameObject.GetComponent<Enemy>().hp -= currentBulletPower;
-
-        //            collider.gameObject.GetComponent<Enemy>().playHurtAnim();
-        //            ultimateGauge++;
-        //            Debug.Log(ultimateGauge);
-        //        }
-        //        if (collider is SphereCollider)
-        //        {
-        //            collider.gameObject.GetComponent<Enemy>().hp -= (currentBulletPower * 2);
-
-        //            collider.gameObject.GetComponent<Enemy>().playHurtAnim();
-
-        //            ultimateGauge += 2;
-        //            Debug.Log(ultimateGauge);
-        //        }
-        //    }
-        //}
-        //fireTimer = 0f;
+       
     }
 
    
