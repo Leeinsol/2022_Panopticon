@@ -61,16 +61,13 @@ public class Bomb : MonoBehaviour
 
         rayHits = Physics.SphereCastAll(transform.position, blastRadius, Vector3.up, 0f, LayerMask.GetMask("Enemy"));
         //Debug.Log("rayHits: " + rayHits.Length);
-        
 
+        effectObj.gameObject.transform.Find("ExplosionEffect").gameObject.SetActive(true);
         foreach (RaycastHit hitObj in rayHits)
         {
             Enemy enemy = hitObj.transform.GetComponent<Enemy>();
             if (enemy != null)
             {
-
-                effectObj.gameObject.transform.Find("ExplosionEffect").gameObject.SetActive(true);
-
                 enemy.HitByBomb(transform.position);
             }
 

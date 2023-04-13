@@ -385,18 +385,18 @@ public class player_Controller : MonoBehaviour
 
         }
         checkUltimate();
-        shootUltimateBullet();
+        //shootUltimateBullet();
         //Debug.Log("energy: " + WeaponNum[2]);
     }
 
 
     void checkUltimate()
     {
-        if (ultimateGauge >= 4)
+        if (ultimateGauge >= 10)
         {
             ultimateTimer -= Time.deltaTime;
             //Debug.Log(ultimateTimer);
-
+            crossHairText.enabled = false;
             //fire
             shootUltimateBullet();
             
@@ -409,6 +409,9 @@ public class player_Controller : MonoBehaviour
                 ultimateTimer = 10f;
                 currentBulletPower = bulletPower;
                 ultimateGauge = 0;
+                ultimateCrossHair.SetActive(false);
+                crossHairText.enabled = true;
+
             }
         }
     }

@@ -35651,6 +35651,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6831464012075225963, guid: 82cfe7f07541d364ea42d33b82a749b2, type: 3}
     - target: {fileID: 7448772974509906306, guid: d8729a0eb69c4c048a21934241c38f02, type: 3}
+      propertyPath: getItemModel
+      value: 
+      objectReference: {fileID: 8362873161591697840, guid: ab5bc01e1a639884d910ad2ba25fe869, type: 3}
+    - target: {fileID: 7448772974509906306, guid: d8729a0eb69c4c048a21934241c38f02, type: 3}
       propertyPath: playerCanvas
       value: 
       objectReference: {fileID: 8638261728435809534}
