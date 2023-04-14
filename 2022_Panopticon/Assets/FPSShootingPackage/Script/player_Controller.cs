@@ -172,6 +172,7 @@ public class player_Controller : MonoBehaviour
 
     public GameObject ultimateCrossHair;
     public Canvas playerCanvas;
+    Collider closestCollider = null;
 
     // Start is called before the first frame update
     void Start()
@@ -384,7 +385,11 @@ public class player_Controller : MonoBehaviour
             setRemainEnergyDrinkUI(false);
 
         }
-        checkUltimate();
+        if (ultimateGauge >= 3)
+        {
+            //Debug.Log(fireTimer);
+            checkUltimate();
+        }
         //shootUltimateBullet();
         //Debug.Log("energy: " + WeaponNum[2]);
     }
@@ -392,57 +397,45 @@ public class player_Controller : MonoBehaviour
 
     void checkUltimate()
     {
-        if (ultimateGauge >= 3)
+        ultimateTimer -= Time.deltaTime;
+        //crossHairText.enabled = false;
+        showClosestCEnemy();
+        if (Input.GetKey(FireKey))
         {
-            ultimateTimer -= Time.deltaTime;
-            //Debug.Log(ultimateTimer);
-            //crossHairText.enabled = false;
-            //fire
             shootUltimateBullet();
-            
-            if (Input.GetKeyDown(FireKey)) fireTimer = fireRate;
-
-
-
-            if (ultimateTimer < 0)
-            {
-                ultimateTimer = 20f;
-                currentBulletPower = bulletPower;
-                ultimateGauge = 0;
-                ultimateCrossHair.SetActive(false);
-                crossHairText.enabled = true;
-
-            }
+            //UltimateFire();
+            if (fireTimer < fireRate) fireTimer += Time.deltaTime;
         }
+
+        if (Input.GetKeyDown(FireKey)) fireTimer = fireRate;
+
+        if (ultimateTimer < 0)
+        {
+            ultimateTimer = 20f;
+            currentBulletPower = bulletPower;
+            ultimateGauge = 0;
+            ultimateCrossHair.SetActive(false);
+            crossHairText.enabled = true;
+
+        }
+        
     }
 
-    void shootUltimateBullet()
+    void showClosestCEnemy()
     {
-        
-        //Debug.Log("shootUltimateBullet");
-
         ultimateCrossHair.SetActive(true);
         Ray ray = new Ray(theCamera.transform.position, theCamera.transform.forward);
         RaycastHit hitInfo = new RaycastHit();
-        //Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 2f);
-        if(Physics.Raycast(ray, out hitInfo))
+        if (Physics.Raycast(ray, out hitInfo))
         {
             Collider[] collidersInRange = Physics.OverlapSphere(hitInfo.point, radius);
 
-
-            //for(int i=0; i < collidersInRange.Length; i++)
-            //{
-            //    Debug.Log(collidersInRange[i]);
-            //}
-
-            Collider closestCollider = null;
+            closestCollider = null;
             float closestDistance = Mathf.Infinity;
-            foreach(Collider collider in collidersInRange)
+            foreach (Collider collider in collidersInRange)
             {
                 if (collider.name == "ZombiePrefab")
                 {
-                    //Gizmos.color = Color.yellow;
-                    //Gizmos.DrawSphere(hitInfo.point, radius);
 
                     float distance = Vector3.Distance(collider.transform.position, hitInfo.point);
                     if (distance < closestDistance)
@@ -457,12 +450,8 @@ public class player_Controller : MonoBehaviour
 
             if (closestCollider != null)
             {
-                //Debug.Log("closestCollider: " + closestCollider);
-                //Vector3 direction = (closestCollider.transform.position - Camera.main.transform.position).normalized;
-                //Camera.main.transform.rotation = Quaternion.LookRotation(direction);
-                //closestCollider.gameObject.GetComponent<Enemy>().hp--;
+
                 Vector3 colliderCenter = closestCollider.bounds.center;
-                //Vector3 screenPosition = Camera.main.WorldToScreenPoint(closestCollider.transform.position);
                 Vector3 screenPosition = Camera.main.WorldToScreenPoint(colliderCenter);
 
                 Vector2 localPosition;
@@ -473,37 +462,56 @@ public class player_Controller : MonoBehaviour
 
             else
             {
-                //ultimateCrossHair.GetComponent<RectTransform>().anchoredPosition = Vector2.zero; ;
                 ultimateCrossHair.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
 
             }
-            if (fireTimer < fireRate)
-            {
-                return;
-            }
+        }
+    }
 
-            if (Input.GetKey(FireKey))
-            {
-                if (useFireSound) PlaySoundEffects(FireSound);
+    void UltimateFire()
+    {
+        if (Input.GetKey(FireKey))
+        {
+            shootUltimateBullet();
+            if (fireTimer < fireRate) fireTimer += Time.deltaTime;
+        }
+        if (Input.GetKeyDown(FireKey)) fireTimer = fireRate;
+    }
 
-
-
-                if (closestCollider != null)
-                {
-                    Debug.Log("closestCollider: " + closestCollider);
-                    //closestCollider.GetComponent<Enemy>().hp--;
-                    closestCollider.GetComponent<Enemy>().decreaseHP();
-                    closestCollider.gameObject.GetComponent<Enemy>().playHurtAnim();
-
-                }
-
-                if (fireTimer < fireRate) fireTimer += Time.deltaTime;
-            }
-
+    void shootUltimateBullet()
+    {
+        if (fireTimer < fireRate)
+        {
+            return;
         }
 
+        //Debug.Log("shootUltimateBullet");
 
-       
+        Ray ray = new Ray(theCamera.transform.position, theCamera.transform.forward);
+        RaycastHit hitInfo = new RaycastHit();
+
+        if (useFireSound) PlaySoundEffects(FireSound);
+
+        StopAllCoroutines();
+        StartCoroutine(reloadActionCoroutine());
+        if (Physics.Raycast(ray, out hitInfo))
+        {
+            bulletEffect.transform.position = hitInfo.point;
+            bulletEffect.transform.forward = hitInfo.normal;
+
+            Instantiate(psBullet, bulletEffect.transform.position, Quaternion.Euler(bulletEffect.transform.forward));
+            psBullet.Play();
+
+            if (closestCollider != null)
+            {
+                Debug.Log("closestCollider: " + closestCollider);
+                //closestCollider.GetComponent<Enemy>().hp--;
+                closestCollider.GetComponent<Enemy>().decreaseHP();
+                closestCollider.gameObject.GetComponent<Enemy>().playHurtAnim();
+            }
+        }
+
+        fireTimer = 0f;
     }
 
    
@@ -968,7 +976,7 @@ public class player_Controller : MonoBehaviour
     {
         if (Input.GetKey(FireKey))
         {
-            if (!useReload) ShootBullet();
+            if (!useReload && ultimateGauge<3) ShootBullet();
 
             if (bulletNum > 0 && useReload)
             {
