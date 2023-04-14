@@ -249,4 +249,10 @@ public class Enemy : MonoBehaviour
         rb.AddForce(reactVec * 2, ForceMode.Impulse);
         rb.AddTorque(reactVec * 2, ForceMode.Impulse);
     }
+
+    public void decreaseHP()
+    {
+        hp--;
+        Debug.Log("decreaseHP");
+    }
 }

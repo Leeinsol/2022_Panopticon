@@ -262,7 +262,7 @@ public class player_Controller : MonoBehaviour
         Weapon[currentIndex].SetActive(true);
 
         setRemainEnergyDrinkUI(false);
-        ultimateTimer = 10f;
+        ultimateTimer = 20f;
     }
     
    
@@ -392,11 +392,11 @@ public class player_Controller : MonoBehaviour
 
     void checkUltimate()
     {
-        if (ultimateGauge >= 10)
+        if (ultimateGauge >= 3)
         {
             ultimateTimer -= Time.deltaTime;
             //Debug.Log(ultimateTimer);
-            crossHairText.enabled = false;
+            //crossHairText.enabled = false;
             //fire
             shootUltimateBullet();
             
@@ -406,7 +406,7 @@ public class player_Controller : MonoBehaviour
 
             if (ultimateTimer < 0)
             {
-                ultimateTimer = 10f;
+                ultimateTimer = 20f;
                 currentBulletPower = bulletPower;
                 ultimateGauge = 0;
                 ultimateCrossHair.SetActive(false);
@@ -418,10 +418,7 @@ public class player_Controller : MonoBehaviour
 
     void shootUltimateBullet()
     {
-        //if (fireTimer < fireRate)
-        //{
-        //    return;
-        //}
+        
         //Debug.Log("shootUltimateBullet");
 
         ultimateCrossHair.SetActive(true);
@@ -460,12 +457,13 @@ public class player_Controller : MonoBehaviour
 
             if (closestCollider != null)
             {
-                Debug.Log("closestCollider: " + closestCollider);
+                //Debug.Log("closestCollider: " + closestCollider);
                 //Vector3 direction = (closestCollider.transform.position - Camera.main.transform.position).normalized;
                 //Camera.main.transform.rotation = Quaternion.LookRotation(direction);
                 //closestCollider.gameObject.GetComponent<Enemy>().hp--;
-
-                Vector3 screenPosition = Camera.main.WorldToScreenPoint(closestCollider.transform.position);
+                Vector3 colliderCenter = closestCollider.bounds.center;
+                //Vector3 screenPosition = Camera.main.WorldToScreenPoint(closestCollider.transform.position);
+                Vector3 screenPosition = Camera.main.WorldToScreenPoint(colliderCenter);
 
                 Vector2 localPosition;
 
@@ -476,13 +474,25 @@ public class player_Controller : MonoBehaviour
             else
             {
                 //ultimateCrossHair.GetComponent<RectTransform>().anchoredPosition = Vector2.zero; ;
+                ultimateCrossHair.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
 
             }
+            if (fireTimer < fireRate)
+            {
+                return;
+            }
+
             if (Input.GetKey(FireKey))
             {
+                if (useFireSound) PlaySoundEffects(FireSound);
+
+
+
                 if (closestCollider != null)
                 {
-                    closestCollider.GetComponent<Enemy>().hp--;
+                    Debug.Log("closestCollider: " + closestCollider);
+                    //closestCollider.GetComponent<Enemy>().hp--;
+                    closestCollider.GetComponent<Enemy>().decreaseHP();
                     closestCollider.gameObject.GetComponent<Enemy>().playHurtAnim();
 
                 }
@@ -967,7 +977,7 @@ public class player_Controller : MonoBehaviour
                     setReloadBulletUI(false);
                     return;
                 }
-                else
+                else if(ultimateGauge<3)
                 {
                     ShootBullet();
                     //shootUltimateBullet();
@@ -1018,7 +1028,7 @@ public class player_Controller : MonoBehaviour
 
                 if (collider is CapsuleCollider)
                 {
-                    //Debug.Log("캡슐");
+                    Debug.Log("캡슐");
                     collider.gameObject.GetComponent<Enemy>().hp -= currentBulletPower;
 
                     //Debug.Log(collider.gameObject.GetComponent<Enemy>().hp);
@@ -1028,7 +1038,7 @@ public class player_Controller : MonoBehaviour
                 }
                 if (collider is SphereCollider)
                 {
-                    //Debug.Log("머리");
+                    Debug.Log("머리");
                     //collider.gameObject.GetComponent<Enemy>().hp -= 2;
 
                     //Debug.Log(collider.gameObject.GetComponent<Enemy>().hp);
