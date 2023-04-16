@@ -480,6 +480,7 @@ public class player_Controller : MonoBehaviour
 
     void shootUltimateBullet()
     {
+        //왜 두번 실행되지?
         if (fireTimer < fireRate)
         {
             return;
