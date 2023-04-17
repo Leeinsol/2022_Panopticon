@@ -109,7 +109,7 @@ public class player_Controller : MonoBehaviour
     public int maxBulletNum = 10;
     int bulletNum;
     public float fireRate = 0.5f;
-    float fireTimer;
+    public float fireTimer;
 
     // Canvas
     public Text crossHairText;
@@ -345,14 +345,20 @@ public class player_Controller : MonoBehaviour
         // Fire
         if (useGun && Weapon[0].activeSelf)
         {
-            Fire();
+            checkFireState();
+            //Fire();
+            //checkUltimate();
             if (useReload)
             {
                 bulletUI();
                 PressReloadKey();
                 reloadBullet();
-
             }
+            //if (ultimateGauge >= 3)
+            //{
+            //    //Debug.Log(fireTimer);
+            //    ultimateFire();
+            //}
         }
 
         if (useGun && Weapon[1].activeSelf)
@@ -385,26 +391,41 @@ public class player_Controller : MonoBehaviour
             setRemainEnergyDrinkUI(false);
 
         }
-        if (ultimateGauge >= 3)
-        {
-            //Debug.Log(fireTimer);
-            checkUltimate();
-        }
+        
         //shootUltimateBullet();
         //Debug.Log("energy: " + WeaponNum[2]);
     }
 
-
-    void checkUltimate()
+    void checkFireState()
     {
+        if (ultimateGauge < 3)
+            Fire();
+        
+        else
+            ultimateFire();
+
+
+        //if (ultimateGauge >= 3)
+        //{
+        //    //Debug.Log(fireTimer);
+        //    checkUltimate();
+        //}
+    }
+
+    void ultimateFire()
+    {
+        //Debug.Log(fireTimer);
         ultimateTimer -= Time.deltaTime;
         //crossHairText.enabled = false;
         showClosestCEnemy();
+
+
         if (Input.GetKey(FireKey))
         {
             shootUltimateBullet();
             //UltimateFire();
             if (fireTimer < fireRate) fireTimer += Time.deltaTime;
+            //else shootUltimateBullet();
         }
 
         if (Input.GetKeyDown(FireKey)) fireTimer = fireRate;
@@ -424,6 +445,8 @@ public class player_Controller : MonoBehaviour
     void showClosestCEnemy()
     {
         ultimateCrossHair.SetActive(true);
+        crossHairText.enabled = false;
+
         Ray ray = new Ray(theCamera.transform.position, theCamera.transform.forward);
         RaycastHit hitInfo = new RaycastHit();
         if (Physics.Raycast(ray, out hitInfo))
@@ -450,6 +473,9 @@ public class player_Controller : MonoBehaviour
 
             if (closestCollider != null)
             {
+                Color color = ultimateCrossHair.transform.GetChild(0).GetComponent<Image>().color;
+                color.a = 1f;
+                ultimateCrossHair.transform.GetChild(0).GetComponent<Image>().color = color;
 
                 Vector3 colliderCenter = closestCollider.bounds.center;
                 Vector3 screenPosition = Camera.main.WorldToScreenPoint(colliderCenter);
@@ -464,29 +490,22 @@ public class player_Controller : MonoBehaviour
             {
                 ultimateCrossHair.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
 
+                //Material material = ultimateCrossHair.transform.GetChild(0).GetComponent<Renderer>().material;
+                Color color = ultimateCrossHair.transform.GetChild(0).GetComponent<Image>().color;
+                color.a = 0.2f;
+                ultimateCrossHair.transform.GetChild(0).GetComponent<Image>().color = color;
             }
         }
     }
 
-    void UltimateFire()
-    {
-        if (Input.GetKey(FireKey))
-        {
-            shootUltimateBullet();
-            if (fireTimer < fireRate) fireTimer += Time.deltaTime;
-        }
-        if (Input.GetKeyDown(FireKey)) fireTimer = fireRate;
-    }
-
     void shootUltimateBullet()
     {
-        //왜 두번 실행되지?
         if (fireTimer < fireRate)
         {
             return;
         }
 
-        //Debug.Log("shootUltimateBullet");
+        Debug.Log("shootUltimateBullet");
 
         Ray ray = new Ray(theCamera.transform.position, theCamera.transform.forward);
         RaycastHit hitInfo = new RaycastHit();
@@ -505,7 +524,7 @@ public class player_Controller : MonoBehaviour
 
             if (closestCollider != null)
             {
-                Debug.Log("closestCollider: " + closestCollider);
+                //Debug.Log("closestCollider: " + closestCollider);
                 //closestCollider.GetComponent<Enemy>().hp--;
                 closestCollider.GetComponent<Enemy>().decreaseHP();
                 closestCollider.gameObject.GetComponent<Enemy>().playHurtAnim();
@@ -986,11 +1005,12 @@ public class player_Controller : MonoBehaviour
                     setReloadBulletUI(false);
                     return;
                 }
-                else if(ultimateGauge<3)
-                {
-                    ShootBullet();
-                    //shootUltimateBullet();
-                }
+                ShootBullet();
+                //else if(ultimateGauge<3)
+                //{
+                //    //
+                //    shootUltimateBullet();
+                //}
             }
             if (fireTimer < fireRate) fireTimer += Time.deltaTime;
         }
@@ -1009,6 +1029,7 @@ public class player_Controller : MonoBehaviour
         {
             return;
         }
+        Debug.Log("shootBullet");
 
         Ray ray = new Ray(theCamera.transform.position, theCamera.transform.forward);
         RaycastHit hitInfo = new RaycastHit();
@@ -1061,18 +1082,6 @@ public class player_Controller : MonoBehaviour
                     ultimateGauge += 2;
                     Debug.Log(ultimateGauge);
                 }
-
-                //else
-                //{
-                //    Debug.Log("다리맞음");
-                //    collider.gameObject.GetComponent<Enemy>().hp--;
-                //}
-
-                //if(collider.GetType() == typeof(SphereCollider))
-
-
-                //Debug.Log(collider.name + collider.gameObject.GetComponent<Enemy>().hp);
-
             }
         }
         fireTimer = 0f;
