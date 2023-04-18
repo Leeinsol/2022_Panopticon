@@ -115,7 +115,7 @@ public class player_Controller : MonoBehaviour
     public Text crossHairText;
     public CrossHairType crosshairtype;
     public GameObject BulletNumUI;
-    public GameObject ReladTimerUI;
+    public GameObject ReloadTimerUI;
 
     //Reload
     public bool useReload = true;
@@ -140,6 +140,8 @@ public class player_Controller : MonoBehaviour
     private float zoomTimer;
     float energyTimer;
     float ultimateTimer;
+    public float ultimateTime = 30f;
+
     // current variable
     float currentSpeed;
 
@@ -173,6 +175,9 @@ public class player_Controller : MonoBehaviour
     public GameObject ultimateCrossHair;
     public Canvas playerCanvas;
     Collider closestCollider = null;
+
+    float RayCastDis = 10f;
+    int ultimateNum = 5;
 
     // Start is called before the first frame update
     void Start()
@@ -230,9 +235,9 @@ public class player_Controller : MonoBehaviour
 
         // reload instantiate
         SetReloadTimer();
-        ReladTimerUI.SetActive(false);
+        ReloadTimerUI.SetActive(false);
         currentReloadTime = ReloadTimer;
-        ReladTimerUI.GetComponent<Slider>().maxValue = ReloadTimer;
+        ReloadTimerUI.GetComponent<Slider>().maxValue = ReloadTimer;
 
         if (!useReload || !useGun) BulletNumUI.SetActive(false);
 
@@ -263,7 +268,7 @@ public class player_Controller : MonoBehaviour
         Weapon[currentIndex].SetActive(true);
 
         setRemainEnergyDrinkUI(false);
-        ultimateTimer = 20f;
+        ultimateTimer = ultimateTime;
     }
     
    
@@ -398,7 +403,7 @@ public class player_Controller : MonoBehaviour
 
     void checkFireState()
     {
-        if (ultimateGauge < 3)
+        if (ultimateGauge < ultimateNum)
             Fire();
         
         else
@@ -432,7 +437,7 @@ public class player_Controller : MonoBehaviour
 
         if (ultimateTimer < 0)
         {
-            ultimateTimer = 20f;
+            ultimateTimer = ultimateTime;
             currentBulletPower = bulletPower;
             ultimateGauge = 0;
             ultimateCrossHair.SetActive(false);
@@ -445,11 +450,12 @@ public class player_Controller : MonoBehaviour
     void showClosestCEnemy()
     {
         ultimateCrossHair.SetActive(true);
-        crossHairText.enabled = false;
+        //crossHairText.enabled = false;
+        setUltimateCrossHair(0.2f);
 
         Ray ray = new Ray(theCamera.transform.position, theCamera.transform.forward);
         RaycastHit hitInfo = new RaycastHit();
-        if (Physics.Raycast(ray, out hitInfo))
+        if (Physics.Raycast(ray, out hitInfo,RayCastDis))
         {
             Collider[] collidersInRange = Physics.OverlapSphere(hitInfo.point, radius);
 
@@ -473,11 +479,14 @@ public class player_Controller : MonoBehaviour
 
             if (closestCollider != null)
             {
-                Color color = ultimateCrossHair.transform.GetChild(0).GetComponent<Image>().color;
-                color.a = 1f;
-                ultimateCrossHair.transform.GetChild(0).GetComponent<Image>().color = color;
+                Debug.Log("! null");
+
+                setUltimateCrossHair(1f);
+
+                // 에너미의 중앙으로 에임 옮기기
 
                 Vector3 colliderCenter = closestCollider.bounds.center;
+
                 Vector3 screenPosition = Camera.main.WorldToScreenPoint(colliderCenter);
 
                 Vector2 localPosition;
@@ -488,16 +497,25 @@ public class player_Controller : MonoBehaviour
 
             else
             {
-                ultimateCrossHair.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+                Debug.Log("null");
 
                 //Material material = ultimateCrossHair.transform.GetChild(0).GetComponent<Renderer>().material;
-                Color color = ultimateCrossHair.transform.GetChild(0).GetComponent<Image>().color;
-                color.a = 0.2f;
-                ultimateCrossHair.transform.GetChild(0).GetComponent<Image>().color = color;
             }
         }
     }
 
+
+    void setUltimateCrossHair(float alpha)
+    {
+        Color color = ultimateCrossHair.transform.GetChild(0).GetComponent<Image>().color;
+        color.a = alpha;
+
+        if(alpha < 0.8f)
+        {
+            ultimateCrossHair.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+        }
+        ultimateCrossHair.transform.GetChild(0).GetComponent<Image>().color = color;
+    }
     void shootUltimateBullet()
     {
         if (fireTimer < fireRate)
@@ -505,7 +523,7 @@ public class player_Controller : MonoBehaviour
             return;
         }
 
-        Debug.Log("shootUltimateBullet");
+        //Debug.Log("shootUltimateBullet");
 
         Ray ray = new Ray(theCamera.transform.position, theCamera.transform.forward);
         RaycastHit hitInfo = new RaycastHit();
@@ -514,8 +532,9 @@ public class player_Controller : MonoBehaviour
 
         StopAllCoroutines();
         StartCoroutine(reloadActionCoroutine());
-        if (Physics.Raycast(ray, out hitInfo))
+        if (Physics.Raycast(ray, out hitInfo, RayCastDis))
         {
+            //Debug.Log("RayCast");
             bulletEffect.transform.position = hitInfo.point;
             bulletEffect.transform.forward = hitInfo.normal;
 
@@ -526,7 +545,8 @@ public class player_Controller : MonoBehaviour
             {
                 //Debug.Log("closestCollider: " + closestCollider);
                 //closestCollider.GetComponent<Enemy>().hp--;
-                closestCollider.GetComponent<Enemy>().decreaseHP();
+                //closestCollider.GetComponent<Enemy>().decreaseHP();
+                closestCollider.GetComponent<Enemy>().hp -= currentBulletPower;
                 closestCollider.gameObject.GetComponent<Enemy>().playHurtAnim();
             }
         }
@@ -636,22 +656,26 @@ public class player_Controller : MonoBehaviour
         if (Input.GetKeyDown(FireKey))
         {
             //Debug.Log("에너지 드링크 사용");
-            currentBulletPower= Weapon[2].GetComponent<Item_energyDrink>().energyDrink.getPower();
+            currentBulletPower = Weapon[2].GetComponent<Item_energyDrink>().energyDrink.getPower();
 
             //Debug.Log("Time: " + Weapon[2].GetComponent<Item_energyDrink>().energyDrink.getTime());
             isPowerUp = true;
-            energyTimer = Weapon[2].GetComponent<Item_energyDrink>().energyDrink.getTime();
+            energyTimer += Weapon[2].GetComponent<Item_energyDrink>().energyDrink.getTime();
             
             //powerUp();
 
             WeaponNum[2]--;
+            //ReloadTimerUI.GetComponent<Slider>().maxValue = energyTimer;
+            PowerTimeUI.GetComponent<Slider>().maxValue = energyTimer;
+
 
             if (WeaponNum[2] <= 0)
             {
                 //Debug.Log("다 사용했어요" + currentIndex );
                 currentIndex++;
                 changeWeaponNext(currentIndex);
-                setRemainEnergyDrinkUI(false);
+                //setRemainEnergyDrinkUI(false);
+                //energyTimer = 0;
 
                 //changeWeaponNext(currentIndex, Input.mouseScrollDelta);
                 //offWeapon();
@@ -665,7 +689,12 @@ public class player_Controller : MonoBehaviour
         if (!isPowerUp) return;
         //Debug.Log("powerUP");
 
-        PowerTimeUI.transform.GetChild(0).GetComponent<Text>().text = energyTimer.ToString();
+        //PowerTimeUI.transform.GetChild(0).GetComponent<Text>().text = energyTimer.ToString();
+        //ReloadTimerUI.SetActive(true);
+        //ReloadTimerUI.GetComponent<Slider>().value = energyTimer;
+
+        PowerTimeUI.SetActive(true);
+        PowerTimeUI.GetComponent<Slider>().value = energyTimer;
         energyTimer -= Time.deltaTime;
         //Debug.Log(energyTimer);
         //Debug.Log(currentBulletPower);
@@ -676,9 +705,14 @@ public class player_Controller : MonoBehaviour
             //Debug.Log("끝");
 
             energyTimer = Weapon[2].GetComponent<Item_energyDrink>().energyDrink.getTime();
+            //setReloadBulletUI(false);
+            PowerTimeUI.SetActive(false);
+            energyTimer = 0;
+            PowerTimeUI.GetComponent<Slider>().value = energyTimer;
+
             currentBulletPower = bulletPower;
             Debug.Log(currentBulletPower);
-
+            setRemainEnergyDrinkUI(false);
             isPowerUp = false;
         }
     }
@@ -686,6 +720,7 @@ public class player_Controller : MonoBehaviour
 
     void BombUI()
     {
+        Debug.Log("set UI");
         BombGauge.transform.parent.gameObject.SetActive(true);
 
         BombGauge.fillAmount = flightLengthFactor;
@@ -696,8 +731,10 @@ public class player_Controller : MonoBehaviour
         //Debug.Log(ReloadTimer);
 
         //bomb
-        if (Input.GetKey(FireKey) && !ReladTimerUI.activeSelf)
+        if (Input.GetKey(FireKey) && !ReloadTimerUI.activeSelf)
         {
+            Debug.Log("bomb Fire");
+
             BombUI();
             flightLengthFactor += IncreaseAmount * Time.deltaTime;
             if (flightLengthFactor >= 1f)
@@ -719,13 +756,13 @@ public class player_Controller : MonoBehaviour
         }
 
 
-        if (Input.GetKeyUp(FireKey) && !ReladTimerUI.activeSelf)
+        if (Input.GetKeyUp(FireKey) && !ReloadTimerUI.activeSelf)
         {
             Ray ray = new Ray(theCamera.transform.position, theCamera.transform.forward);
             RaycastHit hitInfo = new RaycastHit();
 
             
-            if (Physics.Raycast(ray, out hitInfo))
+            if (Physics.Raycast(ray, out hitInfo, RayCastDis))
             {
                 Vector3 forwardPosition = theCamera.transform.position + theCamera.transform.forward * 2f;
                 Vector3 nextVector = hitInfo.point - transform.position;
@@ -793,6 +830,11 @@ public class player_Controller : MonoBehaviour
             {
                 //isReload = false;
                 setReloadBulletUI(false);
+            }
+
+            if (ultimateGauge < ultimateNum)
+            {
+                setUltimateCrossHair(0.2f);
             }
         }
 
@@ -996,7 +1038,7 @@ public class player_Controller : MonoBehaviour
     {
         if (Input.GetKey(FireKey))
         {
-            if (!useReload && ultimateGauge<3) ShootBullet();
+            if (!useReload && ultimateGauge < ultimateNum) ShootBullet();
 
             if (bulletNum > 0 && useReload)
             {
@@ -1029,7 +1071,7 @@ public class player_Controller : MonoBehaviour
         {
             return;
         }
-        Debug.Log("shootBullet");
+        //Debug.Log("shootBullet");
 
         Ray ray = new Ray(theCamera.transform.position, theCamera.transform.forward);
         RaycastHit hitInfo = new RaycastHit();
@@ -1042,7 +1084,7 @@ public class player_Controller : MonoBehaviour
         StartCoroutine(reloadActionCoroutine());
 
 
-        if (Physics.Raycast(ray, out hitInfo))
+        if (Physics.Raycast(ray, out hitInfo,RayCastDis))
         {
             bulletEffect.transform.position = hitInfo.point;
             bulletEffect.transform.forward = hitInfo.normal;
@@ -1058,13 +1100,13 @@ public class player_Controller : MonoBehaviour
 
                 if (collider is CapsuleCollider)
                 {
-                    Debug.Log("캡슐");
+                    //Debug.Log("캡슐");
                     collider.gameObject.GetComponent<Enemy>().hp -= currentBulletPower;
 
                     //Debug.Log(collider.gameObject.GetComponent<Enemy>().hp);
                     collider.gameObject.GetComponent<Enemy>().playHurtAnim();
                     ultimateGauge++;
-                    Debug.Log(ultimateGauge);
+                    //Debug.Log(ultimateGauge);
                 }
                 if (collider is SphereCollider)
                 {
@@ -1095,12 +1137,12 @@ public class player_Controller : MonoBehaviour
     void SetReload()
     {
         isReload = true;
-        if (useReload) ReladTimerUI.SetActive(true);
+        if (useReload) ReloadTimerUI.SetActive(true);
 
         SetReloadTimer();
         currentReloadTime = ReloadTimer;
         //Debug.Log(ReloadTimer);
-        ReladTimerUI.GetComponent<Slider>().maxValue = ReloadTimer;
+        ReloadTimerUI.GetComponent<Slider>().maxValue = ReloadTimer;
     }
 
     void reloadBullet()
@@ -1108,7 +1150,7 @@ public class player_Controller : MonoBehaviour
         if (!isReload) return;
 
         ReloadTimer -= Time.deltaTime;
-        ReladTimerUI.GetComponent<Slider>().value = ReloadTimer;
+        ReloadTimerUI.GetComponent<Slider>().value = ReloadTimer;
 
         if (reloadType == reloadBulletType.oneByOneReload) increaseBullet();
   
@@ -1128,7 +1170,7 @@ public class player_Controller : MonoBehaviour
         if (WeaponNum[1] <= 0) return;
        
         ReloadTimer -= Time.deltaTime;
-        ReladTimerUI.GetComponent<Slider>().value = ReloadTimer;
+        ReloadTimerUI.GetComponent<Slider>().value = ReloadTimer;
 
         //Debug.Log("reload Time: " + ReloadTimer);
 
@@ -1143,10 +1185,10 @@ public class player_Controller : MonoBehaviour
 
     void setReloadBulletUI(bool state)
     {
-        ReladTimerUI.SetActive(state);
+        ReloadTimerUI.SetActive(state);
         ReloadTimer = maxReloadTime;
         isReload = state;
-        ReladTimerUI.GetComponent<Slider>().maxValue = ReloadTimer;
+        ReloadTimerUI.GetComponent<Slider>().maxValue = ReloadTimer;
     }
 
     void increaseBullet()

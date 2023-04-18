@@ -176,8 +176,15 @@ public class Enemy : MonoBehaviour
             //Debug.Log("hp 0");
             agent.isStopped = true;
             //enemyModel.GetComponent<CapsuleCollider>().isTrigger = true;
-            transform.GetComponent<CapsuleCollider>().enabled = false;
-            transform.GetComponent<SphereCollider>().enabled = false;
+            //transform.GetComponent<CapsuleCollider>().enabled = false;
+            //transform.GetComponent<SphereCollider>().enabled = false;
+            Collider[] colliders = gameObject.GetComponents<Collider>();
+
+            foreach(Collider collider in colliders)
+            {
+                collider.enabled = false;
+            }
+
             enemyModel.layer = 2;
             //Debug.Log(agent.isStopped);
             //animator.SetBool("isDie1", true);
@@ -233,7 +240,8 @@ public class Enemy : MonoBehaviour
         Debug.Log(transform.parent.gameObject.name + "HitByBomb");
         Debug.Log(GameObject.FindWithTag("Player").GetComponent<player_Controller>().ultimateGauge);
 
-        hp--;
+        hp -= GameObject.FindWithTag("Player").GetComponent<player_Controller>().currentBulletPower;
+        //hp--;
         Vector3 reactVector = transform.position - BombPos;
         StartCoroutine(Damage(reactVector));
     }
