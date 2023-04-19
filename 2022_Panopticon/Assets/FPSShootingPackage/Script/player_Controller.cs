@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.AI;
 using UnityEditor;
 
 public enum CrossHairType
@@ -177,7 +178,7 @@ public class player_Controller : MonoBehaviour
     Collider closestCollider = null;
 
     float RayCastDis = 10f;
-    int ultimateNum = 5;
+    int ultimateNum = 15;
 
     // Start is called before the first frame update
     void Start()
@@ -208,7 +209,7 @@ public class player_Controller : MonoBehaviour
             // bomb instantiate
             Weapon[1] = Instantiate(BombModel, GunHandle.transform) as GameObject;
             Weapon[1].transform.parent = GunHandle.transform;
-            WeaponNum[1] = 0;
+            WeaponNum[1] = 10;
 
             Destroy(Weapon[1].GetComponent<Bomb>());
             Destroy(Weapon[1].GetComponent<Rigidbody>());
@@ -484,8 +485,8 @@ public class player_Controller : MonoBehaviour
                 setUltimateCrossHair(1f);
 
                 // 에너미의 중앙으로 에임 옮기기
-
-                Vector3 colliderCenter = closestCollider.bounds.center;
+                Vector3 colliderCenter = new Vector3(closestCollider.gameObject.transform.position.x, 1.7f, closestCollider.gameObject.transform.position.z);
+                //Vector3 colliderCenter = closestCollider.bounds.center;
 
                 Vector3 screenPosition = Camera.main.WorldToScreenPoint(colliderCenter);
 
@@ -544,9 +545,10 @@ public class player_Controller : MonoBehaviour
             if (closestCollider != null)
             {
                 //Debug.Log("closestCollider: " + closestCollider);
-                //closestCollider.GetComponent<Enemy>().hp--;
-                //closestCollider.GetComponent<Enemy>().decreaseHP();
                 closestCollider.GetComponent<Enemy>().hp -= currentBulletPower;
+                //closestCollider.GetComponent<Enemy>().decreaseHP();
+                //closestCollider.GetComponent<Enemy>().decreaseHP(currentBulletPower);
+
                 closestCollider.gameObject.GetComponent<Enemy>().playHurtAnim();
             }
         }
@@ -720,7 +722,7 @@ public class player_Controller : MonoBehaviour
 
     void BombUI()
     {
-        Debug.Log("set UI");
+        //Debug.Log("set UI");
         BombGauge.transform.parent.gameObject.SetActive(true);
 
         BombGauge.fillAmount = flightLengthFactor;
@@ -733,7 +735,6 @@ public class player_Controller : MonoBehaviour
         //bomb
         if (Input.GetKey(FireKey) && !ReloadTimerUI.activeSelf)
         {
-            Debug.Log("bomb Fire");
 
             BombUI();
             flightLengthFactor += IncreaseAmount * Time.deltaTime;
@@ -758,11 +759,13 @@ public class player_Controller : MonoBehaviour
 
         if (Input.GetKeyUp(FireKey) && !ReloadTimerUI.activeSelf)
         {
+            //Debug.Log("bomb Fire" + currentBulletPower);
+
             Ray ray = new Ray(theCamera.transform.position, theCamera.transform.forward);
             RaycastHit hitInfo = new RaycastHit();
 
             
-            if (Physics.Raycast(ray, out hitInfo, RayCastDis))
+            if (Physics.Raycast(ray, out hitInfo))
             {
                 Vector3 forwardPosition = theCamera.transform.position + theCamera.transform.forward * 2f;
                 Vector3 nextVector = hitInfo.point - transform.position;
@@ -889,6 +892,7 @@ public class player_Controller : MonoBehaviour
 
         else if (reloadType == reloadBulletType.allReload) ReloadTimer = allReloadTime;
 
+        //Bomb
         if (Weapon[1].activeSelf) ReloadTimer = 2f;
         //else ReloadTimer = 2f;
     }
@@ -1101,6 +1105,7 @@ public class player_Controller : MonoBehaviour
                 if (collider is CapsuleCollider)
                 {
                     //Debug.Log("캡슐");
+                    Debug.Log(currentBulletPower);
                     collider.gameObject.GetComponent<Enemy>().hp -= currentBulletPower;
 
                     //Debug.Log(collider.gameObject.GetComponent<Enemy>().hp);

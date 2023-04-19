@@ -70,6 +70,7 @@ public class Bomb : MonoBehaviour
             {
                 enemy.HitByBomb(transform.position);
             }
+            //enemy.GetComponent<Enemy>().isDamaged = false;
 
             //hitObj.transform.GetComponent<Enemy>().HitByBomb(transform.position);
 

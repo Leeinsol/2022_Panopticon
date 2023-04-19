@@ -142,7 +142,7 @@ public class player_shooting : MonoBehaviour
 
             if (hitInfo.collider.gameObject.GetComponent<Enemy>())
             {
-                ob.GetComponent<Enemy>().hp--;
+                //ob.GetComponent<Enemy>().decreaseHP(currentBulletPower);
                 ob.GetComponent<Enemy>().playHurtAnim();
             }
         }

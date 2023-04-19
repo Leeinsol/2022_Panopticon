@@ -185,7 +185,8 @@ public class Enemy : MonoBehaviour
                 collider.enabled = false;
             }
 
-            enemyModel.layer = 2;
+            rb.constraints = RigidbodyConstraints.FreezeAll;
+            //enemyModel.layer = 2;
             //Debug.Log(agent.isStopped);
             //animator.SetBool("isDie1", true);
             animator.SetTrigger("isDie");
@@ -233,17 +234,28 @@ public class Enemy : MonoBehaviour
         //}
 
         //hp -= 1;
+        Debug.Log("HitByBomb" + transform.parent.gameObject.name);
 
         if (isDamaged) return;
         isDamaged = true;
         GameObject.FindWithTag("Player").GetComponent<player_Controller>().ultimateGauge++;
         Debug.Log(transform.parent.gameObject.name + "HitByBomb");
-        Debug.Log(GameObject.FindWithTag("Player").GetComponent<player_Controller>().ultimateGauge);
+        //Debug.Log(GameObject.FindWithTag("Player").GetComponent<player_Controller>().ultimateGauge);
 
         hp -= GameObject.FindWithTag("Player").GetComponent<player_Controller>().currentBulletPower;
+        Debug.Log(GameObject.FindWithTag("Player").GetComponentInChildren<player_Controller>().currentBulletPower);
+
         //hp--;
         Vector3 reactVector = transform.position - BombPos;
         StartCoroutine(Damage(reactVector));
+        //rb.freezeRotation = true;
+        //isDamaged = false;
+        Invoke("setIsDamaged", 0.3f);
+    }
+
+    void setIsDamaged()
+    {
+        isDamaged = false;
     }
 
     IEnumerator Damage(Vector3 reactVec)
@@ -253,14 +265,15 @@ public class Enemy : MonoBehaviour
         reactVec = reactVec.normalized;
         reactVec += Vector3.up * 3;
 
-        rb.freezeRotation = false;
+        //rb.freezeRotation = false;
         rb.AddForce(reactVec * 2, ForceMode.Impulse);
         rb.AddTorque(reactVec * 2, ForceMode.Impulse);
+        playHurtAnim();
     }
 
-    public void decreaseHP()
+    public void decreaseHP(int demage)
     {
-        hp--;
-        Debug.Log("decreaseHP");
+        hp -= demage;
+        Debug.Log("decreaseHP: " + hp);
     }
 }
