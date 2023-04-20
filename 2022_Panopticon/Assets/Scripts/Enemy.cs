@@ -33,6 +33,8 @@ public class Enemy : MonoBehaviour
     GameObject enemyModel;
 
     bool isInstantiate = false;
+    int RandomNum = 0;
+    float Timer;
 
 
     // Start is called before the first frame update
@@ -52,6 +54,8 @@ public class Enemy : MonoBehaviour
 
         agent.enabled = true;
         agent.isStopped = true;
+
+        setRandomState();
     }
     // Update is called once per frame
     void Update()
@@ -92,8 +96,34 @@ public class Enemy : MonoBehaviour
         checkAngryState();
         //Debug.Log(agent.speed);
         //Debug.Log(hp);
-
+        speedTimer();
     }
+
+    void speedTimer()
+    {
+        //Debug.Log("speedTiemr" + Timer);
+        Timer += Time.deltaTime;
+        if (Timer > 10)
+        {
+            setRandomState();
+            Timer = 0;
+        }
+    }
+
+    void setRandomState()
+    {
+        RandomNum = Random.Range(0, 2);
+        animator.SetInteger("randomNum", RandomNum);
+        //Debug.Log(animator.GetInteger("randomNum"));
+        if (RandomNum == 0)
+        {
+            agent.speed = 0.5f;
+        }
+        else
+        {
+            agent.speed = 1f;
+        }
+    } 
 
     void SetDestination()
     {
@@ -219,7 +249,7 @@ public class Enemy : MonoBehaviour
     void SetAngry()
     {
         //isCheck = true;
-        agent.speed *= 2;
+        agent.speed *= 1.5f;
         hp *= 2;
         power *= 2;
     }

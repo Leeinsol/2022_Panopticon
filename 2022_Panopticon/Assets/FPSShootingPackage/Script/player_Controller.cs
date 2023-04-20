@@ -46,7 +46,8 @@ public class player_Controller : MonoBehaviour
 
     // Head Bob
     public bool useHeadBob = true;
-    public float headBobSpeed = 10f;
+    public float walkHeadBobSpeed = 5f;
+    public float sprintHeadBobSpeed = 10f;
 
     // Jump
     public bool useJump = true;
@@ -141,7 +142,7 @@ public class player_Controller : MonoBehaviour
     private float zoomTimer;
     float energyTimer;
     float ultimateTimer;
-    public float ultimateTime = 30f;
+    public float ultimateTime = 7f;
 
     // current variable
     float currentSpeed;
@@ -177,8 +178,8 @@ public class player_Controller : MonoBehaviour
     public Canvas playerCanvas;
     Collider closestCollider = null;
 
-    float RayCastDis = 10f;
-    int ultimateNum = 15;
+    float RayCastDis = 20.5f;
+    int ultimateNum = 50;
 
     // Start is called before the first frame update
     void Start()
@@ -209,7 +210,7 @@ public class player_Controller : MonoBehaviour
             // bomb instantiate
             Weapon[1] = Instantiate(BombModel, GunHandle.transform) as GameObject;
             Weapon[1].transform.parent = GunHandle.transform;
-            WeaponNum[1] = 10;
+            WeaponNum[1] = 0;
 
             Destroy(Weapon[1].GetComponent<Bomb>());
             Destroy(Weapon[1].GetComponent<Rigidbody>());
@@ -480,7 +481,7 @@ public class player_Controller : MonoBehaviour
 
             if (closestCollider != null)
             {
-                Debug.Log("! null");
+                //Debug.Log("! null");
 
                 setUltimateCrossHair(1f);
 
@@ -498,7 +499,7 @@ public class player_Controller : MonoBehaviour
 
             else
             {
-                Debug.Log("null");
+                //Debug.Log("null");
 
                 //Material material = ultimateCrossHair.transform.GetChild(0).GetComponent<Renderer>().material;
             }
@@ -596,7 +597,7 @@ public class player_Controller : MonoBehaviour
 
         while (isPulling)
         {
-            t += Time.deltaTime * 1f;
+            t += Time.deltaTime * 1.5f;
             Object.transform.position = Vector3.Lerp(originalPosition, transform.position, t);
 
             float distance = Vector3.Distance(Object.transform.position, transform.position);
@@ -985,13 +986,31 @@ public class player_Controller : MonoBehaviour
 
     void HeadBob()
     {
-        if (iswalking)
+        if (iswalking && isSprinting)
         {
-            shakeTimer += Time.deltaTime * headBobSpeed;
+            shakeTimer += Time.deltaTime * sprintHeadBobSpeed;
+
             camHandle.localPosition = new Vector3(camHandlePos.x + Mathf.Sin(shakeTimer) * HeadBobAmount.x,
                 camHandlePos.y + Mathf.Sin(shakeTimer) * HeadBobAmount.y,
                 camHandlePos.z + Mathf.Sin(shakeTimer) * HeadBobAmount.z);
+
         }
+        else if (iswalking && !isSprinting)
+        {
+            shakeTimer += Time.deltaTime * walkHeadBobSpeed;
+
+            camHandle.localPosition = new Vector3(camHandlePos.x + Mathf.Sin(shakeTimer) * HeadBobAmount.x,
+                    camHandlePos.y + Mathf.Sin(shakeTimer) * HeadBobAmount.y,
+                    camHandlePos.z + Mathf.Sin(shakeTimer) * HeadBobAmount.z);
+        }
+        //if (iswalking)
+        //{
+        //    shakeTimer += Time.deltaTime * walkHeadBobSpeed;
+
+        //    camHandle.localPosition = new Vector3(camHandlePos.x + Mathf.Sin(shakeTimer) * HeadBobAmount.x,
+        //            camHandlePos.y + Mathf.Sin(shakeTimer) * HeadBobAmount.y,
+        //            camHandlePos.z + Mathf.Sin(shakeTimer) * HeadBobAmount.z);
+        //}
         else
         {
             shakeTimer = 0;

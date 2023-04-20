@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1925817343914810180}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: particle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,7 +46,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1383578201729439075}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,7 +79,7 @@ GameObject:
   - component: {fileID: 8427483238082181658}
   - component: {fileID: 7489063145950780535}
   - component: {fileID: 8432068678815690713}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: spark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4900,7 +4900,7 @@ GameObject:
   - component: {fileID: 8532233763281190612}
   - component: {fileID: 4963583937170652542}
   - component: {fileID: 6455143437538876857}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: spark3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10011,7 +10011,7 @@ GameObject:
   - component: {fileID: 4666555345638723942}
   - component: {fileID: 5102442173511023595}
   - component: {fileID: 2339341123954066194}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: sparkle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14833,9 +14833,9 @@ GameObject:
   - component: {fileID: 7334897590129256857}
   - component: {fileID: 2463110720667512017}
   - component: {fileID: 8948712711539776720}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BombInstantiate
-  m_TagString: Untagged
+  m_TagString: Bomb
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14912,7 +14912,7 @@ GameObject:
   - component: {fileID: 2025191433478317519}
   - component: {fileID: 2423811695331937659}
   - component: {fileID: 6126056170327004435}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: spark2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20019,9 +20019,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1925817343914810180}
     m_Modifications:
+    - target: {fileID: 1000010972190198, guid: ecdd96beb7f93494880c052dfccf9dc1, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011277865272, guid: ecdd96beb7f93494880c052dfccf9dc1, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011445404004, guid: ecdd96beb7f93494880c052dfccf9dc1, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 1000013462590818, guid: ecdd96beb7f93494880c052dfccf9dc1, type: 3}
       propertyPath: m_Name
       value: ExplosionEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013462590818, guid: ecdd96beb7f93494880c052dfccf9dc1, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1000013462590818, guid: ecdd96beb7f93494880c052dfccf9dc1, type: 3}
       propertyPath: m_IsActive
@@ -20168,6 +20184,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: ffdfad76d2f7648d19c79be026141ab7, type: 3}
       propertyPath: m_Name
       value: bomb
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ffdfad76d2f7648d19c79be026141ab7, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ffdfad76d2f7648d19c79be026141ab7, type: 3}

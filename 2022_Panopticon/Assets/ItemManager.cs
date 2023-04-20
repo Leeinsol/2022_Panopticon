@@ -14,7 +14,7 @@ public class ItemManager : MonoBehaviour
     //float launchSpeed = 10f;
 
     float maxRadius = 23f;
-    float minRadius = 7.5f;
+    float minRadius = 9f;
 
     // Start is called before the first frame update
     void Start()
