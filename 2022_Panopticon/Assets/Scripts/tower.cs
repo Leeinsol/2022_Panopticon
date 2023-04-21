@@ -47,7 +47,7 @@ public class tower : MonoBehaviour
                 navMeshAgents.RemoveAt(i);
             }
         }
-        Debug.Log(navMeshAgents.Count);
+        //Debug.Log(navMeshAgents.Count);
         if (hp <= 0 || navMeshAgents.Count==0)
         {
             //PlayerPrefs.GetInt("remainEnemy");

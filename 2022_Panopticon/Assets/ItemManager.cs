@@ -14,7 +14,7 @@ public class ItemManager : MonoBehaviour
     //float launchSpeed = 10f;
 
     float maxRadius = 23f;
-    float minRadius = 9f;
+    float minRadius = 10f;
 
     // Start is called before the first frame update
     void Start()
@@ -43,54 +43,27 @@ public class ItemManager : MonoBehaviour
 
     public void instantiateItem(Vector3 position)
     {
-        
-            //Debug.Log("instantiateItem");
 
-            //Gizmos.color = Color.white;
-            //Gizmos.DrawWireSphere(position, 2f);
+        //Debug.Log("instantiateItem");
 
-            //float randomAngle = Random.Range(0f, 1f * Mathf.PI);
-            //float randomDistance = Random.Range(0f, circleRadius/2f);
+        //Vector2 randomPoint = Random.insideUnitCircle * circleRadius;
+        //Debug.Log(randomPoint.magnitude);
 
-            ////Vector2 randomPoint = Random.insideUnitCircle * circleRadius;
-            //Vector3 randomPosition = position + new Vector3(randomDistance * Mathf.Cos(randomAngle), Random.Range(1f, 2f), randomDistance * Mathf.Sin(randomAngle));
+        ////while(randomPoint.magnitude <= 10f)
+        ////{
+        ////    randomPoint = Random.insideUnitCircle * circleRadius;
+        ////}
 
-            //GameObject Item =Instantiate(Bomb, randomPosition, Quaternion.identity);
+        //Instantiate(Bomb, position + new Vector3(randomPoint.x, 0f, randomPoint.y), Quaternion.identity);
 
-            //Rigidbody rb = Item.AddComponent<Rigidbody>();
+        Vector2 randomPoint;
+        Vector3 vector3;
 
-            //float launchAngle = Random.Range(minLaunchAngle, maxLaunchAngle);
-            //float launchVelocity = launchSpeed / Mathf.Cos(launchAngle * Mathf.Deg2Rad);
-            //Vector3 launchDirection = new Vector3(Mathf.Sin(launchAngle * Mathf.Deg2Rad), Mathf.Cos(launchAngle * Mathf.Deg2Rad), 0f);
-            //Vector3 launchVelocityVector = launchDirection * launchVelocity;
-
-            //rb.velocity = launchVelocityVector;
-
-            //rb.AddForce(Vector3.down * gravity, ForceMode.Acceleration);
-
-            //isInstantiate = true;
-            //Vector3 randomPoint = Random.insideUnitCircle * circleRadius;
-            //Vector3 launchDirection = (randomPoint - position).normalized;
-            //float launchAngle = Random.Range(minLaunchAngle, maxLaunchAngle);
-            //float launchVelocity = launchSpeed / Mathf.Cos(launchAngle * Mathf.Deg2Rad);
-            //Vector3 launchVelocityVector = launchDirection * launchVelocity;
-
-            //GameObject item = Instantiate(Bomb, position, Quaternion.identity);
-            //Rigidbody rb = item.AddComponent<Rigidbody>();
-
-            //Vector3 gravityVector = new Vector3(0f, -gravity, 0f);
-            //rb.velocity = launchVelocityVector + gravityVector * launchVelocity / gravity;
-            //rb.useGravity = false;
-            //rb.AddForce(gravityVector, ForceMode.Acceleration);
-
-            //isInstantiate = true;
-
-
-            //Debug.Log("instantiateItem");
-
-        Vector2 randomPoint = Random.insideUnitCircle * circleRadius;
-
-        Instantiate(Bomb, position + new Vector3(randomPoint.x, 0f, randomPoint.y), Quaternion.identity);
-
+        do
+        {
+            randomPoint = Random.insideUnitCircle * circleRadius;
+            vector3 = position + new Vector3(randomPoint.x, 0f, randomPoint.y);
+        } while (vector3.magnitude <= 10f);
+        Instantiate(Bomb, position + new Vector3(randomPoint.x, 0f, randomPoint.y),Quaternion.identity);
     }
 }
