@@ -118,6 +118,7 @@ public class player_Controller : MonoBehaviour
     public CrossHairType crosshairtype;
     public GameObject BulletNumUI;
     public GameObject ReloadTimerUI;
+    public GameObject ItemNumUI;
 
     //Reload
     public bool useReload = true;
@@ -179,7 +180,7 @@ public class player_Controller : MonoBehaviour
     Collider closestCollider = null;
 
     float RayCastDis = 20.5f;
-    int ultimateNum = 50;
+    int ultimateNum = 5;
 
     // Start is called before the first frame update
     void Start()
@@ -203,17 +204,18 @@ public class player_Controller : MonoBehaviour
         // gun instantiate
         if (useGun)
         {
+            // Gun instantiate
             Weapon[0] = Instantiate(GunModel, GunHandle.transform) as GameObject;
             Weapon[0].transform.parent = GunHandle.transform;
             WeaponNum[0] = 1;
 
             // bomb instantiate
-            Weapon[1] = Instantiate(BombModel, GunHandle.transform) as GameObject;
-            Weapon[1].transform.parent = GunHandle.transform;
-            WeaponNum[1] = 0;
+            Weapon[2] = Instantiate(BombModel, GunHandle.transform) as GameObject;
+            Weapon[2].transform.parent = GunHandle.transform;
+            WeaponNum[2] = 0;
 
-            Destroy(Weapon[1].GetComponent<Bomb>());
-            Destroy(Weapon[1].GetComponent<Rigidbody>());
+            Destroy(Weapon[2].GetComponent<Bomb>());
+            Destroy(Weapon[2].GetComponent<Rigidbody>());
 
             //Weapon[1].SetActive(false);
         }
@@ -224,10 +226,11 @@ public class player_Controller : MonoBehaviour
 
         if (useItem)
         {
-            Weapon[2] = Instantiate(EnergeDrinkModel, GunHandle.transform) as GameObject;
-            Weapon[2].transform.parent = GunHandle.transform;
+            // energydrink instantiate
+            Weapon[3] = Instantiate(EnergeDrinkModel, GunHandle.transform) as GameObject;
+            Weapon[3].transform.parent = GunHandle.transform;
             //Weapon[2].SetActive(false);
-            WeaponNum[2] = 0;
+            WeaponNum[3] = 0;
         }
 
         // bullet instantiate
@@ -259,17 +262,17 @@ public class player_Controller : MonoBehaviour
                 break;
             }
         }
-        //아이템 획득 도구
-        Weapon[3] = Instantiate(getItemModel, GunHandle.transform) as GameObject;
-        Weapon[3].transform.parent = GunHandle.transform;
+        // getItem instantiate
+        Weapon[1] = Instantiate(getItemModel, GunHandle.transform) as GameObject;
+        Weapon[1].transform.parent = GunHandle.transform;
 
-        WeaponNum[3] = 1;
+        WeaponNum[1] = 1;
         
         
         offWeapon();
         Weapon[currentIndex].SetActive(true);
 
-        setRemainEnergyDrinkUI(false);
+        setRemainItemUI(false);
         ultimateTimer = ultimateTime;
     }
     
@@ -352,15 +355,28 @@ public class player_Controller : MonoBehaviour
         // Fire
         if (useGun && Weapon[0].activeSelf)
         {
-            checkFireState();
+            //checkFireState();
             //Fire();
             //checkUltimate();
-            if (useReload)
+
+            if (ultimateGauge < ultimateNum)
             {
-                bulletUI();
-                PressReloadKey();
-                reloadBullet();
+                Fire();
+                if (useReload)
+                {
+                    bulletUI();
+                    PressReloadKey();
+                    reloadBullet();
+                }
+
             }
+
+            else
+            {
+                ultimateFire();
+                
+            }
+
             //if (ultimateGauge >= 3)
             //{
             //    //Debug.Log(fireTimer);
@@ -368,21 +384,30 @@ public class player_Controller : MonoBehaviour
             //}
         }
 
-        if (useGun && Weapon[1].activeSelf)
+        // getItem
+        if (Weapon[1].activeSelf)
+        {
+            getItem();
+            setRemainItemUI(false);
+        }
+
+        // Bomb
+        if (useGun && Weapon[2].activeSelf)
         {
             bombFire();
             if (useReload)
             {
                 reloadBomb();
                 //Debug.Log("실행");
-                setRemainEnergyDrinkUI(true);
+                setRemainItemUI(true);
                 RemainBombNum();
             }
         }
 
-        if (useGun && Weapon[2].activeSelf)
+        // Energydrink 
+        if (useGun && Weapon[3].activeSelf)
         {
-            setRemainEnergyDrinkUI(true);
+            setRemainItemUI(true);
             eatEnergyDrink();
             RemainEnergyDrinkNum();
         }
@@ -392,12 +417,7 @@ public class player_Controller : MonoBehaviour
         //Debug.Log(energyTimer);
         //Debug.Log(isPowerUp);
 
-        if (Weapon[3].activeSelf)
-        {
-            getItem();
-            setRemainEnergyDrinkUI(false);
-
-        }
+        
         
         //shootUltimateBullet();
         //Debug.Log("energy: " + WeaponNum[2]);
@@ -423,7 +443,9 @@ public class player_Controller : MonoBehaviour
     {
         //Debug.Log(fireTimer);
         ultimateTimer -= Time.deltaTime;
-        //crossHairText.enabled = false;
+
+        crossHairText.enabled = false;
+        BulletNumUI.SetActive(false);
         showClosestCEnemy();
 
 
@@ -444,9 +466,9 @@ public class player_Controller : MonoBehaviour
             ultimateGauge = 0;
             ultimateCrossHair.SetActive(false);
             crossHairText.enabled = true;
-
+            BulletNumUI.SetActive(true);
         }
-        
+
     }
 
     void showClosestCEnemy()
@@ -605,12 +627,12 @@ public class player_Controller : MonoBehaviour
             {
                 if (Object.gameObject.tag == "Bomb")
                 {
-                    WeaponNum[1]++;
+                    WeaponNum[2]++;
                 }
 
                 if (Object.gameObject.tag == "EnergyDrink")
                 {
-                    WeaponNum[2]++;
+                    WeaponNum[3]++;
                 }
                 Destroy(Object);
                 yield break;
@@ -620,21 +642,21 @@ public class player_Controller : MonoBehaviour
         }
     }
 
-    void setRemainEnergyDrinkUI(bool isShow)
+    void setRemainItemUI(bool isShow)
     {
-        RemainItemNumUI.SetActive(isShow);
+        ItemNumUI.SetActive(isShow);
         //Debug.Log("실행 " + RemainItemNumUI.activeSelf);
 
     } 
 
     void RemainEnergyDrinkNum()
     {
-        RemainItemNumUI.transform.GetChild(0).GetComponent<Text>().text = WeaponNum[2].ToString();
+        ItemNumUI.transform.GetChild(0).GetComponent<Text>().text = WeaponNum[3].ToString();
     }
 
     void RemainBombNum()
     {
-        RemainItemNumUI.transform.GetChild(0).GetComponent<Text>().text = WeaponNum[1].ToString();
+        ItemNumUI.transform.GetChild(0).GetComponent<Text>().text = WeaponNum[2].ToString();
     }
 
 
@@ -659,20 +681,20 @@ public class player_Controller : MonoBehaviour
         if (Input.GetKeyDown(FireKey))
         {
             //Debug.Log("에너지 드링크 사용");
-            currentBulletPower = Weapon[2].GetComponent<Item_energyDrink>().energyDrink.getPower();
+            currentBulletPower = Weapon[3].GetComponent<Item_energyDrink>().energyDrink.getPower();
 
             //Debug.Log("Time: " + Weapon[2].GetComponent<Item_energyDrink>().energyDrink.getTime());
             isPowerUp = true;
-            energyTimer += Weapon[2].GetComponent<Item_energyDrink>().energyDrink.getTime();
+            energyTimer += Weapon[3].GetComponent<Item_energyDrink>().energyDrink.getTime();
             
             //powerUp();
 
-            WeaponNum[2]--;
+            WeaponNum[3]--;
             //ReloadTimerUI.GetComponent<Slider>().maxValue = energyTimer;
             PowerTimeUI.GetComponent<Slider>().maxValue = energyTimer;
 
 
-            if (WeaponNum[2] <= 0)
+            if (WeaponNum[3] <= 0)
             {
                 //Debug.Log("다 사용했어요" + currentIndex );
                 currentIndex++;
@@ -707,7 +729,7 @@ public class player_Controller : MonoBehaviour
         {
             //Debug.Log("끝");
 
-            energyTimer = Weapon[2].GetComponent<Item_energyDrink>().energyDrink.getTime();
+            energyTimer = Weapon[3].GetComponent<Item_energyDrink>().energyDrink.getTime();
             //setReloadBulletUI(false);
             PowerTimeUI.SetActive(false);
             energyTimer = 0;
@@ -715,7 +737,7 @@ public class player_Controller : MonoBehaviour
 
             currentBulletPower = bulletPower;
             Debug.Log(currentBulletPower);
-            setRemainEnergyDrinkUI(false);
+            setRemainItemUI(false);
             isPowerUp = false;
         }
     }
@@ -795,7 +817,7 @@ public class player_Controller : MonoBehaviour
                     Debug.Log("다 사용했어요" + currentIndex );
                     currentIndex++;
                     changeWeaponNext(currentIndex);
-                    setRemainEnergyDrinkUI(false);
+                    setRemainItemUI(false);
                 }
                 else
                 {
@@ -826,7 +848,7 @@ public class player_Controller : MonoBehaviour
                 // Scroll down
                 changeWeaponNext(oldIndex);
             }
-            setRemainEnergyDrinkUI(false);
+            setRemainItemUI(false);
 
             //Debug.Log(currentIndex);
 
@@ -845,6 +867,8 @@ public class player_Controller : MonoBehaviour
 
         offWeapon();
         Weapon[currentIndex].SetActive(true);
+        if (currentIndex == 0 && ultimateGauge < ultimateNum) BulletNumUI.SetActive(true);
+        else if (currentIndex == 2 || currentIndex == 3) ItemNumUI.SetActive(true);
     }
 
     void changeWeaponPrevious(int oldIndex)
@@ -876,6 +900,8 @@ public class player_Controller : MonoBehaviour
         {
             Weapon[i].SetActive(false);
         }
+        BulletNumUI.SetActive(false);
+        ItemNumUI.SetActive(false);
     }
 
 
@@ -894,7 +920,7 @@ public class player_Controller : MonoBehaviour
         else if (reloadType == reloadBulletType.allReload) ReloadTimer = allReloadTime;
 
         //Bomb
-        if (Weapon[1].activeSelf) ReloadTimer = 2f;
+        if (Weapon[2].activeSelf) ReloadTimer = 2f;
         //else ReloadTimer = 2f;
     }
 
@@ -929,9 +955,11 @@ public class player_Controller : MonoBehaviour
 
             if (useGun)
             {
-                Weapon[0].transform.localPosition = Vector3.Slerp(Weapon[0].transform.localPosition, GunSprintPos, GunRotationSpeed * Time.deltaTime);
-                Weapon[0].transform.localRotation = Quaternion.Slerp(Weapon[0].transform.localRotation, GunSprintRot, GunRotationSpeed * Time.deltaTime);
-
+                if (currentIndex == 0 || currentIndex == 1)
+                {
+                    Weapon[currentIndex].transform.localPosition = Vector3.Slerp(Weapon[currentIndex].transform.localPosition, GunSprintPos, GunRotationSpeed * Time.deltaTime);
+                    Weapon[currentIndex].transform.localRotation = Quaternion.Slerp(Weapon[currentIndex].transform.localRotation, GunSprintRot, GunRotationSpeed * Time.deltaTime);
+                }
             }
 
             if (useStaminaLimit) stamina -= Time.deltaTime;
@@ -947,8 +975,8 @@ public class player_Controller : MonoBehaviour
 
     void setGunOrigin()
     {
-        Weapon[0].transform.localPosition = GunOriginPos;
-        Weapon[0].transform.localRotation = GunOriginRot;
+        Weapon[currentIndex].transform.localPosition = GunOriginPos;
+        Weapon[currentIndex].transform.localRotation = GunOriginRot;
     }
     void Crouch()
     {
@@ -1124,7 +1152,7 @@ public class player_Controller : MonoBehaviour
                 if (collider is CapsuleCollider)
                 {
                     //Debug.Log("캡슐");
-                    Debug.Log(currentBulletPower);
+                    //Debug.Log(currentBulletPower);
                     collider.gameObject.GetComponent<Enemy>().hp -= currentBulletPower;
 
                     //Debug.Log(collider.gameObject.GetComponent<Enemy>().hp);
@@ -1155,7 +1183,7 @@ public class player_Controller : MonoBehaviour
 
     void PressReloadKey()
     {
-        if (Input.GetKeyDown(ReloadKey) && !isReload && bulletNum != maxBulletNum)  SetReload();
+        if (Input.GetKeyDown(ReloadKey) && !isReload && bulletNum != maxBulletNum )  SetReload();
     }
 
     void SetReload()
