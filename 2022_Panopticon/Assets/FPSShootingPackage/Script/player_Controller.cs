@@ -374,7 +374,6 @@ public class player_Controller : MonoBehaviour
             else
             {
                 ultimateFire();
-                
             }
 
             //if (ultimateGauge >= 3)
@@ -382,6 +381,11 @@ public class player_Controller : MonoBehaviour
             //    //Debug.Log(fireTimer);
             //    ultimateFire();
             //}
+        }
+
+        if(ultimateGauge >= ultimateNum)
+        {
+            setUltimateTimer();
         }
 
         // getItem
@@ -438,11 +442,24 @@ public class player_Controller : MonoBehaviour
         //    checkUltimate();
         //}
     }
+    void setUltimateTimer()
+    {
+        Debug.Log(ultimateTimer);
+
+        ultimateTimer -= Time.deltaTime;
+        if (ultimateTimer < 0)
+        {
+            ultimateTimer = ultimateTime;
+            currentBulletPower = bulletPower;
+            ultimateGauge = 0;
+            ultimateCrossHair.SetActive(false);
+            crossHairText.enabled = true;
+            BulletNumUI.SetActive(true);
+        }
+    }
 
     void ultimateFire()
     {
-        //Debug.Log(fireTimer);
-        ultimateTimer -= Time.deltaTime;
 
         crossHairText.enabled = false;
         BulletNumUI.SetActive(false);
@@ -459,15 +476,7 @@ public class player_Controller : MonoBehaviour
 
         if (Input.GetKeyDown(FireKey)) fireTimer = fireRate;
 
-        if (ultimateTimer < 0)
-        {
-            ultimateTimer = ultimateTime;
-            currentBulletPower = bulletPower;
-            ultimateGauge = 0;
-            ultimateCrossHair.SetActive(false);
-            crossHairText.enabled = true;
-            BulletNumUI.SetActive(true);
-        }
+       
 
     }
 
@@ -619,7 +628,7 @@ public class player_Controller : MonoBehaviour
 
         while (isPulling)
         {
-            t += Time.deltaTime * 1.5f;
+            t += Time.deltaTime * 1.2f;
             Object.transform.position = Vector3.Lerp(originalPosition, transform.position, t);
 
             float distance = Vector3.Distance(Object.transform.position, transform.position);
