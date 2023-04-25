@@ -179,7 +179,7 @@ public class player_Controller : MonoBehaviour
     public Canvas playerCanvas;
     Collider closestCollider = null;
 
-    float RayCastDis = 20.5f;
+    float RayCastDis = 21f;
     int ultimateNum = 5;
 
     // Start is called before the first frame update
@@ -444,7 +444,7 @@ public class player_Controller : MonoBehaviour
     }
     void setUltimateTimer()
     {
-        Debug.Log(ultimateTimer);
+        //Debug.Log(ultimateTimer);
 
         ultimateTimer -= Time.deltaTime;
         if (ultimateTimer < 0)

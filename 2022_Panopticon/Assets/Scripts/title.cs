@@ -5,10 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class title : MonoBehaviour
 {
+
+    public GameObject StagePanel;
     // Start is called before the first frame update
     void Start()
     {
         Cursor.lockState = CursorLockMode.None;
+        StagePanel.SetActive(false);
 
     }
 
@@ -22,4 +25,9 @@ public class title : MonoBehaviour
     {
         SceneManager.LoadScene("Main");
     }
+
+    public void setStage()
+    {
+        StagePanel.SetActive(true);
+    } 
 }

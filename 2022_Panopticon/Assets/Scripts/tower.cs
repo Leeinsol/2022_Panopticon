@@ -29,7 +29,8 @@ public class tower : MonoBehaviour
         }
 
         //enemyNum = navMeshAgents.Count;
-        //Debug.Log(navMeshAgents.Count);
+        Debug.Log(navMeshAgents.Count);
+        PlayerPrefs.SetInt("AllEnemy", navMeshAgents.Count);
         PlayerPrefs.SetInt("remainEnemy", navMeshAgents.Count);
 
         //Debug.Log("Number of NavMeshAgents: " + enemyNum);
@@ -48,7 +49,7 @@ public class tower : MonoBehaviour
             }
         }
         //Debug.Log(navMeshAgents.Count);
-        if (hp <= 0 || navMeshAgents.Count==0)
+        if (hp <= 0)
         {
             //PlayerPrefs.GetInt("remainEnemy");
             
@@ -56,6 +57,16 @@ public class tower : MonoBehaviour
 
             SceneManager.LoadScene("GameOver");
             Debug.Log("Game Over");
+        }
+        if (navMeshAgents.Count == 0)
+        {
+            PlayerPrefs.SetInt("remainEnemy", navMeshAgents.Count);
+
+            Debug.Log(hp);
+            PlayerPrefs.SetInt("remainTower", hp);
+            PlayerPrefs.GetInt("remainTower");
+            SceneManager.LoadScene("GameClear");
+            Debug.Log("Game Clear");
         }
         else if (hp < maXHP / 2f && count == 0)
         {

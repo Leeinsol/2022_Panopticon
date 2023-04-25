@@ -10,7 +10,8 @@ public class gameOver : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        remainEnemyText.GetComponent<Text>().text = PlayerPrefs.GetInt("remainEnemy").ToString();    
+        remainEnemyText.GetComponent<Text>().text = PlayerPrefs.GetInt("remainEnemy").ToString();
+        Debug.Log(PlayerPrefs.GetInt("remainEnemy") / (float)PlayerPrefs.GetInt("AllEnemy"));
     }
 
     // Update is called once per frame
