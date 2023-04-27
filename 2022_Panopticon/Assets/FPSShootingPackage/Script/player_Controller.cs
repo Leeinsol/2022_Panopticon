@@ -274,9 +274,32 @@ public class player_Controller : MonoBehaviour
 
         setRemainItemUI(false);
         ultimateTimer = ultimateTime;
+
+
+        if (GameObject.Find("StageSetting").GetComponent<StageSetting>().getStage() == "easyMode")
+        {
+            Debug.Log("easy");
+            ultimateNum = 30;
+            ultimateTime = 12;
+        }
+        else if (GameObject.Find("StageSetting").GetComponent<StageSetting>().getStage() == "normalMode")
+        {
+            Debug.Log("normal");
+            ultimateNum = 50;
+            ultimateTime = 10;
+        }
+        else if (GameObject.Find("StageSetting").GetComponent<StageSetting>().getStage() == "hardMode")
+        {
+            Debug.Log("hard");
+            ultimateNum = 100;
+            ultimateTime = 7;
+        }
+
+        Debug.Log("ultimateNum: " + ultimateNum);
+        Debug.Log("ultimateTime: " + ultimateTime);
     }
-    
-   
+
+
     public void setup(int damage, Vector3 rotation)
     {
         rigidbody = GetComponent<Rigidbody>();

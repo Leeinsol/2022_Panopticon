@@ -26,6 +26,12 @@ public class title : MonoBehaviour
         SceneManager.LoadScene("Main");
     }
 
+    public void closeStagePanel()
+    {
+        StagePanel.SetActive(false);
+    }
+
+
     public void setStage()
     {
         StagePanel.SetActive(true);
