@@ -115,6 +115,7 @@
 -define:ENABLE_TILEMAP
 -define:ENABLE_TIMELINE
 -define:ENABLE_LEGACY_INPUT_MANAGER
+-define:CROSS_PLATFORM_INPUT
 -define:UNITY_POST_PROCESSING_STACK_V2
 -define:CSHARP_7_OR_LATER
 -define:CSHARP_7_3_OR_NEWER
@@ -423,11 +424,14 @@
 -r:"D:/UNITY/2022_Panopticon/2022_Panopticon/2022_Panopticon/Library/PackageCache/com.unity.visualscripting@1.7.6/Runtime/VisualScripting.Flow/Dependencies/NCalc/Unity.VisualScripting.Antlr3.Runtime.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.2D.Sprite.Editor.ref.dll"
+-r:"Library/Bee/artifacts/1900b0aE.dag/Unity.2D.Tilemap.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.EditorCoroutines.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.Performance.Profile-Analyzer.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.PlasticSCM.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.Postprocessing.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.Postprocessing.Runtime.ref.dll"
+-r:"Library/Bee/artifacts/1900b0aE.dag/Unity.ProGrids.Editor.ref.dll"
+-r:"Library/Bee/artifacts/1900b0aE.dag/Unity.ProGrids.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.RenderPipelines.Core.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.RenderPipelines.Core.Runtime.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.RenderPipelines.Core.ShaderLibrary.ref.dll"
@@ -467,6 +471,7 @@
 "Assets/PlayerPrefs/Editor/PlayerPrefsEditor/PlayerPrefsEditorUtility.cs"
 "Assets/PlayerPrefs/Editor/PlayerPrefsEditor/PlayerPrefsEditorWindow.cs"
 "Assets/PlayerPrefs/Editor/PlayerPrefsExtension.cs"
+"Assets/UnityTechnologies/EffectExamples/Shared/Ramps/Editor/RampAssetEditor.cs"
 "Assets/UnityTechnologies/EffectExamples/TutorialInfo/Scripts/Editor/ReadmeEditor.cs"
 -langversion:9.0
 

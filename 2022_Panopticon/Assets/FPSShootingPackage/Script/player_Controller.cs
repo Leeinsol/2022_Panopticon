@@ -276,27 +276,27 @@ public class player_Controller : MonoBehaviour
         ultimateTimer = ultimateTime;
 
 
-        if (GameObject.Find("StageSetting").GetComponent<StageSetting>().getStage() == "easyMode")
-        {
-            Debug.Log("easy");
-            ultimateNum = 30;
-            ultimateTime = 12;
-        }
-        else if (GameObject.Find("StageSetting").GetComponent<StageSetting>().getStage() == "normalMode")
-        {
-            Debug.Log("normal");
-            ultimateNum = 50;
-            ultimateTime = 10;
-        }
-        else if (GameObject.Find("StageSetting").GetComponent<StageSetting>().getStage() == "hardMode")
-        {
-            Debug.Log("hard");
-            ultimateNum = 100;
-            ultimateTime = 7;
-        }
+        //if (GameObject.Find("StageSetting").GetComponent<StageSetting>().getStage() == "easyMode")
+        //{
+        //    Debug.Log("easy");
+        //    ultimateNum = 30;
+        //    ultimateTime = 12;
+        //}
+        //else if (GameObject.Find("StageSetting").GetComponent<StageSetting>().getStage() == "normalMode")
+        //{
+        //    Debug.Log("normal");
+        //    ultimateNum = 50;
+        //    ultimateTime = 10;
+        //}
+        //else if (GameObject.Find("StageSetting").GetComponent<StageSetting>().getStage() == "hardMode")
+        //{
+        //    Debug.Log("hard");
+        //    ultimateNum = 100;
+        //    ultimateTime = 7;
+        //}
 
-        Debug.Log("ultimateNum: " + ultimateNum);
-        Debug.Log("ultimateTime: " + ultimateTime);
+        //Debug.Log("ultimateNum: " + ultimateNum);
+        //Debug.Log("ultimateTime: " + ultimateTime);
     }
 
 
@@ -605,6 +605,7 @@ public class player_Controller : MonoBehaviour
                 //closestCollider.GetComponent<Enemy>().decreaseHP(currentBulletPower);
 
                 closestCollider.gameObject.GetComponent<Enemy>().playHurtAnim();
+                closestCollider.gameObject.GetComponent<Enemy>().playEffect(hitInfo);
             }
         }
 
@@ -1145,8 +1146,9 @@ public class player_Controller : MonoBehaviour
     }
     void PlaySoundEffects(AudioClip audioClip)
     {
-        audioSource.clip = audioClip;
-        audioSource.Play();
+        //audioSource.clip = audioClip;
+        //audioSource.Play();
+        audioSource.PlayOneShot(audioClip);
     }
     void ShootBullet()
     {
@@ -1160,8 +1162,12 @@ public class player_Controller : MonoBehaviour
         RaycastHit hitInfo = new RaycastHit();
         Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 2f); 
         bulletNum--;
-        
-        if(useFireSound) PlaySoundEffects(FireSound);
+
+        if (useFireSound)
+        {
+            audioSource.volume = 0.7f;
+            PlaySoundEffects(FireSound);
+        }
 
         StopAllCoroutines();
         StartCoroutine(reloadActionCoroutine());
@@ -1189,6 +1195,7 @@ public class player_Controller : MonoBehaviour
 
                     //Debug.Log(collider.gameObject.GetComponent<Enemy>().hp);
                     collider.gameObject.GetComponent<Enemy>().playHurtAnim();
+                    collider.gameObject.GetComponent<Enemy>().playEffect(hitInfo);
                     ultimateGauge++;
                     //Debug.Log(ultimateGauge);
                 }

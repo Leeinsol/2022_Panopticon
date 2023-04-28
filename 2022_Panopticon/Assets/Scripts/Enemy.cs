@@ -36,6 +36,12 @@ public class Enemy : MonoBehaviour
     int RandomNum = 0;
     float Timer;
 
+    public AudioClip[] hurtSound = new AudioClip[3];
+    public AudioClip deathSound;
+    AudioSource audioSource;
+
+    public GameObject bloodEffect;
+    ParticleSystem bEffect;
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +50,8 @@ public class Enemy : MonoBehaviour
         //hp = maxHp;
         rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
+        audioSource = GetComponent<AudioSource>();
+        bEffect = bloodEffect.GetComponent<ParticleSystem>();
         //destination = agent.destination;
         SetDestination();
         animator = enemyModel.GetComponent<Animator>();
@@ -191,7 +199,24 @@ public class Enemy : MonoBehaviour
         //animator.SetBool("isHurt", true);
         agent.isStopped = true;
         animator.SetTrigger("isHurt");
+        int index = Random.Range(0, 3);
+        PlaySoundEffects(hurtSound[index]);
         Invoke("playNav", 0.167f);
+    }
+
+    void PlaySoundEffects(AudioClip audioClip)
+    {
+        //audioSource.clip = audioClip;
+        audioSource.PlayOneShot(audioClip);
+    }
+
+    public void playEffect(RaycastHit hitInfo)
+    {
+        bloodEffect.transform.position = hitInfo.point;
+        bloodEffect.transform.forward = hitInfo.normal;
+
+        Instantiate(bEffect, bloodEffect.transform.position, Quaternion.Euler(bloodEffect.transform.forward));
+        bEffect.Play();
     }
 
     void playNav()
@@ -208,6 +233,8 @@ public class Enemy : MonoBehaviour
             //enemyModel.GetComponent<CapsuleCollider>().isTrigger = true;
             //transform.GetComponent<CapsuleCollider>().enabled = false;
             //transform.GetComponent<SphereCollider>().enabled = false;
+            if(!audioSource.isPlaying)  PlaySoundEffects(deathSound);
+
             Collider[] colliders = gameObject.GetComponents<Collider>();
 
             foreach(Collider collider in colliders)

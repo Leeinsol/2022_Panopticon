@@ -115,6 +115,7 @@
 -define:ENABLE_TILEMAP
 -define:ENABLE_TIMELINE
 -define:ENABLE_LEGACY_INPUT_MANAGER
+-define:CROSS_PLATFORM_INPUT
 -define:UNITY_POST_PROCESSING_STACK_V2
 -define:CSHARP_7_OR_LATER
 -define:CSHARP_7_3_OR_NEWER
@@ -329,11 +330,14 @@
 -r:"D:/UNITY/2022_Panopticon/2022_Panopticon/2022_Panopticon/Library/PackageCache/com.unity.testtools.codecoverage@1.0.1/lib/ReportGenerator/ReportGeneratorMerged.dll"
 -r:"D:/UNITY/2022_Panopticon/2022_Panopticon/2022_Panopticon/Library/PackageCache/com.unity.visualscripting@1.7.6/Runtime/VisualScripting.Flow/Dependencies/NCalc/Unity.VisualScripting.Antlr3.Runtime.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.2D.Sprite.Editor.ref.dll"
+-r:"Library/Bee/artifacts/1900b0aE.dag/Unity.2D.Tilemap.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.EditorCoroutines.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.Performance.Profile-Analyzer.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.PlasticSCM.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.Postprocessing.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.Postprocessing.Runtime.ref.dll"
+-r:"Library/Bee/artifacts/1900b0aE.dag/Unity.ProGrids.Editor.ref.dll"
+-r:"Library/Bee/artifacts/1900b0aE.dag/Unity.ProGrids.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.RenderPipelines.Core.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.RenderPipelines.Core.Runtime.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.RenderPipelines.Core.ShaderLibrary.ref.dll"
@@ -366,9 +370,6 @@
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEditor.UI.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEngine.UI.ref.dll"
 "Assets/FPSShootingPackage/Script/player_Controller.cs"
-"Assets/gameClear.cs"
-"Assets/ItemManager.cs"
-"Assets/Item_energyDrink.cs"
 "Assets/JMO Assets/Cartoon FX/Demo/Assets/CFX_AutoStopLoopedEffect.cs"
 "Assets/JMO Assets/Cartoon FX/Demo/Assets/CFX_Demo_New.cs"
 "Assets/JMO Assets/Cartoon FX/Demo/Assets/CFX_Demo_RandomDir.cs"
@@ -390,7 +391,10 @@
 "Assets/Scripts/cinema_controller.cs"
 "Assets/Scripts/cinema_moving.cs"
 "Assets/Scripts/Enemy.cs"
+"Assets/Scripts/gameClear.cs"
 "Assets/Scripts/gameOver.cs"
+"Assets/Scripts/ItemManager.cs"
+"Assets/Scripts/Item_energyDrink.cs"
 "Assets/Scripts/player_camera.cs"
 "Assets/Scripts/player_pacnopticon.cs"
 "Assets/Scripts/player_shooting.cs"
@@ -440,6 +444,9 @@
 "Assets/UIBars/Scripts/CriteriaRule.cs"
 "Assets/UIBars/Scripts/UIBarScript.cs"
 "Assets/UIBars/Scripts/UpdateAnimationRule.cs"
+"Assets/UnityTechnologies/EffectExamples/Misc Effects/Scripts/SpawnEffect.cs"
+"Assets/UnityTechnologies/EffectExamples/Shared/Ramps/Runtime/RampAsset.cs"
+"Assets/UnityTechnologies/EffectExamples/Shared/Scripts/AdjustTimeScale.cs"
 "Assets/UnityTechnologies/EffectExamples/Shared/Scripts/DecalDestroyer.cs"
 "Assets/UnityTechnologies/EffectExamples/Shared/Scripts/ExtinguishableFire.cs"
 "Assets/UnityTechnologies/EffectExamples/Shared/Scripts/GunAim.cs"
@@ -447,6 +454,9 @@
 "Assets/UnityTechnologies/EffectExamples/Shared/Scripts/ParticleCollision.cs"
 "Assets/UnityTechnologies/EffectExamples/Shared/Scripts/ParticleExamples.cs"
 "Assets/UnityTechnologies/EffectExamples/Shared/Scripts/ParticleMenu.cs"
+"Assets/UnityTechnologies/EffectExamples/Shared/Scripts/ProximityActivate.cs"
+"Assets/UnityTechnologies/EffectExamples/Shared/Scripts/SimpleCameraController.cs"
+"Assets/UnityTechnologies/EffectExamples/Shared/Scripts/SimpleCharacterMotor.cs"
 "Assets/UnityTechnologies/EffectExamples/TutorialInfo/Scripts/Readme.cs"
 -langversion:9.0
 
