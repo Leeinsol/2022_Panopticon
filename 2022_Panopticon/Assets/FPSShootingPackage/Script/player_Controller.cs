@@ -605,7 +605,7 @@ public class player_Controller : MonoBehaviour
                 //closestCollider.GetComponent<Enemy>().decreaseHP(currentBulletPower);
 
                 closestCollider.gameObject.GetComponent<Enemy>().playHurtAnim();
-                closestCollider.gameObject.GetComponent<Enemy>().playEffect(hitInfo);
+                closestCollider.gameObject.GetComponent<Enemy>().playBloodEffect(hitInfo);
             }
         }
 
@@ -1195,7 +1195,7 @@ public class player_Controller : MonoBehaviour
 
                     //Debug.Log(collider.gameObject.GetComponent<Enemy>().hp);
                     collider.gameObject.GetComponent<Enemy>().playHurtAnim();
-                    collider.gameObject.GetComponent<Enemy>().playEffect(hitInfo);
+                    collider.gameObject.GetComponent<Enemy>().playBloodEffect(hitInfo);
                     ultimateGauge++;
                     //Debug.Log(ultimateGauge);
                 }

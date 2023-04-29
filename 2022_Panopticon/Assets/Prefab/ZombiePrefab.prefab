@@ -1876,6 +1876,8 @@ MonoBehaviour:
   deathSound: {fileID: 8300000, guid: c97930d83fc98a8439e07bfc3c1ed4f9, type: 3}
   bloodEffect: {fileID: 1000012909287652, guid: 1b72d43e22f1ffe4486005e6fa11231e,
     type: 3}
+  deathEffect: {fileID: 1025285306637258, guid: d8f0099df63275647a8bcf646df1ca00,
+    type: 3}
 --- !u!195 &5115912789076446619
 NavMeshAgent:
   m_ObjectHideFlags: 0

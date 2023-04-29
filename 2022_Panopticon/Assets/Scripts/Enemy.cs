@@ -41,7 +41,7 @@ public class Enemy : MonoBehaviour
     AudioSource audioSource;
 
     public GameObject bloodEffect;
-    ParticleSystem bEffect;
+    public GameObject deathEffect;
 
     // Start is called before the first frame update
     void Start()
@@ -51,7 +51,6 @@ public class Enemy : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
         audioSource = GetComponent<AudioSource>();
-        bEffect = bloodEffect.GetComponent<ParticleSystem>();
         //destination = agent.destination;
         SetDestination();
         animator = enemyModel.GetComponent<Animator>();
@@ -210,15 +209,20 @@ public class Enemy : MonoBehaviour
         audioSource.PlayOneShot(audioClip);
     }
 
-    public void playEffect(RaycastHit hitInfo)
+    public void playBloodEffect(RaycastHit hitInfo)
     {
         bloodEffect.transform.position = hitInfo.point;
         bloodEffect.transform.forward = hitInfo.normal;
 
-        Instantiate(bEffect, bloodEffect.transform.position, Quaternion.Euler(bloodEffect.transform.forward));
-        bEffect.Play();
+        Instantiate(bloodEffect.GetComponent<ParticleSystem>(), bloodEffect.transform.position, Quaternion.Euler(bloodEffect.transform.forward));
+        bloodEffect.GetComponent<ParticleSystem>().Play();
     }
-
+    public void playDeathEffect()
+    {
+        Instantiate(deathEffect.GetComponent<ParticleSystem>(), transform.position, Quaternion.identity);
+        deathEffect.GetComponent<ParticleSystem>().Play();
+        Debug.Log("playDeathEffect");
+    }
     void playNav()
     {
         agent.isStopped = false;
@@ -233,7 +237,12 @@ public class Enemy : MonoBehaviour
             //enemyModel.GetComponent<CapsuleCollider>().isTrigger = true;
             //transform.GetComponent<CapsuleCollider>().enabled = false;
             //transform.GetComponent<SphereCollider>().enabled = false;
-            if(!audioSource.isPlaying)  PlaySoundEffects(deathSound);
+            if (!audioSource.isPlaying)
+            {
+                playDeathEffect();
+                PlaySoundEffects(deathSound);
+            }
+
 
             Collider[] colliders = gameObject.GetComponents<Collider>();
 
