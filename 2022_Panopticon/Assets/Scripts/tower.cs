@@ -19,6 +19,11 @@ public class tower : MonoBehaviour
 
     int enemyNum;
 
+    public bool isFlachingUI = false;
+    Image towerHpUI;
+    Color originalColor;
+    Color FlashColor;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,6 +39,8 @@ public class tower : MonoBehaviour
         PlayerPrefs.SetInt("remainEnemy", navMeshAgents.Count);
 
         //Debug.Log("Number of NavMeshAgents: " + enemyNum);
+        towerHpUI = towerHp.transform.GetChild(1).GetComponentInChildren<Image>();
+        originalColor = towerHpUI.color;
     }
 
     // Update is called once per frame
@@ -74,6 +81,10 @@ public class tower : MonoBehaviour
             isHalfHP = true;
         }
         ShowWarningMessage();
+
+        if (isFlachingUI)
+        {
+        }
     }
 
     void ShowWarningMessage()
@@ -82,5 +93,25 @@ public class tower : MonoBehaviour
         {
             WarningText.SetActive(true);
         }
+    }
+
+
+    public void DecreaseHp(int power)
+    {
+        hp -= power;
+        //if (!isFlachingUI) isFlachingUI = true;
+        //else return;
+        StartCoroutine("FlashUI");
+
+    }
+
+    IEnumerator FlashUI()
+    {
+        towerHpUI.color = Color.white;
+        yield return new WaitForSeconds(0.2f);
+        towerHpUI.color = originalColor;
+        yield return new WaitForSeconds(0.2f);
+
+        isFlachingUI = false;
     }
 }

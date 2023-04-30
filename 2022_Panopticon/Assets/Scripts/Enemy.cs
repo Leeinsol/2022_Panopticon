@@ -104,6 +104,7 @@ public class Enemy : MonoBehaviour
         //Debug.Log(agent.speed);
         //Debug.Log(hp);
         speedTimer();
+        //Debug.Log(animator.GetBool("isAttack"));
     }
 
     void speedTimer()
@@ -158,7 +159,10 @@ public class Enemy : MonoBehaviour
         if (collision.gameObject.tag == "Player" || (collision.gameObject.transform.parent != null
             && collision.gameObject.transform.parent.name == "tower"))
         {
-            animator.SetBool("isAttack", true);
+            if (!animator.GetBool("isAttack"))
+            {
+                animator.SetBool("isAttack", true);
+            }
         }
     }
 
@@ -172,13 +176,16 @@ public class Enemy : MonoBehaviour
     }
     private void OnCollisionStay(Collision collision)
     {
+        
+
         if (collision.gameObject.transform.parent != null
             && collision.gameObject.transform.parent.name == "tower")
         {
             GameObject ob = collision.gameObject.transform.parent.gameObject;
             if(ob.GetComponent<tower>().hp > 0)
             {
-                ob.GetComponent<tower>().hp-= power;
+                //ob.GetComponent<tower>().hp-= power;
+                ob.GetComponent<tower>().DecreaseHp(power);
                 //Debug.Log(ob.GetComponent<tower>().hp);
             }
         }
