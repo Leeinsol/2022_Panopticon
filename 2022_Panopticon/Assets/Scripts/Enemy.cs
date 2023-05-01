@@ -82,10 +82,7 @@ public class Enemy : MonoBehaviour
         //agent.destination = targetPos.transform.position;
         //agent.destination = targetPos;
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            GameObject.Find("CinemaCamera").GetComponent<cinema_moving>().isDoorOpen = true;
-        }
+        
         if (GameObject.Find("CinemaCamera").GetComponent<cinema_moving>().isDoorOpen
             || PlayerPrefs.GetInt("isCinemaEnd") == 1)
         {
@@ -93,11 +90,8 @@ public class Enemy : MonoBehaviour
             agent.isStopped = false;
             animator.SetBool("isRun", true);
         }
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            agent.isStopped = true;
-            animator.SetBool("isRun", false);
-        }
+
+
         //animator.SetBool("isAttack", false);
         deadCheck();
         checkAngryState();
@@ -125,11 +119,14 @@ public class Enemy : MonoBehaviour
         //Debug.Log(animator.GetInteger("randomNum"));
         if (RandomNum == 0)
         {
-            agent.speed = 0.5f;
+            //agent.speed = 0.5f;
+            agent.speed = 2;
         }
         else
         {
-            agent.speed = 1f;
+            //agent.speed = 1f;
+            agent.speed = 4;
+
         }
     } 
 

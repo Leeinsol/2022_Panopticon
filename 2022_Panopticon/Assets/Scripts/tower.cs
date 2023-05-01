@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.AI;
+using UnityEngine.Rendering.PostProcessing;
 
 public class tower : MonoBehaviour
 {
@@ -24,6 +25,17 @@ public class tower : MonoBehaviour
     Color originalColor;
     Color FlashColor;
 
+    public PostProcessVolume postProcessVolume;
+    private ColorGrading colorGrading;
+
+    //Camera Shake
+    public float shakeTime = 1.0f;
+    public float shakeSpeed = 2.0f;
+    [SerializeField]
+    Vector3 shakeAmount = new Vector3(0f, 0f, 0f);
+    Transform cameraTransform;
+    GameObject Camera;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,6 +53,12 @@ public class tower : MonoBehaviour
         //Debug.Log("Number of NavMeshAgents: " + enemyNum);
         towerHpUI = towerHp.transform.GetChild(1).GetComponentInChildren<Image>();
         originalColor = towerHpUI.color;
+
+        postProcessVolume.profile.TryGetSettings(out colorGrading);
+
+        Camera = GameObject.FindGameObjectWithTag("MainCamera");
+        cameraTransform = Camera.transform;
+
     }
 
     // Update is called once per frame
@@ -82,9 +100,23 @@ public class tower : MonoBehaviour
         }
         ShowWarningMessage();
 
-        if (isFlachingUI)
+        if (hp < maXHP)
         {
+            float weight = 1f - (float)hp / maXHP;
+            SetPostProcessingWeight(weight);
         }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            StartCoroutine(ShakeCamera());
+        }
+
+    }
+
+    void SetPostProcessingWeight(float weight)
+    {
+        colorGrading.postExposure.value = weight;
+        postProcessVolume.weight = weight;
     }
 
     void ShowWarningMessage()
@@ -107,11 +139,33 @@ public class tower : MonoBehaviour
 
     IEnumerator FlashUI()
     {
+       
         towerHpUI.color = Color.white;
         yield return new WaitForSeconds(0.2f);
         towerHpUI.color = originalColor;
         yield return new WaitForSeconds(0.2f);
 
-        isFlachingUI = false;
+    }
+
+    IEnumerator ShakeCamera()
+    {
+        Vector3 originPos = cameraTransform.localPosition;
+        float shakeTimer = 0.0f;
+
+        while (shakeTimer < shakeTime)
+        {
+            //Vector3 randomPoint = originPos + Random.insideUnitSphere * shakeAmount;
+            Vector3 randomPoint = originPos + new Vector3(Random.Range(-shakeAmount.x, shakeAmount.x), Random.Range(-shakeAmount.y, shakeAmount.y), shakeAmount.z);
+
+
+            cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, randomPoint, Time.deltaTime * shakeSpeed);
+
+            yield return null;
+
+            shakeTimer += Time.deltaTime;
+        }
+
+        cameraTransform.localPosition = originPos;
+
     }
 }
