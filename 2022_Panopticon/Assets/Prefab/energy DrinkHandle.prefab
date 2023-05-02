@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8275866744537830723}
   - component: {fileID: 8275866744537830724}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: energy DrinkHandle
   m_TagString: EnergyDrink
   m_Icon: {fileID: 0}
@@ -55,6 +55,10 @@ PrefabInstance:
     - target: {fileID: 1705129010167144, guid: 69511df5fc9cfac4b8896aff618222bd, type: 3}
       propertyPath: m_Name
       value: Cola Can 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1705129010167144, guid: 69511df5fc9cfac4b8896aff618222bd, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4528477828364640, guid: 69511df5fc9cfac4b8896aff618222bd, type: 3}
       propertyPath: m_RootOrder
@@ -116,6 +120,7 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: 69511df5fc9cfac4b8896aff618222bd, type: 3}
 --- !u!4 &8271386645493172734 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 4528477828364640, guid: 69511df5fc9cfac4b8896aff618222bd, type: 3}
+  m_CorrespondingSourceObject: {fileID: 4528477828364640, guid: 69511df5fc9cfac4b8896aff618222bd,
+    type: 3}
   m_PrefabInstance: {fileID: 8275866744809255070}
   m_PrefabAsset: {fileID: 0}

@@ -119,13 +119,13 @@ public class Enemy : MonoBehaviour
         //Debug.Log(animator.GetInteger("randomNum"));
         if (RandomNum == 0)
         {
-            //agent.speed = 0.5f;
-            agent.speed = 2;
+            agent.speed = 0.5f;
+            //agent.speed = 2;
         }
         else
         {
-            //agent.speed = 1f;
-            agent.speed = 4;
+            agent.speed = 1f;
+            //agent.speed = 4;
 
         }
     } 

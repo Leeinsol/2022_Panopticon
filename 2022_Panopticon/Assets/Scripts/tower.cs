@@ -105,12 +105,10 @@ public class tower : MonoBehaviour
             float weight = 1f - (float)hp / maXHP;
             SetPostProcessingWeight(weight);
         }
-
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (hp >950 && hp < 1000)
         {
             StartCoroutine(ShakeCamera());
         }
-
     }
 
     void SetPostProcessingWeight(float weight)

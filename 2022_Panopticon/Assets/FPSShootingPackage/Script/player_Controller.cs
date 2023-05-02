@@ -96,6 +96,8 @@ public class player_Controller : MonoBehaviour
     Quaternion GunOriginRot = Quaternion.Euler(0, 180, 0);
     Vector3 GunSprintPos = new Vector3(-0.271f, 0.001f, 0.135f);
     Quaternion GunSprintRot = Quaternion.Euler(-0.133f, 123.826f, -0.249f);
+    Vector3 GetItemPos = new Vector3(0, 0.2f, 0);
+    Quaternion GetItemRot = Quaternion.Euler(-15f, 180, 0);
     public Transform BombPostion;
     public float BombRadius = 10.0f;
     public float BombForce = 500f;
@@ -135,7 +137,7 @@ public class player_Controller : MonoBehaviour
     // Sound
     public bool useFireSound = true;
     public bool useReloadSound = true;
-    public AudioClip FireSound, oneByOneReloadSound, allReloadSound;
+    public AudioClip FireSound, oneByOneReloadSound, allReloadSound, getItemSound, changeWaeponSound;
     AudioSource audioSource;
 
     // Timer
@@ -181,6 +183,8 @@ public class player_Controller : MonoBehaviour
 
     float RayCastDis = 21f;
     int ultimateNum = 5;
+
+    public GameObject getItemEffect;
 
     // Start is called before the first frame update
     void Start()
@@ -406,9 +410,14 @@ public class player_Controller : MonoBehaviour
             //}
         }
 
-        if(ultimateGauge >= ultimateNum)
+        if (ultimateGauge >= ultimateNum)
         {
             setUltimateTimer();
+        }
+
+        if (!Weapon[0].activeSelf)
+        {
+            setUltimateCrossHair(0.2f);
         }
 
         // getItem
@@ -613,10 +622,18 @@ public class player_Controller : MonoBehaviour
     }
 
    
+    void pullItemMotion()
+    {
+        Weapon[1].transform.localPosition = Vector3.Slerp(Weapon[1].transform.localPosition, GetItemPos, GunRotationSpeed * Time.deltaTime);
+        Weapon[1].transform.localRotation = Quaternion.Slerp(Weapon[1].transform.localRotation, GetItemRot, GunRotationSpeed * Time.deltaTime);
+    }
+
+
     void getItem()
     { 
         if (Input.GetKeyDown(FireKey)){
             Ray ray = new Ray(theCamera.transform.position, theCamera.transform.forward);
+            
 
             //RaycastHit hitInfo = new RaycastHit();
             RaycastHit[] hits = Physics.RaycastAll(ray);
@@ -643,6 +660,12 @@ public class player_Controller : MonoBehaviour
         if (Input.GetKeyUp(FireKey))
         {
             isPulling = false;
+            setGunOrigin();
+        }
+
+        if (Input.GetKey(FireKey))
+        {
+            pullItemMotion();
         }
     }
     IEnumerator PullItem(GameObject Object)
@@ -653,7 +676,10 @@ public class player_Controller : MonoBehaviour
         while (isPulling)
         {
             t += Time.deltaTime * 1.2f;
-            Object.transform.position = Vector3.Lerp(originalPosition, transform.position, t);
+            float shakeAmount = 0.1f;
+            Vector3 randomOffset = new Vector3(Random.Range(-shakeAmount, shakeAmount), Random.Range(-shakeAmount, shakeAmount), Random.Range(-shakeAmount, shakeAmount));
+
+            Object.transform.position = Vector3.Lerp(originalPosition, transform.position + randomOffset, t);
 
             float distance = Vector3.Distance(Object.transform.position, transform.position);
             if (distance < distanceThreshold)
@@ -667,6 +693,13 @@ public class player_Controller : MonoBehaviour
                 {
                     WeaponNum[3]++;
                 }
+                PlaySoundEffects(getItemSound);
+
+                getItemEffect.transform.position = Object.transform.position;
+                
+                Instantiate(getItemEffect.GetComponent<ParticleSystem>(), getItemEffect.transform.position, Quaternion.Euler(getItemEffect.transform.forward));
+                getItemEffect.GetComponent<ParticleSystem>().Play();
+
                 Destroy(Object);
                 yield break;
             }
@@ -843,9 +876,9 @@ public class player_Controller : MonoBehaviour
                 
                 //reloadBomb();
 
-                WeaponNum[1]--;
+                WeaponNum[2]--;
 
-                if (WeaponNum[1] <= 0)
+                if (WeaponNum[2] <= 0)
                 {
                     Debug.Log("다 사용했어요" + currentIndex );
                     currentIndex++;
@@ -882,6 +915,7 @@ public class player_Controller : MonoBehaviour
                 changeWeaponNext(oldIndex);
             }
             setRemainItemUI(false);
+            PlaySoundEffects(changeWaeponSound);
 
             //Debug.Log(currentIndex);
 
@@ -900,6 +934,7 @@ public class player_Controller : MonoBehaviour
 
         offWeapon();
         Weapon[currentIndex].SetActive(true);
+        //Debug.Log(currentIndex);
         if (currentIndex == 0 && ultimateGauge < ultimateNum) BulletNumUI.SetActive(true);
         else if (currentIndex == 2 || currentIndex == 3) ItemNumUI.SetActive(true);
     }
@@ -990,6 +1025,7 @@ public class player_Controller : MonoBehaviour
             {
                 if (currentIndex == 0 || currentIndex == 1)
                 {
+
                     Weapon[currentIndex].transform.localPosition = Vector3.Slerp(Weapon[currentIndex].transform.localPosition, GunSprintPos, GunRotationSpeed * Time.deltaTime);
                     Weapon[currentIndex].transform.localRotation = Quaternion.Slerp(Weapon[currentIndex].transform.localRotation, GunSprintRot, GunRotationSpeed * Time.deltaTime);
                 }

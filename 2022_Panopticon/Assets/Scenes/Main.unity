@@ -14992,7 +14992,7 @@ RectTransform:
   - {fileID: 250422632}
   - {fileID: 396201856}
   m_Father: {fileID: 0}
-  m_RootOrder: 18
+  m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -21572,6 +21572,8 @@ MonoBehaviour:
   FireSound: {fileID: 8300000, guid: 89cde63b2e6110649a51f36fe9f4051d, type: 3}
   oneByOneReloadSound: {fileID: 8300000, guid: 95b58d0bdba85d94ea966ac40f4ad9d7, type: 3}
   allReloadSound: {fileID: 8300000, guid: a62c1178493053241a014b05dd221052, type: 3}
+  getItemSound: {fileID: 0}
+  changeWaeponSound: {fileID: 0}
   ultimateTime: 30
   flightLengthFactor: 0
   IncreaseAmount: 0.1
@@ -21589,6 +21591,7 @@ MonoBehaviour:
   middleAimPoint: {fileID: 0}
   ultimateCrossHair: {fileID: 0}
   playerCanvas: {fileID: 0}
+  getItemEffect: {fileID: 0}
 --- !u!82 &1520396107
 AudioSource:
   m_ObjectHideFlags: 0
@@ -25034,6 +25037,8 @@ MonoBehaviour:
   FireSound: {fileID: 8300000, guid: 89cde63b2e6110649a51f36fe9f4051d, type: 3}
   oneByOneReloadSound: {fileID: 8300000, guid: 95b58d0bdba85d94ea966ac40f4ad9d7, type: 3}
   allReloadSound: {fileID: 8300000, guid: a62c1178493053241a014b05dd221052, type: 3}
+  getItemSound: {fileID: 0}
+  changeWaeponSound: {fileID: 0}
   ultimateTime: 30
   flightLengthFactor: 0
   IncreaseAmount: 0.1
@@ -25051,6 +25056,7 @@ MonoBehaviour:
   middleAimPoint: {fileID: 0}
   ultimateCrossHair: {fileID: 0}
   playerCanvas: {fileID: 0}
+  getItemEffect: {fileID: 0}
 --- !u!82 &1750834411
 AudioSource:
   m_ObjectHideFlags: 0
@@ -37912,7 +37918,7 @@ PrefabInstance:
     - target: {fileID: 8275866744537830723, guid: b6fcd5cceba30094fbf98d9f730ab7d6,
         type: 3}
       propertyPath: m_RootOrder
-      value: 19
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 8275866744537830723, guid: b6fcd5cceba30094fbf98d9f730ab7d6,
         type: 3}
@@ -38323,6 +38329,32 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7448772974509906306, guid: d8729a0eb69c4c048a21934241c38f02,
+        type: 3}
+      propertyPath: sprintSpeed
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7448772974509906306, guid: d8729a0eb69c4c048a21934241c38f02,
+        type: 3}
+      propertyPath: getItemSound
+      value: 
+      objectReference: {fileID: 8300000, guid: eb89bfdf960c3534792c02e11c44b296, type: 3}
+    - target: {fileID: 7448772974509906306, guid: d8729a0eb69c4c048a21934241c38f02,
+        type: 3}
+      propertyPath: ultimateTime
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7448772974509906306, guid: d8729a0eb69c4c048a21934241c38f02,
+        type: 3}
+      propertyPath: getItemEffect
+      value: 
+      objectReference: {fileID: 1337198075554910, guid: 25c7aa9ad705fe143a4d71c1c8deb7d4,
+        type: 3}
+    - target: {fileID: 7448772974509906306, guid: d8729a0eb69c4c048a21934241c38f02,
+        type: 3}
+      propertyPath: changeWaeponSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 92ea962b9c7cc674b84f7137451169fd, type: 3}
     - target: {fileID: 7448772974509906307, guid: d8729a0eb69c4c048a21934241c38f02,
         type: 3}
       propertyPath: m_Enabled
