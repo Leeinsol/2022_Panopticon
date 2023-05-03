@@ -105,7 +105,7 @@ public class tower : MonoBehaviour
             float weight = 1f - (float)hp / maXHP;
             SetPostProcessingWeight(weight);
         }
-        if (hp >950 && hp < 1000)
+        if (hp >1950 && hp < 2000)
         {
             StartCoroutine(ShakeCamera());
         }

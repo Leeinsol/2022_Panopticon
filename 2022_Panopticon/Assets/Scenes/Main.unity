@@ -38329,32 +38329,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7448772974509906306, guid: d8729a0eb69c4c048a21934241c38f02,
-        type: 3}
-      propertyPath: sprintSpeed
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 7448772974509906306, guid: d8729a0eb69c4c048a21934241c38f02,
-        type: 3}
-      propertyPath: getItemSound
-      value: 
-      objectReference: {fileID: 8300000, guid: eb89bfdf960c3534792c02e11c44b296, type: 3}
-    - target: {fileID: 7448772974509906306, guid: d8729a0eb69c4c048a21934241c38f02,
-        type: 3}
-      propertyPath: ultimateTime
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7448772974509906306, guid: d8729a0eb69c4c048a21934241c38f02,
-        type: 3}
-      propertyPath: getItemEffect
-      value: 
-      objectReference: {fileID: 1337198075554910, guid: 25c7aa9ad705fe143a4d71c1c8deb7d4,
-        type: 3}
-    - target: {fileID: 7448772974509906306, guid: d8729a0eb69c4c048a21934241c38f02,
-        type: 3}
-      propertyPath: changeWaeponSound
-      value: 
-      objectReference: {fileID: 8300000, guid: 92ea962b9c7cc674b84f7137451169fd, type: 3}
     - target: {fileID: 7448772974509906307, guid: d8729a0eb69c4c048a21934241c38f02,
         type: 3}
       propertyPath: m_Enabled

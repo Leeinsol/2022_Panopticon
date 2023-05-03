@@ -182,7 +182,7 @@ public class player_Controller : MonoBehaviour
     Collider closestCollider = null;
 
     float RayCastDis = 21f;
-    int ultimateNum = 5;
+    int ultimateNum = 100;
 
     public GameObject getItemEffect;
 

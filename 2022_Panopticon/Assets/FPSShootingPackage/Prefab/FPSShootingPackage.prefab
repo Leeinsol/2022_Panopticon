@@ -2398,7 +2398,7 @@ MonoBehaviour:
   HeadBobAmount: {x: 0, y: 0.05, z: 0}
   useSprint: 1
   SprintKey: 304
-  sprintSpeed: 20
+  sprintSpeed: 15
   useStaminaLimit: 1
   StaminaBar: {fileID: 7448772974397145885}
   maxStamina: 5
@@ -2422,9 +2422,12 @@ MonoBehaviour:
   zoomSpeed: 2
   isZooming: 0
   useGun: 1
-  GunModel: {fileID: 6831464012075225963, guid: 82cfe7f07541d364ea42d33b82a749b2, type: 3}
-  BombModel: {fileID: 3396139144155364053, guid: 3f4cb44f8ffeba149b051d052f551402, type: 3}
-  EnergeDrinkModel: {fileID: 8275866744537830725, guid: b04139cfad833c947b8f4b240e0cc0b3, type: 3}
+  GunModel: {fileID: 6831464012075225963, guid: 82cfe7f07541d364ea42d33b82a749b2,
+    type: 3}
+  BombModel: {fileID: 3396139144155364053, guid: 3f4cb44f8ffeba149b051d052f551402,
+    type: 3}
+  EnergeDrinkModel: {fileID: 8275866744537830725, guid: b04139cfad833c947b8f4b240e0cc0b3,
+    type: 3}
   GunRotationSpeed: 10
   useItem: 1
   BombPostion: {fileID: 0}
@@ -2432,7 +2435,8 @@ MonoBehaviour:
   BombForce: 500
   throwForce: 1000
   FireKey: 323
-  bulletEffect: {fileID: 1743301284569550, guid: ad2ab49d0a2a17148bd51c93d977bdbc, type: 3}
+  bulletEffect: {fileID: 1743301284569550, guid: ad2ab49d0a2a17148bd51c93d977bdbc,
+    type: 3}
   maxBulletNum: 10
   fireRate: 0.5
   fireTimer: 0
@@ -2452,6 +2456,8 @@ MonoBehaviour:
   FireSound: {fileID: 8300000, guid: 89cde63b2e6110649a51f36fe9f4051d, type: 3}
   oneByOneReloadSound: {fileID: 8300000, guid: 95b58d0bdba85d94ea966ac40f4ad9d7, type: 3}
   allReloadSound: {fileID: 8300000, guid: a62c1178493053241a014b05dd221052, type: 3}
+  getItemSound: {fileID: 8300000, guid: eb89bfdf960c3534792c02e11c44b296, type: 3}
+  changeWaeponSound: {fileID: 8300000, guid: 92ea962b9c7cc674b84f7137451169fd, type: 3}
   ultimateTime: 7
   flightLengthFactor: 0
   IncreaseAmount: 1.5
@@ -2462,13 +2468,17 @@ MonoBehaviour:
   WeaponNum: 00000000000000000000000000000000
   RemainItemNumUI: {fileID: 8993991700403000583}
   PowerTimeUI: {fileID: 126555677}
-  getItemModel: {fileID: 8362873161591697840, guid: ab5bc01e1a639884d910ad2ba25fe869, type: 3}
-  BombInstantiate: {fileID: 2595720090088871617, guid: 395c6673f01388947a1ff7ccdbb1bd60, type: 3}
+  getItemModel: {fileID: 8362873161591697840, guid: ab5bc01e1a639884d910ad2ba25fe869,
+    type: 3}
+  BombInstantiate: {fileID: 2595720090088871617, guid: 395c6673f01388947a1ff7ccdbb1bd60,
+    type: 3}
   ultimateGauge: 0
   radius: 2
   middleAimPoint: {fileID: 0}
   ultimateCrossHair: {fileID: 9026239496352793690}
   playerCanvas: {fileID: 7448772975807656505}
+  getItemEffect: {fileID: 1337198075554910, guid: 25c7aa9ad705fe143a4d71c1c8deb7d4,
+    type: 3}
 --- !u!114 &1860784108
 MonoBehaviour:
   m_ObjectHideFlags: 0
