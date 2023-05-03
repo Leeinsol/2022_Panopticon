@@ -28,7 +28,7 @@ public class TutorialController : MonoBehaviour
         }
     }
 
-    void SetNextTutorial()
+    public void SetNextTutorial()
     {
         if (currentTutorial != null)
         {
