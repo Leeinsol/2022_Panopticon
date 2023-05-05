@@ -5,7 +5,7 @@ using UnityEngine;
 public class TutorialTrigger : TutorialBase
 {
     [SerializeField]
-    player_Controller player_Controller;
+    GameObject player;
     [SerializeField]
     private Transform triggerObject;
 
@@ -18,7 +18,8 @@ public class TutorialTrigger : TutorialBase
 
     public override void Execute(TutorialController controller)
     {
-        if ((triggerObject.position - player_Controller.transform.position).sqrMagnitude < 0.1f)
+        float distance = Vector3.Distance(triggerObject.position, player.transform.position);
+        if (distance < 1.1f)
         {
             controller.SetNextTutorial();
         }
@@ -26,15 +27,7 @@ public class TutorialTrigger : TutorialBase
 
     public override void Exit()
     {
-        triggerObject.gameObject.SetActive(false);
+        //triggerObject.gameObject.SetActive(false);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.transform.Equals(triggerObject)){
-            isTrigger = true;
-
-            other.gameObject.SetActive(false);
-        }
-    }
 }

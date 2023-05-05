@@ -22,14 +22,14 @@ public class player_Controller : MonoBehaviour
     // Walk
     public float walkSpeed;
     public Vector3 HeadBobAmount = new Vector3(0f, .05f, 0f);
-    private bool iswalking = false;
+    public bool iswalking = false;
     private float walkHeight;
 
     // Sprint
     public bool useSprint = true;
     public KeyCode SprintKey = KeyCode.LeftShift;
     public float sprintSpeed =50f;
-    private bool isSprinting = false;
+    public bool isSprinting = false;
 
     // Stamina
     public bool useStaminaLimit = true;
@@ -42,7 +42,7 @@ public class player_Controller : MonoBehaviour
     public KeyCode CrouchKey = KeyCode.LeftControl;
     public float crouchSpeed = 15f;
     public float crouchHeight = 0.5f;
-    private bool isCrouching = false;
+    public bool isCrouching = false;
 
     // Head Bob
     public bool useHeadBob = true;
@@ -55,7 +55,7 @@ public class player_Controller : MonoBehaviour
     public float jumpForce = 5f;
     float groundCheckDistance = .1f;
     private float bufferCheckDistance = .1f;
-    private bool isGround = false;
+    public bool isGround = false;
 
     // Camera
     public bool useCameraRotationVerticality = true;
@@ -111,7 +111,7 @@ public class player_Controller : MonoBehaviour
     public GameObject bulletEffect;
     ParticleSystem psBullet;
     public int maxBulletNum = 10;
-    int bulletNum;
+    public int bulletNum;
     public float fireRate = 0.5f;
     public float fireTimer;
 

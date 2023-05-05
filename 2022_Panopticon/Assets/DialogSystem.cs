@@ -3,35 +3,27 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public enum Speaker { Rico = 0, DoctorKO }
-
 public class DialogSystem : MonoBehaviour
 {
 	[SerializeField]
 	private	Dialog[] dialogs;
 	[SerializeField]
-	private	Image[]	 imageDialogs;
+	private Image imgaeDialog;
 	[SerializeField]
-	private	TextMeshProUGUI[] textNames; 
+	private	TextMeshProUGUI textDialogues; 
 	[SerializeField]
-	private	TextMeshProUGUI[] textDialogues; 
-	[SerializeField]
-	private	GameObject[] objectArrows; 
+	private	GameObject objectArrows; 
 	[SerializeField]
 	private	float typingSpeed; 
 	[SerializeField]
-	private	KeyCode keyCodeSkip = KeyCode.Space; 
+	private	KeyCode keyCodeSkip = KeyCode.Return; 
 
 	private	int currentIndex = -1;
-	private	bool isTypingEffect = false; 
-	private	Speaker	currentSpeaker = Speaker.Rico;
+	private	bool isTypingEffect = false;
 
 	public void Setup()
 	{
-		for ( int i = 0; i < 2; ++ i )
-		{ 
-			InActiveObjects(i);
-		}
+		InActiveObjects();
 
 		SetNextDialog();
 	}
@@ -44,9 +36,8 @@ public class DialogSystem : MonoBehaviour
 			{ 
 				StopCoroutine("TypingText");
 				isTypingEffect = false;
-				textDialogues[(int)currentSpeaker].text = dialogs[currentIndex].dialogue;
-  
-				objectArrows[(int)currentSpeaker].SetActive(true);
+				textDialogues.text = dialogs[currentIndex].dialogue;
+				objectArrows.SetActive(true);
 
 				return false;
 			}
@@ -56,11 +47,8 @@ public class DialogSystem : MonoBehaviour
 				SetNextDialog();
 			} 
 			else
-			{ 
-				for ( int i = 0; i < 2; ++ i )
-				{ 
-					InActiveObjects(i);
-				}
+			{
+				InActiveObjects();
 
 				return true;
 			}
@@ -71,29 +59,21 @@ public class DialogSystem : MonoBehaviour
 
 	private void SetNextDialog()
 	{ 
-		InActiveObjects((int)currentSpeaker);
+		InActiveObjects();
 
 		currentIndex ++;
-		 
-		currentSpeaker = dialogs[currentIndex].speaker;
- 
-		imageDialogs[(int)currentSpeaker].gameObject.SetActive(true);
 
-		 
-		textNames[(int)currentSpeaker].gameObject.SetActive(true);
-		textNames[(int)currentSpeaker].text = dialogs[currentIndex].speaker.ToString();
+		imgaeDialog.gameObject.SetActive(true);
 
-		 
-		textDialogues[(int)currentSpeaker].gameObject.SetActive(true);
+		textDialogues.gameObject.SetActive(true);
 		StartCoroutine(nameof(TypingText));
 	}
 
-	private void InActiveObjects(int index)
+	private void InActiveObjects()
 	{
-		imageDialogs[index].gameObject.SetActive(false);
-		textNames[index].gameObject.SetActive(false);
-		textDialogues[index].gameObject.SetActive(false);
-		objectArrows[index].SetActive(false);
+		imgaeDialog.gameObject.SetActive(false);
+		textDialogues.gameObject.SetActive(false);
+		objectArrows.SetActive(false);
 	}
 
 	private IEnumerator TypingText()
@@ -104,7 +84,7 @@ public class DialogSystem : MonoBehaviour
 		 
 		while ( index < dialogs[currentIndex].dialogue.Length )
 		{
-			textDialogues[(int)currentSpeaker].text = dialogs[currentIndex].dialogue.Substring(0, index);
+			textDialogues.text = dialogs[currentIndex].dialogue.Substring(0, index);
 
 			index ++;
 
@@ -113,14 +93,13 @@ public class DialogSystem : MonoBehaviour
 
 		isTypingEffect = false;
 		 
-		objectArrows[(int)currentSpeaker].SetActive(true);
+		objectArrows.SetActive(true);
 	}
 }
 
 [System.Serializable]
 public struct Dialog
 {
-	public	Speaker speaker; 
 	[TextArea(3, 5)]
 	public	string dialogue; 
 }
