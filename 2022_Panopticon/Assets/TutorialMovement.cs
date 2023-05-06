@@ -6,6 +6,7 @@ public enum PlayerState
 {
     Walk, Jump, Sprint, Crouch, Attack, Zoom, ChangeWeapon, Item
 }
+
 public class TutorialMovement : TutorialBase
 {
     [SerializeField]
@@ -18,14 +19,22 @@ public class TutorialMovement : TutorialBase
     //public bool SInput = false;
     //public bool DInput = false;
     public PlayerState playerState;
+    
+
     public GameObject player;
+
+    float WalkTime = 5f;
+    float JumpTime = 2.5f;
+    float SprintTime = 7f;
+    float CrouchTime = 3.5f;
+    float ZoomTime = 2f;
+
     float Timer;
-    int num;
+    float LimitTime;
 
     public override void Enter()
     {
-        if (playerState == PlayerState.Jump) StartCoroutine(Jump());
-        else if (playerState == PlayerState.Attack) StartCoroutine(Attack());
+        if (playerState == PlayerState.Attack) StartCoroutine(Attack());
         else if (playerState == PlayerState.ChangeWeapon) StartCoroutine(ChanegeWeapon());
         else if (playerState == PlayerState.Item) StartCoroutine(Item());
         else StartCoroutine(Movement());
@@ -44,10 +53,19 @@ public class TutorialMovement : TutorialBase
 
     }
 
+
+    void setTimer()
+    {
+        if (playerState == PlayerState.Walk) LimitTime = WalkTime;
+        else if (playerState == PlayerState.Jump) LimitTime = JumpTime;
+        else if (playerState == PlayerState.Sprint) LimitTime = SprintTime;
+        else if (playerState == PlayerState.Crouch) LimitTime = CrouchTime;
+        else if (playerState == PlayerState.Zoom) LimitTime = ZoomTime;
+    }
     IEnumerator Movement()
     {
-        
-        while (Timer < 5f)
+        setTimer();
+        while (Timer < LimitTime)
         {
             Debug.Log("Timer: "+Timer);
             if (playerState == PlayerState.Walk && player.GetComponent<player_Controller>().iswalking)
@@ -66,27 +84,16 @@ public class TutorialMovement : TutorialBase
             {
                 Timer += Time.deltaTime;
             }
-
-
-            yield return null;
-        }
-        isCompleted = true;
-
-    }
-
-    IEnumerator Jump()
-    {
-        while(Timer < 2.5f)
-        {
-            Debug.Log("Timer: "+Timer);
-            if (!player.GetComponent<player_Controller>().isGround)
+            if (playerState == PlayerState.Jump && !player.GetComponent<player_Controller>().isGround)
             {
                 Timer += Time.deltaTime;
             }
             yield return null;
         }
         isCompleted = true;
+
     }
+
 
     IEnumerator Attack()
     {
@@ -114,14 +121,18 @@ public class TutorialMovement : TutorialBase
     
     IEnumerator Item()
     {
+        float buttonUpTime = -1f;
         while (true)
         {
             if (Input.GetMouseButtonUp(0))
             {
+                buttonUpTime = Time.time;
+            }
+            if (buttonUpTime > 0 && Time.time - buttonUpTime >= 4f)
+            {
                 isCompleted = true;
             }
             yield return null;
-
         }
     }
 

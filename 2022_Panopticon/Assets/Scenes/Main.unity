@@ -15825,6 +15825,9 @@ MonoBehaviour:
   Bomb: {fileID: 3396139144155364053, guid: 3f4cb44f8ffeba149b051d052f551402, type: 3}
   energyDrink: {fileID: 8275866744537830725, guid: b6fcd5cceba30094fbf98d9f730ab7d6,
     type: 3}
+  useRandomEnergyDrink: 1
+  enertDrinkNum: 10
+  isDistanceCorrection: 1
 --- !u!4 &1180156921
 Transform:
   m_ObjectHideFlags: 0
@@ -21514,9 +21517,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 0
   HeadBobAmount: {x: 0, y: 0.05, z: 0}
+  iswalking: 0
   useSprint: 1
   SprintKey: 304
   sprintSpeed: 50
+  isSprinting: 0
   useStaminaLimit: 1
   StaminaBar: {fileID: 2111569933}
   maxStamina: 5
@@ -21524,12 +21529,14 @@ MonoBehaviour:
   CrouchKey: 306
   crouchSpeed: 15
   crouchHeight: 0.5
+  isCrouching: 0
   useHeadBob: 1
   walkHeadBobSpeed: 5
   sprintHeadBobSpeed: 10
   useJump: 1
   JumpKey: 32
   jumpForce: 5
+  isGround: 0
   useCameraRotationVerticality: 1
   useCameraRotationHorizontality: 1
   theCamera: {fileID: 412506409}
@@ -21554,6 +21561,7 @@ MonoBehaviour:
   bulletEffect: {fileID: 1743301284569550, guid: ad2ab49d0a2a17148bd51c93d977bdbc,
     type: 3}
   maxBulletNum: 10
+  bulletNum: 0
   fireRate: 0.5
   fireTimer: 0
   crossHairText: {fileID: 1064596035}
@@ -24979,9 +24987,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 30
   HeadBobAmount: {x: 0, y: 0.05, z: 0}
+  iswalking: 0
   useSprint: 1
   SprintKey: 304
   sprintSpeed: 50
+  isSprinting: 0
   useStaminaLimit: 1
   StaminaBar: {fileID: 1897006709}
   maxStamina: 5
@@ -24989,12 +24999,14 @@ MonoBehaviour:
   CrouchKey: 306
   crouchSpeed: 15
   crouchHeight: 0.5
+  isCrouching: 0
   useHeadBob: 1
   walkHeadBobSpeed: 5
   sprintHeadBobSpeed: 10
   useJump: 1
   JumpKey: 32
   jumpForce: 5
+  isGround: 0
   useCameraRotationVerticality: 1
   useCameraRotationHorizontality: 1
   theCamera: {fileID: 963194227}
@@ -25019,6 +25031,7 @@ MonoBehaviour:
   bulletEffect: {fileID: 1743301284569550, guid: ad2ab49d0a2a17148bd51c93d977bdbc,
     type: 3}
   maxBulletNum: 10
+  bulletNum: 0
   fireRate: 0.5
   fireTimer: 0
   crossHairText: {fileID: 1930771229}

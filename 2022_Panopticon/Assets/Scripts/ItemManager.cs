@@ -7,6 +7,9 @@ public class ItemManager : MonoBehaviour
     public GameObject Bomb;
     public GameObject energyDrink;
 
+    public bool useRandomEnergyDrink = true;
+    public int enertDrinkNum=10;
+
     float circleRadius = 5f;
     //float gravity = 9.8f;
     //float minLaunchAngle = 30f;
@@ -16,23 +19,29 @@ public class ItemManager : MonoBehaviour
     float maxRadius = 23f;
     float minRadius = 10f;
 
+    public bool isDistanceCorrection = true;
+
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 0; i < 10; i++)
+        if (useRandomEnergyDrink)
         {
-            //Debug.Log(i);
-            Vector2 randomPoint = Random.insideUnitCircle.normalized * Random.Range(minRadius, maxRadius);
-            //Debug.Log(randomPoint);
-            //Vector2 towerPoint = Random.insideUnitCircle * 7f;
-
-            while(randomPoint.magnitude <= minRadius)
+            for (int i = 0; i < 10; i++)
             {
-                randomPoint = Random.insideUnitCircle.normalized * Random.Range(minRadius, maxRadius);
-            }
+                //Debug.Log(i);
+                Vector2 randomPoint = Random.insideUnitCircle.normalized * Random.Range(minRadius, maxRadius);
+                //Debug.Log(randomPoint);
+                //Vector2 towerPoint = Random.insideUnitCircle * 7f;
 
-            Instantiate(energyDrink, new Vector3(randomPoint.x, 0 ,randomPoint.y), Quaternion.identity);
+                while (randomPoint.magnitude <= minRadius)
+                {
+                    randomPoint = Random.insideUnitCircle.normalized * Random.Range(minRadius, maxRadius);
+                }
+
+                Instantiate(energyDrink, new Vector3(randomPoint.x, 0, randomPoint.y), Quaternion.identity);
+            }
         }
+        
     }
 
     // Update is called once per frame
@@ -58,12 +67,21 @@ public class ItemManager : MonoBehaviour
 
         Vector2 randomPoint;
         Vector3 vector3;
+        if (isDistanceCorrection)
+        {
+            do
+            {
+                randomPoint = Random.insideUnitCircle * circleRadius;
+                vector3 = position + new Vector3(randomPoint.x, 0f, randomPoint.y);
+            } while (vector3.magnitude < 10f);
+            Instantiate(Bomb, position + new Vector3(randomPoint.x, 0f, randomPoint.y), Quaternion.identity);
 
-        do
+        }
+        else
         {
             randomPoint = Random.insideUnitCircle * circleRadius;
-            vector3 = position + new Vector3(randomPoint.x, 0f, randomPoint.y);
-        } while (vector3.magnitude <= 10f);
-        Instantiate(Bomb, position + new Vector3(randomPoint.x, 0f, randomPoint.y),Quaternion.identity);
+            Instantiate(Bomb, position + new Vector3(randomPoint.x, 0f, randomPoint.y), Quaternion.identity);
+        }
+
     }
 }

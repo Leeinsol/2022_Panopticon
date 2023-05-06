@@ -26,11 +26,11 @@ public class Item_energyDrink : MonoBehaviour
         }
     }
     public EnergyDrink energyDrink;
-
+    public float time = 10;
     // Start is called before the first frame update
     void Start()
     {
-        energyDrink = new EnergyDrink(2, 10);
+        energyDrink = new EnergyDrink(2, time);
     }
 
     // Update is called once per frame

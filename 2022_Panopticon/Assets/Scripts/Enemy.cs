@@ -82,14 +82,17 @@ public class Enemy : MonoBehaviour
         //agent.destination = targetPos.transform.position;
         //agent.destination = targetPos;
 
-        
-        if (GameObject.Find("CinemaCamera").GetComponent<cinema_moving>().isDoorOpen
-            || PlayerPrefs.GetInt("isCinemaEnd") == 1)
+        if (GameObject.Find("CinemaCamera") != null)
         {
-            //Debug.Log("�����̽�");
-            agent.isStopped = false;
-            animator.SetBool("isRun", true);
+            if (GameObject.Find("CinemaCamera").GetComponent<cinema_moving>().isDoorOpen
+            || PlayerPrefs.GetInt("isCinemaEnd") == 1)
+            {
+                //Debug.Log("�����̽�");
+                agent.isStopped = false;
+                animator.SetBool("isRun", true);
+            }
         }
+        
 
 
         //animator.SetBool("isAttack", false);
@@ -279,7 +282,8 @@ public class Enemy : MonoBehaviour
     void checkAngryState()
     {
 
-        if (GameObject.Find("Canvas").GetComponent<BlinkingText>().hideWarning && !isAngry)
+        if (GameObject.Find("Canvas").GetComponent<BlinkingText>()!=null &&
+            GameObject.Find("Canvas").GetComponent<BlinkingText>().hideWarning && !isAngry)
         {
             isAngry = true;
             SetAngry();

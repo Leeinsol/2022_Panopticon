@@ -10,6 +10,8 @@ public class TutorialDestroyTagObjects : TutorialBase
     private GameObject[] objectList;
     [SerializeField]
     string tagName;
+    [SerializeField]
+    string[] ItemTagName;
 
     public override void Enter()
     {
@@ -31,6 +33,20 @@ public class TutorialDestroyTagObjects : TutorialBase
 
     public override void Exit()
     {
+        GameObject[] taggedObjects;
+        List<GameObject> objectsWithTag = new List<GameObject>();
 
+        foreach (string tag in ItemTagName)
+        {
+            GameObject[] foundObjects = GameObject.FindGameObjectsWithTag(tag);
+            objectsWithTag.AddRange(foundObjects);
+        }
+
+        taggedObjects = objectsWithTag.ToArray();
+
+        foreach(GameObject obj in taggedObjects)
+        {
+            Destroy(obj);
+        }
     }
 }
