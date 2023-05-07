@@ -2594,6 +2594,7 @@ GameObject:
   - component: {fileID: 296025950}
   - component: {fileID: 296025952}
   - component: {fileID: 296025951}
+  - component: {fileID: 296025953}
   m_Layer: 5
   m_Name: Text (TMP) (1)
   m_TagString: Untagged
@@ -2719,6 +2720,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 296025949}
   m_CullTransparentMesh: 1
+--- !u!114 &296025953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 296025949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ecc6fd555a888b49b7c86eafbf04d42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeTime: 0.7
 --- !u!1001 &297627242
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4046,7 +4060,7 @@ MonoBehaviour:
   energyDrink: {fileID: 8275866744537830725, guid: b6fcd5cceba30094fbf98d9f730ab7d6,
     type: 3}
   useRandomEnergyDrink: 0
-  enertDrinkNum: 10
+  energyDrinkNum: 10
   isDistanceCorrection: 0
 --- !u!4 &405014765
 Transform:
@@ -8152,6 +8166,7 @@ GameObject:
   - component: {fileID: 865138878}
   - component: {fileID: 865138880}
   - component: {fileID: 865138881}
+  - component: {fileID: 865138882}
   m_Layer: 0
   m_Name: TutorialController
   m_TagString: Untagged
@@ -8166,7 +8181,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 865138877}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dbeb455d21f72dd489410bd3882cb77c, type: 3}
   m_Name: 
@@ -8295,6 +8310,23 @@ MonoBehaviour:
   - {fileID: 1131496952}
   - {fileID: 734177542}
   nextSceneName: 
+--- !u!114 &865138882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 865138877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbeb455d21f72dd489410bd3882cb77c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tutorials:
+  - {fileID: 297807732}
+  - {fileID: 1131496952}
+  - {fileID: 734177542}
+  nextSceneName: Main
 --- !u!1001 &868891063
 PrefabInstance:
   m_ObjectHideFlags: 0

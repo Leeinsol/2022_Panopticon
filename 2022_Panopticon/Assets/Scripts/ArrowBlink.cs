@@ -1,16 +1,17 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ArrowBlink : MonoBehaviour
 {
 	[SerializeField]
 	private	float fadeTime; 
-	private	Image fadeImage; 
+	private	TextMeshProUGUI fadeImage; 
 
 	private void Awake()
 	{
-		fadeImage = GetComponent<Image>();
+		fadeImage = GetComponent<TextMeshProUGUI>();
 	}
 
 	private void OnEnable()

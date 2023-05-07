@@ -12,7 +12,8 @@ enum Stage
 
 public class StageSetting : MonoBehaviour
 {
-    Stage stage;
+    [SerializeField]
+    Stage stage = Stage.easyMode;
 
     private void Awake()
     {
@@ -22,7 +23,6 @@ public class StageSetting : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -54,6 +54,11 @@ public class StageSetting : MonoBehaviour
     void loadMain()
     {
         SceneManager.LoadScene("Main");
+    }
+
+    public void loadTutorial()
+    {
+        SceneManager.LoadScene("Tutorial");
     }
 
     public string getStage()

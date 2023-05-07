@@ -55,6 +55,7 @@ public class TutorialController : MonoBehaviour
 
         if (!nextSceneName.Equals(""))
         {
+            PlayerPrefs.SetInt("Stage", 1);
             SceneManager.LoadScene(nextSceneName);
         }
     }

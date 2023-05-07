@@ -43,9 +43,32 @@ public class Enemy : MonoBehaviour
     public GameObject bloodEffect;
     public GameObject deathEffect;
 
+    float walkSpeed;
+    float runSpeed;
+
+
     // Start is called before the first frame update
     void Start()
     {
+        if (GameObject.Find("StageSetting").GetComponent<StageSetting>().getStage() == "easyMode")
+        {
+            walkSpeed = 0.4f;
+            runSpeed = 0.8f;
+            hp = 3;
+        }
+        else if (GameObject.Find("StageSetting").GetComponent<StageSetting>().getStage() == "normalMode")
+        {
+            walkSpeed = 0.5f;
+            runSpeed = 1f;
+            hp = 3;
+        }
+        else if (GameObject.Find("StageSetting").GetComponent<StageSetting>().getStage() == "hardMode")
+        {
+            walkSpeed = 0.5f;
+            runSpeed = 1f;
+            hp = 5;
+        }
+
         enemyModel = transform.GetChild(0).gameObject;
         //hp = maxHp;
         rb = GetComponent<Rigidbody>();
@@ -102,6 +125,9 @@ public class Enemy : MonoBehaviour
         //Debug.Log(hp);
         speedTimer();
         //Debug.Log(animator.GetBool("isAttack"));
+
+        //Debug.Log("speed: " + walkSpeed + runSpeed);
+        //Debug.Log("Enemy hp: " + hp);
     }
 
     void speedTimer()
@@ -122,12 +148,12 @@ public class Enemy : MonoBehaviour
         //Debug.Log(animator.GetInteger("randomNum"));
         if (RandomNum == 0)
         {
-            agent.speed = 0.5f;
+            agent.speed = walkSpeed;
             //agent.speed = 2;
         }
         else
         {
-            agent.speed = 1f;
+            agent.speed = runSpeed;
             //agent.speed = 4;
 
         }

@@ -46,7 +46,7 @@ public class tower : MonoBehaviour
         }
 
         //enemyNum = navMeshAgents.Count;
-        Debug.Log(navMeshAgents.Count);
+        //Debug.Log(navMeshAgents.Count);
         PlayerPrefs.SetInt("AllEnemy", navMeshAgents.Count);
         PlayerPrefs.SetInt("remainEnemy", navMeshAgents.Count);
 
@@ -58,7 +58,6 @@ public class tower : MonoBehaviour
 
         Camera = GameObject.FindGameObjectWithTag("MainCamera");
         cameraTransform = Camera.transform;
-
     }
 
     // Update is called once per frame
@@ -89,8 +88,21 @@ public class tower : MonoBehaviour
 
             Debug.Log(hp);
             PlayerPrefs.SetInt("remainTower", hp);
-            PlayerPrefs.GetInt("remainTower");
+            //PlayerPrefs.GetInt("remainTower");
+
+
+            if (GameObject.Find("StageSetting").GetComponent<StageSetting>().getStage() == "easyMode")
+            {
+                PlayerPrefs.SetInt("Stage", 2);
+            }
+            else if (GameObject.Find("StageSetting").GetComponent<StageSetting>().getStage() == "normalMode")
+            {
+                PlayerPrefs.SetInt("Stage", 3);
+            }
+
             SceneManager.LoadScene("GameClear");
+
+
             Debug.Log("Game Clear");
         }
         else if (hp < maXHP / 2f && count == 0)

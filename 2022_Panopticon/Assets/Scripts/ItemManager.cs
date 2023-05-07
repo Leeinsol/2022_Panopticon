@@ -8,7 +8,7 @@ public class ItemManager : MonoBehaviour
     public GameObject energyDrink;
 
     public bool useRandomEnergyDrink = true;
-    public int enertDrinkNum=10;
+    public int energyDrinkNum=10;
 
     float circleRadius = 5f;
     //float gravity = 9.8f;
@@ -24,9 +24,22 @@ public class ItemManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        if (GameObject.Find("StageSetting").GetComponent<StageSetting>().getStage() == "easyMode")
+        {
+            energyDrinkNum = 7;
+        }
+        else if (GameObject.Find("StageSetting").GetComponent<StageSetting>().getStage() == "normalMode")
+        {
+            energyDrinkNum = 10;
+        }
+        else if (GameObject.Find("StageSetting").GetComponent<StageSetting>().getStage() == "hardMode")
+        {
+            energyDrinkNum = 5;
+        }
         if (useRandomEnergyDrink)
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < energyDrinkNum; i++)
             {
                 //Debug.Log(i);
                 Vector2 randomPoint = Random.insideUnitCircle.normalized * Random.Range(minRadius, maxRadius);
