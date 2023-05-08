@@ -13,7 +13,7 @@ public class StageMap : MonoBehaviour
     void Start()
     {
 
-        if (GameObject.Find("StageSetting").GetComponent<StageSetting>().getStage() == "easyMode")
+        if (StageSetting.Instance.getStage() == "easyMode")
         {
             PrisonRoom[0].SetActive(false);
             PrisonRoom[1].SetActive(false);
@@ -24,7 +24,7 @@ public class StageMap : MonoBehaviour
             Tower[0].SetActive(false);
             Tower[1].SetActive(false);
         }
-        else if (GameObject.Find("StageSetting").GetComponent<StageSetting>().getStage() == "normalMode")
+        else if (StageSetting.Instance.getStage() == "normalMode")
         {
             PrisonRoom[1].SetActive(false);
             PrisonStair[1].SetActive(false);

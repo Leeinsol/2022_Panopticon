@@ -6,15 +6,26 @@ using UnityEngine.SceneManagement;
 
 public class title : MonoBehaviour
 {
+    public GameObject[] StageButton;
 
     public GameObject StagePanel;
-    public GameObject[] StageButton;
+
+    
     // Start is called before the first frame update
     void Start()
     {
         Cursor.lockState = CursorLockMode.None;
 
 
+        StageButtonState();
+
+        
+
+
+        StagePanel.SetActive(false);
+    }
+    void StageButtonState()
+    {
         if (PlayerPrefs.GetInt("Stage") == 0)
         {
             StageButton[0].GetComponent<Button>().interactable = false;
@@ -30,16 +41,18 @@ public class title : MonoBehaviour
         {
             StageButton[2].GetComponent<Button>().interactable = false;
         }
-
-        StagePanel.SetActive(false);
     }
-
     // Update is called once per frame
     void Update()
     {
         
     }
     
+
+    
+
+  
+
     public void gameStart()
     {
         SceneManager.LoadScene("Main");
@@ -63,5 +76,10 @@ public class title : MonoBehaviour
 #else
         Application.Quit(); // 어플리케이션 종료
 #endif
+    }
+
+    public void LoadTitle()
+    {
+        SceneManager.LoadScene("Title");
     }
 }

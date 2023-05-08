@@ -39,6 +39,7 @@ public class tower : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         NavMeshAgent[] foundNavMeshAgents = FindObjectsOfType<NavMeshAgent>();
         foreach (NavMeshAgent agent in foundNavMeshAgents)
         {
@@ -91,11 +92,11 @@ public class tower : MonoBehaviour
             //PlayerPrefs.GetInt("remainTower");
 
 
-            if (GameObject.Find("StageSetting").GetComponent<StageSetting>().getStage() == "easyMode")
+            if (StageSetting.Instance.getStage() == "easyMode")
             {
                 PlayerPrefs.SetInt("Stage", 2);
             }
-            else if (GameObject.Find("StageSetting").GetComponent<StageSetting>().getStage() == "normalMode")
+            else if (StageSetting.Instance.getStage() == "normalMode")
             {
                 PlayerPrefs.SetInt("Stage", 3);
             }

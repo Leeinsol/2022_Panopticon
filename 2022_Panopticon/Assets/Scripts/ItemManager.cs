@@ -25,15 +25,15 @@ public class ItemManager : MonoBehaviour
     void Start()
     {
 
-        if (GameObject.Find("StageSetting").GetComponent<StageSetting>().getStage() == "easyMode")
+        if (StageSetting.Instance.getStage() == "easyMode")
         {
             energyDrinkNum = 7;
         }
-        else if (GameObject.Find("StageSetting").GetComponent<StageSetting>().getStage() == "normalMode")
+        else if (StageSetting.Instance.getStage() == "normalMode")
         {
             energyDrinkNum = 10;
         }
-        else if (GameObject.Find("StageSetting").GetComponent<StageSetting>().getStage() == "hardMode")
+        else if (StageSetting.Instance.getStage() == "hardMode")
         {
             energyDrinkNum = 5;
         }

@@ -18,16 +18,19 @@ public class gameClear : MonoBehaviour
         if (PlayerPrefs.GetInt("remainTower")/10000f >= 0.8f)
         {
             Debug.Log("3");
+            StageSetting.Instance.SetStar(StageSetting.Instance.getStage(), 3);
             return;
         }
-        else if (PlayerPrefs.GetInt("remainTower") / 10000f >= 0.5f)
+        else if (PlayerPrefs.GetInt("remainTower") / 10000f >= 0.4f)
         {
             Debug.Log("2");
+            StageSetting.Instance.SetStar(StageSetting.Instance.getStage(), 2);
             threeStar.SetActive(false);
         }
         else
         {
             Debug.Log("1");
+            StageSetting.Instance.SetStar(StageSetting.Instance.getStage(), 1);
             twoStar.SetActive(false);
             threeStar.SetActive(false);
         }

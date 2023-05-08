@@ -50,19 +50,19 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (GameObject.Find("StageSetting").GetComponent<StageSetting>().getStage() == "easyMode")
+        if (StageSetting.Instance.getStage() == "easyMode")
         {
             walkSpeed = 0.4f;
             runSpeed = 0.8f;
             hp = 3;
         }
-        else if (GameObject.Find("StageSetting").GetComponent<StageSetting>().getStage() == "normalMode")
+        else if (StageSetting.Instance.getStage() == "normalMode")
         {
             walkSpeed = 0.5f;
             runSpeed = 1f;
             hp = 3;
         }
-        else if (GameObject.Find("StageSetting").GetComponent<StageSetting>().getStage() == "hardMode")
+        else if (StageSetting.Instance.getStage() == "hardMode")
         {
             walkSpeed = 0.5f;
             runSpeed = 1f;
@@ -97,7 +97,8 @@ public class Enemy : MonoBehaviour
         if (!hasReachedDestination && agent.remainingDistance <= agent.stoppingDistance)
         {
             hasReachedDestination = true;
-            SetDestination();
+            //SetDestination();
+            StartCoroutine(SetDestination());
         }
 
         //agent.SetDestination(targetPos.transform.position);
@@ -159,8 +160,9 @@ public class Enemy : MonoBehaviour
         }
     } 
 
-    void SetDestination()
+    IEnumerator SetDestination()
     {
+        yield return new WaitForSeconds(3f);
         Vector3 directionToCenter = targetPos.position - transform.position;
         directionToCenter.Normalize();
 
