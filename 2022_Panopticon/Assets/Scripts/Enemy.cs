@@ -309,13 +309,15 @@ public class Enemy : MonoBehaviour
 
     void checkAngryState()
     {
-
-        if (GameObject.Find("Canvas").GetComponent<BlinkingText>()!=null &&
-            GameObject.Find("Canvas").GetComponent<BlinkingText>().hideWarning && !isAngry)
+        if (GameObject.Find("Canvas") == null) return;
+        if (GameObject.Find("Canvas").GetComponent<BlinkingText>() != null)
         {
-            isAngry = true;
-            SetAngry();
-            //GameObject.Find("Canvas").GetComponent<BlinkingText>().hideWarning = false;
+            if (GameObject.Find("Canvas").GetComponent<BlinkingText>().hideWarning && !isAngry)
+            {
+                isAngry = true;
+                SetAngry();
+                //GameObject.Find("Canvas").GetComponent<BlinkingText>().hideWarning = false;
+            }
         }
     }
     void SetAngry()

@@ -14,10 +14,6 @@ public class TutorialMovement : TutorialBase
     [SerializeField]
     private Vector3 endPosition;
     bool isCompleted = false;
-    //public bool WInput = false;
-    //public bool AInput = false;
-    //public bool SInput = false;
-    //public bool DInput = false;
     public PlayerState playerState;
     
 

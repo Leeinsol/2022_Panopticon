@@ -299,6 +299,12 @@ public class player_Controller : MonoBehaviour
             ultimateTime = 7;
         }
 
+
+        if (PlayerPrefs.GetInt("isCinemaEnd") == 0)
+        {
+            transform.GetChild(1).gameObject.SetActive(false);
+        }
+
         //Debug.Log("ultimateNum: " + ultimateNum);
         //Debug.Log("ultimateTime: " + ultimateTime);
     }
@@ -1194,6 +1200,11 @@ public class player_Controller : MonoBehaviour
         }
         //Debug.Log("shootBullet");
 
+        if (isSprinting)
+        {
+            isSprinting = false;
+            setGunOrigin();
+        }
         Ray ray = new Ray(theCamera.transform.position, theCamera.transform.forward);
         RaycastHit hitInfo = new RaycastHit();
         Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 2f); 

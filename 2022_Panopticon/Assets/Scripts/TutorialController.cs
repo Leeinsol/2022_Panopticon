@@ -56,7 +56,14 @@ public class TutorialController : MonoBehaviour
         if (!nextSceneName.Equals(""))
         {
             PlayerPrefs.SetInt("Stage", 1);
-            SceneManager.LoadScene(nextSceneName);
+            if (PlayerPrefs.GetInt("isCinemaEnd") == 0)
+            {
+                StageSetting.Instance.setStageHard();
+                SceneManager.LoadScene(nextSceneName);
+
+            }
+            else
+                SceneManager.LoadScene(nextSceneName);
         }
     }
 }
