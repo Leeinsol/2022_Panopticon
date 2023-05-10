@@ -300,10 +300,7 @@ public class player_Controller : MonoBehaviour
         }
 
 
-        if (PlayerPrefs.GetInt("isCinemaEnd") == 0)
-        {
-            transform.GetChild(1).gameObject.SetActive(false);
-        }
+        
 
         //Debug.Log("ultimateNum: " + ultimateNum);
         //Debug.Log("ultimateTime: " + ultimateTime);

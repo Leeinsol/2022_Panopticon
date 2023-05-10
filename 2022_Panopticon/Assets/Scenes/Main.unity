@@ -1838,6 +1838,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MainCamera: {fileID: 963194227}
   CinemaCamera: {fileID: 105005968}
+  playerCanvas: {fileID: 8638261728435809533}
 --- !u!1001 &106488890
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31163,3 +31164,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d8729a0eb69c4c048a21934241c38f02, type: 3}
+--- !u!1 &8638261728435809533 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7448772975807656485, guid: d8729a0eb69c4c048a21934241c38f02,
+    type: 3}
+  m_PrefabInstance: {fileID: 8638261728435809532}
+  m_PrefabAsset: {fileID: 0}

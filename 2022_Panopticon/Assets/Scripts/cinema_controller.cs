@@ -6,6 +6,7 @@ public class cinema_controller : MonoBehaviour
 {
     public Camera MainCamera;
     public Camera CinemaCamera;
+    public GameObject playerCanvas;
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +23,7 @@ public class cinema_controller : MonoBehaviour
         }
         else
         {
+            playerCanvas.SetActive(false);
             ShowCinemaCamera();
         }
     }

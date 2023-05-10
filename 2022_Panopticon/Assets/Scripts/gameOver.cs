@@ -15,8 +15,8 @@ public class gameOver : MonoBehaviour
     void Start()
     {
         remainEnemyText.GetComponent<Text>().text = PlayerPrefs.GetInt("remainEnemy").ToString();
-        //percent = 100-(PlayerPrefs.GetInt("remainEnemy") / (float)PlayerPrefs.GetInt("AllEnemy")) * 100f;
-        percent = 80.1234f;
+        percent = 100 - (PlayerPrefs.GetInt("remainEnemy") / (float)PlayerPrefs.GetInt("AllEnemy")) * 100f;
+        //percent = 80.1234f;
         Debug.Log(percent);
 
         StartCoroutine(AnimateSlider());
