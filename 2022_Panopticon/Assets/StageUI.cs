@@ -5,10 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class StageUI : MonoBehaviour
 {
+    public AudioSource BGMSource;
     // Start is called before the first frame update
     void Start()
     {
-        
+        BGMSource.Play();
     }
 
     // Update is called once per frame
@@ -44,6 +45,7 @@ public class StageUI : MonoBehaviour
 
     public void loadTutorial()
     {
+        StageSetting.Instance.BGMSource = BGMSource;
         SceneManager.LoadScene("Tutorial");
     }
 }

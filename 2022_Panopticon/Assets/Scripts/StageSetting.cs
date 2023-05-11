@@ -17,6 +17,8 @@ public class StageSetting : MonoBehaviour
     [SerializeField]
     Stage stage = Stage.easyMode;
 
+    public AudioSource BGMSource;
+
     private void Awake()
     {
         //PlayerPrefs.SetInt("Stage", 1);

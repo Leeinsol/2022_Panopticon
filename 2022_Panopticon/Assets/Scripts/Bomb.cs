@@ -10,14 +10,19 @@ public class Bomb : MonoBehaviour
 
     public GameObject meshObj;
     public GameObject effectObj;
+    public AudioClip BombSound,explosionSound;
+    AudioSource audioSource;
 
     public RaycastHit[] rayHits = new RaycastHit[0];
     // Start is called before the first frame update
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
+
         //rigidbody.velocity = transform.position * bombSpeed;
         //rigidbody.AddForce(transform.forward * bombSpeed);
+
         StartCoroutine(Explosion());
     }
 
@@ -63,6 +68,8 @@ public class Bomb : MonoBehaviour
         //Debug.Log("rayHits: " + rayHits.Length);
 
         effectObj.gameObject.transform.Find("ExplosionEffect").gameObject.SetActive(true);
+        PlaySoundEffects(explosionSound);
+
         foreach (RaycastHit hitObj in rayHits)
         {
             Enemy enemy = hitObj.transform.GetComponent<Enemy>();
@@ -80,7 +87,10 @@ public class Bomb : MonoBehaviour
 
         //Invoke("DestroyBomb", 1f);
     }
-
+    void PlaySoundEffects(AudioClip audioClip)
+    {
+        audioSource.PlayOneShot(audioClip);
+    }
     void DestroyBomb()
     {
         effectObj.gameObject.transform.Find("ExplosionEffect").gameObject.SetActive(true);
@@ -93,6 +103,8 @@ public class Bomb : MonoBehaviour
         if (collision.gameObject.tag == "ground")
         {
             rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+            PlaySoundEffects(BombSound);
+
             //Destroy(gameObject, 1f);
         }
     }

@@ -137,7 +137,7 @@ public class player_Controller : MonoBehaviour
     // Sound
     public bool useFireSound = true;
     public bool useReloadSound = true;
-    public AudioClip FireSound, oneByOneReloadSound, allReloadSound, getItemSound, changeWaeponSound;
+    public AudioClip FireSound, oneByOneReloadSound, allReloadSound, getItemSound, changeWaeponSound, energySound;
     AudioSource audioSource;
 
     // Timer
@@ -749,6 +749,7 @@ public class player_Controller : MonoBehaviour
     {
         if (Input.GetKeyDown(FireKey))
         {
+            PlaySoundEffects(energySound);
             //Debug.Log("에너지 드링크 사용");
             currentBulletPower = Weapon[3].GetComponent<Item_energyDrink>().energyDrink.getPower();
 
