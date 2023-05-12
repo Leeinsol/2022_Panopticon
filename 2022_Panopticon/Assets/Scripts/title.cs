@@ -11,11 +11,18 @@ public class title : MonoBehaviour
 
     public GameObject StagePanel;
 
+    public AudioClip titleMusic;
     
     // Start is called before the first frame update
     void Start()
     {
         Cursor.lockState = CursorLockMode.None;
+        if (StageSetting.Instance.BGMSource.clip != titleMusic)
+        {
+            StageSetting.Instance.BGMSource.clip = titleMusic;
+            StageSetting.Instance.BGMSource.Play();
+
+        }
 
 
         StageButtonState();

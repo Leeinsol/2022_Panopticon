@@ -561,6 +561,7 @@ MonoBehaviour:
   - {fileID: 2435362813441937762}
   - {fileID: 2435362811830246189}
   StagePanel: {fileID: 2435362812871742052}
+  titleMusic: {fileID: 8300000, guid: e076ca828cd70dd47807263209e9b586, type: 3}
 --- !u!114 &615350290
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -573,6 +574,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aebea382fadb364095a26301fc2ea31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BGMSource: {fileID: 0}
 --- !u!1 &738862101
 GameObject:
   m_ObjectHideFlags: 0

@@ -17,6 +17,7 @@ public class tower : MonoBehaviour
     public GameObject WarningText;
 
     List<NavMeshAgent> navMeshAgents = new List<NavMeshAgent>();
+    public AudioClip bgm;
 
     int enemyNum;
 
@@ -39,6 +40,8 @@ public class tower : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        StageSetting.Instance.BGMSource.clip = bgm;
+        StageSetting.Instance.BGMSource.Play();
 
         NavMeshAgent[] foundNavMeshAgents = FindObjectsOfType<NavMeshAgent>();
         foreach (NavMeshAgent agent in foundNavMeshAgents)

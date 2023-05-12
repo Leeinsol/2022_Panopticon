@@ -9,7 +9,7 @@ public class StageUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        BGMSource.Play();
+        //BGMSource.Play();
     }
 
     // Update is called once per frame

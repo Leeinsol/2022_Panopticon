@@ -12,11 +12,18 @@ public class TutorialController : MonoBehaviour
 
     private TutorialBase currentTutorial = null;
     private int currentIndex = -1;
+    public AudioClip tutorialMusic;
 
     // Start is called before the first frame update
     void Start()
     {
-        StageSetting.Instance.BGMSource.Play();
+        if (StageSetting.Instance.BGMSource.clip != tutorialMusic)
+        {
+            StageSetting.Instance.BGMSource.clip = tutorialMusic;
+            StageSetting.Instance.BGMSource.Play();
+
+        }
+
         SetNextTutorial();
     }
 

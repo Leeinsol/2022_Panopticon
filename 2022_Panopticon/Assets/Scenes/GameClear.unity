@@ -703,11 +703,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91faa6e2eac7b984b967bf0ade8cf52d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StagePanel: {fileID: 123141211}
   StageButton:
   - {fileID: 123141210}
   - {fileID: 123141209}
   - {fileID: 123141207}
+  StagePanel: {fileID: 123141211}
+  titleMusic: {fileID: 8300000, guid: e076ca828cd70dd47807263209e9b586, type: 3}
 --- !u!114 &375258025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -720,6 +721,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aebea382fadb364095a26301fc2ea31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BGMSource: {fileID: 0}
 --- !u!1 &490475135
 GameObject:
   m_ObjectHideFlags: 0

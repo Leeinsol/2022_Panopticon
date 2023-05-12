@@ -8167,7 +8167,6 @@ GameObject:
   - component: {fileID: 865138880}
   - component: {fileID: 865138881}
   - component: {fileID: 865138882}
-  - component: {fileID: 865138883}
   m_Layer: 0
   m_Name: TutorialController
   m_TagString: Untagged
@@ -8182,7 +8181,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 865138877}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dbeb455d21f72dd489410bd3882cb77c, type: 3}
   m_Name: 
@@ -8218,6 +8217,7 @@ MonoBehaviour:
   - {fileID: 1131496952}
   - {fileID: 734177542}
   nextSceneName: Main
+  tutorialMusic: {fileID: 0}
 --- !u!4 &865138879
 Transform:
   m_ObjectHideFlags: 0
@@ -8281,6 +8281,7 @@ MonoBehaviour:
   - {fileID: 191527004}
   - {fileID: 1715615854}
   nextSceneName: 
+  tutorialMusic: {fileID: 0}
 --- !u!114 &865138881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8311,6 +8312,7 @@ MonoBehaviour:
   - {fileID: 1131496952}
   - {fileID: 734177542}
   nextSceneName: 
+  tutorialMusic: {fileID: 0}
 --- !u!114 &865138882
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8318,7 +8320,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 865138877}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dbeb455d21f72dd489410bd3882cb77c, type: 3}
   m_Name: 
@@ -8328,102 +8330,7 @@ MonoBehaviour:
   - {fileID: 1131496952}
   - {fileID: 734177542}
   nextSceneName: Main
---- !u!82 &865138883
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 865138877}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  tutorialMusic: {fileID: 8300000, guid: 318eca451de165841888fddd006e7865, type: 3}
 --- !u!1001 &868891063
 PrefabInstance:
   m_ObjectHideFlags: 0
