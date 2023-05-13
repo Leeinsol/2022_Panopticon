@@ -858,7 +858,7 @@ public class player_Controller : MonoBehaviour
             RaycastHit hitInfo = new RaycastHit();
 
             
-            if (Physics.Raycast(ray, out hitInfo))
+            if (Physics.Raycast(ray, out hitInfo, Mathf.Infinity, ~LayerMask.GetMask("Ignore Raycast")))
             {
                 Vector3 forwardPosition = theCamera.transform.position + theCamera.transform.forward * 2f;
                 Vector3 nextVector = hitInfo.point - transform.position;
