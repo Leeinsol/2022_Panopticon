@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using DG.Tweening;
-
 public class title : MonoBehaviour
 {
     public GameObject[] StageButton;
@@ -32,7 +30,6 @@ public class title : MonoBehaviour
 
         StagePanel.SetActive(false);
 
-        DOTween.Init();
     }
     void StageButtonState()
     {
