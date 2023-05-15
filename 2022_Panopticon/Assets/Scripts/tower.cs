@@ -95,11 +95,11 @@ public class tower : MonoBehaviour
             //PlayerPrefs.GetInt("remainTower");
 
 
-            if (StageSetting.Instance.getStage() == "easyMode")
+            if (StageSetting.Instance.getStage() == "easy")
             {
                 PlayerPrefs.SetInt("Stage", 2);
             }
-            else if (StageSetting.Instance.getStage() == "normalMode")
+            else if (StageSetting.Instance.getStage() == "normal")
             {
                 PlayerPrefs.SetInt("Stage", 3);
             }

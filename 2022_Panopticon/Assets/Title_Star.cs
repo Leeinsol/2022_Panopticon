@@ -38,54 +38,102 @@ public class Title_Star : MonoBehaviour
     void StageStar()
     {
         FindStarImage();
-
-        if (PlayerPrefs.GetInt("easyStar") == 2)
+        if (StageSetting.Instance.GetStarNum("easy")== 2)
         {
             easyStars[2].SetActive(false);
         }
-        else if (PlayerPrefs.GetInt("easyStar") == 1)
+        else if (StageSetting.Instance.GetStarNum("easy") == 1)
         {
             easyStars[1].SetActive(false);
             easyStars[2].SetActive(false);
         }
-        else if (PlayerPrefs.GetInt("easyStar") == 0)
+        else if (StageSetting.Instance.GetStarNum("easy")== 0)
         {
             easyStars[0].SetActive(false);
             easyStars[1].SetActive(false);
             easyStars[2].SetActive(false);
         }
 
-        if (PlayerPrefs.GetInt("normalStar") == 2)
+        if (StageSetting.Instance.GetStarNum("normal") == 2)
         {
             normalStars[2].SetActive(false);
         }
-        else if (PlayerPrefs.GetInt("normalStar") == 1)
+        else if (StageSetting.Instance.GetStarNum("normal") == 1)
         {
             normalStars[1].SetActive(false);
             normalStars[2].SetActive(false);
         }
-        else if (PlayerPrefs.GetInt("normalStar") == 0)
+        else if (StageSetting.Instance.GetStarNum("normal") == 0)
         {
             normalStars[0].SetActive(false);
             normalStars[1].SetActive(false);
             normalStars[2].SetActive(false);
         }
 
-        if (PlayerPrefs.GetInt("hardStar") == 2)
+        if (StageSetting.Instance.GetStarNum("hard") == 2)
         {
             hardStars[2].SetActive(false);
         }
-        else if (PlayerPrefs.GetInt("hardStar") == 1)
+        else if (StageSetting.Instance.GetStarNum("hard") == 1)
         {
             hardStars[1].SetActive(false);
             hardStars[2].SetActive(false);
         }
-        else if (PlayerPrefs.GetInt("hardStar") == 0)
+        else if (StageSetting.Instance.GetStarNum("hard") == 0)
         {
             hardStars[0].SetActive(false);
             hardStars[1].SetActive(false);
             hardStars[2].SetActive(false);
         }
+
+
+        //if (PlayerPrefs.GetInt("easyStar") == 2)
+        //{
+        //    easyStars[2].SetActive(false);
+        //}
+        //else if (PlayerPrefs.GetInt("easyStar") == 1)
+        //{
+        //    easyStars[1].SetActive(false);
+        //    easyStars[2].SetActive(false);
+        //}
+        //else if (PlayerPrefs.GetInt("easyStar") == 0)
+        //{
+        //    easyStars[0].SetActive(false);
+        //    easyStars[1].SetActive(false);
+        //    easyStars[2].SetActive(false);
+        //}
+
+        //if (PlayerPrefs.GetInt("normalStar") == 2)
+        //{
+        //    normalStars[2].SetActive(false);
+        //}
+        //else if (PlayerPrefs.GetInt("normalStar") == 1)
+        //{
+        //    normalStars[1].SetActive(false);
+        //    normalStars[2].SetActive(false);
+        //}
+        //else if (PlayerPrefs.GetInt("normalStar") == 0)
+        //{
+        //    normalStars[0].SetActive(false);
+        //    normalStars[1].SetActive(false);
+        //    normalStars[2].SetActive(false);
+        //}
+
+        //if (PlayerPrefs.GetInt("hardStar") == 2)
+        //{
+        //    hardStars[2].SetActive(false);
+        //}
+        //else if (PlayerPrefs.GetInt("hardStar") == 1)
+        //{
+        //    hardStars[1].SetActive(false);
+        //    hardStars[2].SetActive(false);
+        //}
+        //else if (PlayerPrefs.GetInt("hardStar") == 0)
+        //{
+        //    hardStars[0].SetActive(false);
+        //    hardStars[1].SetActive(false);
+        //    hardStars[2].SetActive(false);
+        //}
     }
     void offStarImage(List<GameObject> list)
     {

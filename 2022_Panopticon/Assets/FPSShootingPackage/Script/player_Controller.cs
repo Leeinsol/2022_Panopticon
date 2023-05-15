@@ -280,19 +280,19 @@ public class player_Controller : MonoBehaviour
         ultimateTimer = ultimateTime;
 
 
-        if (StageSetting.Instance.getStage() == "easyMode")
+        if (StageSetting.Instance.getStage() == "easy")
         {
             Debug.Log("easy");
             ultimateNum = 30;
             ultimateTime = 12;
         }
-        else if (StageSetting.Instance.getStage() == "normalMode")
+        else if (StageSetting.Instance.getStage() == "normal")
         {
             Debug.Log("normal");
             ultimateNum = 50;
             ultimateTime = 10;
         }
-        else if (StageSetting.Instance.getStage() == "hardMode")
+        else if (StageSetting.Instance.getStage() == "hard")
         {
             Debug.Log("hard");
             ultimateNum = 100;

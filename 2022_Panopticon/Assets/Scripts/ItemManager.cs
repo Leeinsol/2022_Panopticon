@@ -25,15 +25,15 @@ public class ItemManager : MonoBehaviour
     void Start()
     {
 
-        if (StageSetting.Instance.getStage() == "easyMode")
+        if (StageSetting.Instance.getStage() == "easy")
         {
             energyDrinkNum = 7;
         }
-        else if (StageSetting.Instance.getStage() == "normalMode")
+        else if (StageSetting.Instance.getStage() == "normal")
         {
             energyDrinkNum = 10;
         }
-        else if (StageSetting.Instance.getStage() == "hardMode")
+        else if (StageSetting.Instance.getStage() == "hard")
         {
             energyDrinkNum = 5;
         }

@@ -50,19 +50,19 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (StageSetting.Instance.getStage() == "easyMode")
+        if (StageSetting.Instance.getStage() == "easy")
         {
             walkSpeed = 0.4f;
             runSpeed = 0.8f;
             hp = 3;
         }
-        else if (StageSetting.Instance.getStage() == "normalMode")
+        else if (StageSetting.Instance.getStage() == "normal")
         {
             walkSpeed = 0.5f;
             runSpeed = 1f;
             hp = 3;
         }
-        else if (StageSetting.Instance.getStage() == "hardMode")
+        else if (StageSetting.Instance.getStage() == "hard")
         {
             walkSpeed = 0.5f;
             runSpeed = 1f;

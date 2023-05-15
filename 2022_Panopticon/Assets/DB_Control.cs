@@ -9,7 +9,7 @@ public class DB_Control : MonoBehaviour
 {
     MySqlConnection sqlconn = null;
     private string sqlDBip = "127.0.0.1";
-    private string sqlDBname = "test1";
+    private string sqlDBname = "soldb";
     private string sqlDBid = "root";
     private string sqlDBpw = "bitnami";
     
