@@ -30,11 +30,6 @@ enum Stage
 
 public class StageSetting : MonoBehaviour
 {
-    private static StageSetting instance = null;
-
-    [SerializeField]
-    Stage stage = Stage.easy;
-
     public AudioSource BGMSource;
 
 
@@ -42,12 +37,17 @@ public class StageSetting : MonoBehaviour
     public List<StageStar> stageList, myStageList;
     string filePath;
 
+
+    private static StageSetting instance = null;
+
+    [SerializeField]
+    Stage stage = Stage.easy;
+
     private void Awake()
     {
-        //PlayerPrefs.SetInt("Stage", 1);
-
         if (instance == null)
         {
+            Debug.Log("instance==null");
             instance = this;
             DontDestroyOnLoad(this.gameObject);
         }
@@ -55,29 +55,6 @@ public class StageSetting : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        //PlayerPrefs.SetInt("easyStar", 0);
-        string[] line = StageDatabase.text.Substring(0, StageDatabase.text.Length - 1).Split('\n');
-        for (int i = 0; i < line.Length; i++)
-        {
-            string[] row = line[i].Split('\t');
-
-            stageList.Add(new StageStar(row[0], row[1]));
-        }
-        filePath = Application.persistentDataPath + "/MyStageText.txt";
-
-        //Save();
-        Load();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
     public static StageSetting Instance
     {
@@ -90,6 +67,27 @@ public class StageSetting : MonoBehaviour
             return instance;
         }
     }
+    // Start is called before the first frame update
+    void Start()
+    {
+        string[] line = StageDatabase.text.Substring(0, StageDatabase.text.Length - 1).Split('\n');
+        for (int i = 0; i < line.Length; i++)
+        {
+            string[] row = line[i].Split('\t');
+
+            stageList.Add(new StageStar(row[0], row[1]));
+        }
+        filePath = Application.persistentDataPath + "/MyStageText.txt";
+
+        Load();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+    
 
     public string getStage()
     {
@@ -137,24 +135,6 @@ public class StageSetting : MonoBehaviour
         if (GetStarNum(mode) < currentStar)
             SetStarNum(mode, currentStar);
     }
-    void SetEasyStar(int currentStar)
-    {
-        if (PlayerPrefs.GetInt("easyStar") < currentStar)
-            PlayerPrefs.SetInt("easyStar", currentStar);
-    }
-
-    void SetNormalStar(int currentStar)
-    {
-        if (PlayerPrefs.GetInt("normalStar") < currentStar)
-            PlayerPrefs.SetInt("normalStar", currentStar);
-    }
-
-    void SetHardStar(int currentStar)
-    {
-        if (PlayerPrefs.GetInt("hardStar") < currentStar) 
-            PlayerPrefs.SetInt("hardStar", currentStar);
-    }
-
     void Save()
     {
         string jdata = JsonUtility.ToJson(new Serialization<StageStar>(myStageList));
@@ -203,4 +183,5 @@ public class StageSetting : MonoBehaviour
         Save();
         Load();
     }
+
 }

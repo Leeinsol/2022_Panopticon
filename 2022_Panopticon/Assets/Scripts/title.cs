@@ -8,6 +8,8 @@ public class title : MonoBehaviour
     public GameObject[] StageButton;
 
     public GameObject StagePanel;
+    public GameObject SettingPanel;
+    public GameObject QuitPanel;
 
     public AudioClip titleMusic;
     
@@ -52,13 +54,21 @@ public class title : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (QuitPanel.activeSelf)
+            {
+                setQuitPanel(false);
+
+            }
+            else
+            {
+                setQuitPanel(true);
+
+            }
+        }
     }
     
-
-    
-
-  
 
     public void gameStart()
     {
@@ -69,13 +79,20 @@ public class title : MonoBehaviour
     {
         StagePanel.SetActive(false);
     }
+    public void closeSettingPanel()
+    {
+        SettingPanel.SetActive(false);
+    }
 
 
     public void setStage()
     {
         StagePanel.SetActive(true);
     } 
-
+    public void setting()
+    {
+        SettingPanel.SetActive(true);
+    }
     public void QuitGame()
     {
 #if UNITY_EDITOR
@@ -88,5 +105,15 @@ public class title : MonoBehaviour
     public void LoadTitle()
     {
         SceneManager.LoadScene("Title");
+    }
+
+    public void Reset()
+    {
+        StageSetting.Instance.ResetStar();
+    }
+
+    public void setQuitPanel(bool state)
+    {
+        QuitPanel.SetActive(state);
     }
 }

@@ -194,7 +194,7 @@ public class player_Controller : MonoBehaviour
 
         // initialize
         rb = GetComponent<Rigidbody>();
-        audioSource = GetComponent<AudioSource>();
+        audioSource = StageSetting.Instance.gameObject.transform.GetChild(0).GetComponent<AudioSource>();
         camHandle = transform.Find("CamHandle");
         GunHandle = theCamera.transform.Find("GunHandle").gameObject;
 
@@ -367,9 +367,9 @@ public class player_Controller : MonoBehaviour
         }
 
         // camera
-        if (useCameraRotationVerticality) CameraRotationVerticality();
+        if (useCameraRotationVerticality && Time.timeScale > 0) CameraRotationVerticality();
 
-        if (useCameraRotationHorizontality) CameraRotationHorizontality();
+        if (useCameraRotationHorizontality && Time.timeScale > 0) CameraRotationHorizontality();
 
         // jump
         if (useJump) Jump();
@@ -383,7 +383,7 @@ public class player_Controller : MonoBehaviour
         if (!isZooming && !isSprinting) theCamera.fieldOfView = defaultFOV;
 
         // Fire
-        if (useGun && Weapon[0].activeSelf)
+        if (useGun && Weapon[0].activeSelf && Time.timeScale > 0)
         {
             //checkFireState();
             //Fire();
@@ -906,7 +906,7 @@ public class player_Controller : MonoBehaviour
         //changeWeaponPrevious(oldIndex, scrollDelta);
         //changeWeaponNext(oldIndex, scrollDelta);
 
-        if(scrollDelta.y != 0)
+        if(scrollDelta.y != 0 && Time.timeScale > 0)
         {
             if (scrollDelta.y > 0)
             {

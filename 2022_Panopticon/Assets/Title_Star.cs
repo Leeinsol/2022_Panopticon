@@ -16,9 +16,7 @@ public class Title_Star : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StageStar();
     }
-    
 
     void FindStarImage()
     {
@@ -145,6 +143,6 @@ public class Title_Star : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        StageStar();
     }
 }
