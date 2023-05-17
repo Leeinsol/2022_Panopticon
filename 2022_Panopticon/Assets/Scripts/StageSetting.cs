@@ -23,6 +23,7 @@ public class StageStar
 }
 enum Stage
 {
+    tutorial,
     easy,
     normal,
     hard
@@ -31,6 +32,7 @@ enum Stage
 public class StageSetting : MonoBehaviour
 {
     public AudioSource BGMSource;
+    public AudioSource SfxSource;
 
 
     public TextAsset StageDatabase;
@@ -41,10 +43,11 @@ public class StageSetting : MonoBehaviour
     private static StageSetting instance = null;
 
     [SerializeField]
-    Stage stage = Stage.easy;
+    Stage stage = Stage.tutorial;
 
     private void Awake()
     {
+        getAudioSource();
         if (instance == null)
         {
             Debug.Log("instance==null");
@@ -88,7 +91,11 @@ public class StageSetting : MonoBehaviour
 
     }
     
+    public void getAudioSource()
+    {
+        BGMSource = GetComponent<AudioSource>();
 
+    }
     public string getStage()
     {
         return stage.ToString();

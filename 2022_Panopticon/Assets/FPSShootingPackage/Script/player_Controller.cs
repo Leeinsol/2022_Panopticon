@@ -189,6 +189,7 @@ public class player_Controller : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ultimateNum = 100;
         // hide cursor
         Cursor.lockState = CursorLockMode.Locked;
 

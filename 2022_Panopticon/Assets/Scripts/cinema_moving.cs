@@ -210,7 +210,8 @@ void moveRotateLeft()
     void loadTitle()
     {
         PlayerPrefs.SetInt("isCinemaEnd", 1);
-        SceneManager.LoadScene("Title");
+        StageSetting.Instance.setStageEasy();
+        SceneManager.LoadScene("Main");
     }
 
     void setCameraPosition()

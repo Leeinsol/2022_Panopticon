@@ -20,6 +20,7 @@ public class DialogSystem : MonoBehaviour
 
 	private	int currentIndex = -1;
 	private	bool isTypingEffect = false;
+	public AudioClip TypingSound;
 
 	public void Setup()
 	{
@@ -37,6 +38,8 @@ public class DialogSystem : MonoBehaviour
 				StopCoroutine("TypingText");
 				isTypingEffect = false;
 				textDialogues.text = dialogs[currentIndex].dialogue;
+				StageSetting.Instance.SfxSource.Stop();
+
 				objectArrows.SetActive(true);
 
 				return false;
@@ -81,7 +84,9 @@ public class DialogSystem : MonoBehaviour
 		int index = 0;
 		
 		isTypingEffect = true;
-		 
+		StageSetting.Instance.SfxSource.clip = TypingSound;
+		StageSetting.Instance.SfxSource.Play();
+
 		while ( index < dialogs[currentIndex].dialogue.Length )
 		{
 			textDialogues.text = dialogs[currentIndex].dialogue.Substring(0, index);
@@ -92,7 +97,8 @@ public class DialogSystem : MonoBehaviour
 		}
 
 		isTypingEffect = false;
-		 
+		StageSetting.Instance.SfxSource.Stop();
+
 		objectArrows.SetActive(true);
 	}
 }

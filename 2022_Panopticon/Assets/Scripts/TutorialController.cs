@@ -14,9 +14,11 @@ public class TutorialController : MonoBehaviour
     private int currentIndex = -1;
     public AudioClip tutorialMusic;
 
+    public GameObject SettingPanel;
     // Start is called before the first frame update
     void Start()
     {
+        StageSetting.Instance.getAudioSource();
         if (StageSetting.Instance.BGMSource.clip != tutorialMusic)
         {
             StageSetting.Instance.BGMSource.clip = tutorialMusic;
@@ -34,6 +36,28 @@ public class TutorialController : MonoBehaviour
         {
             currentTutorial.Execute(this);
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (SettingPanel.activeSelf)
+            {
+                Time.timeScale = 1;
+                SettingPanel.SetActive(false);
+                Cursor.lockState = CursorLockMode.Locked;
+
+            }
+            else
+            {
+                Time.timeScale = 0;
+                SettingPanel.SetActive(true);
+                Cursor.lockState = CursorLockMode.None;
+            }
+        }
+    }
+
+    public void setSettingPanel()
+    {
+        SettingPanel.SetActive(false);
     }
 
     public void SetNextTutorial()

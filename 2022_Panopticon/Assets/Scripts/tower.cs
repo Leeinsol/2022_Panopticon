@@ -147,13 +147,13 @@ public class tower : MonoBehaviour
         hp -= power;
         //if (!isFlachingUI) isFlachingUI = true;
         //else return;
-        StartCoroutine("FlashUI");
+        StartCoroutine(FlashUI());
 
     }
 
     IEnumerator FlashUI()
     {
-       
+        Debug.Log("½ÇÇà");
         towerHpUI.color = Color.white;
         yield return new WaitForSeconds(0.2f);
         towerHpUI.color = originalColor;

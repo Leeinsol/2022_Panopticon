@@ -21,26 +21,17 @@ public class StageUI : MonoBehaviour
     public void StageEasy()
     {
         StageSetting.Instance.setStageEasy();
-        loadMain();
     }
 
     public void StageNormal()
     {
         StageSetting.Instance.setStageNormal();
-        loadMain();
 
     }
 
     public void StageHard()
     {
         StageSetting.Instance.setStageHard();
-
-        loadMain();
-    }
-
-    public void loadMain()
-    {
-        SceneManager.LoadScene("Main");
     }
 
     public void loadTutorial()

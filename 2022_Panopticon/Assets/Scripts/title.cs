@@ -1,21 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 public class title : MonoBehaviour
 {
-    public GameObject[] StageButton;
 
     public GameObject StagePanel;
     public GameObject SettingPanel;
     public GameObject QuitPanel;
+    public GameObject ResetPanel;
+    public GameObject AllresetButton;
+    public GameObject ResetButton;
 
     public AudioClip titleMusic;
     
     // Start is called before the first frame update
     void Start()
     {
+        Time.timeScale = 1;
         Cursor.lockState = CursorLockMode.None;
         if (StageSetting.Instance.BGMSource.clip != titleMusic)
         {
@@ -23,34 +25,10 @@ public class title : MonoBehaviour
             StageSetting.Instance.BGMSource.Play();
 
         }
-
-
-        StageButtonState();
-
-        
-
-
         StagePanel.SetActive(false);
 
     }
-    void StageButtonState()
-    {
-        if (PlayerPrefs.GetInt("Stage") == 0)
-        {
-            StageButton[0].GetComponent<Button>().interactable = false;
-            StageButton[1].GetComponent<Button>().interactable = false;
-            StageButton[2].GetComponent<Button>().interactable = false;
-        }
-        else if (PlayerPrefs.GetInt("Stage") == 1)
-        {
-            StageButton[1].GetComponent<Button>().interactable = false;
-            StageButton[2].GetComponent<Button>().interactable = false;
-        }
-        else if (PlayerPrefs.GetInt("Stage") == 2)
-        {
-            StageButton[2].GetComponent<Button>().interactable = false;
-        }
-    }
+    
     // Update is called once per frame
     void Update()
     {
@@ -67,13 +45,10 @@ public class title : MonoBehaviour
 
             }
         }
-    }
-    
 
-    public void gameStart()
-    {
-        SceneManager.LoadScene("Main");
     }
+
+ 
 
     public void closeStagePanel()
     {
@@ -83,7 +58,6 @@ public class title : MonoBehaviour
     {
         SettingPanel.SetActive(false);
     }
-
 
     public void setStage()
     {
@@ -115,5 +89,29 @@ public class title : MonoBehaviour
     public void setQuitPanel(bool state)
     {
         QuitPanel.SetActive(state);
+    }
+    public void setResetPanel(bool state)
+    {
+        ResetPanel.SetActive(state);
+    }
+
+    public void setAllresetButton()
+    {
+        AllresetButton.SetActive(false);
+        ResetButton.SetActive(false);
+    
+        AllresetButton.SetActive(true);        
+    }
+    public void setResetButton()
+    {
+        AllresetButton.SetActive(false);
+        ResetButton.SetActive(false);
+        
+        ResetButton.SetActive(true);
+    }
+
+    public void resetPlayerPrefs()
+    {
+        PlayerPrefs.DeleteAll();
     }
 }
