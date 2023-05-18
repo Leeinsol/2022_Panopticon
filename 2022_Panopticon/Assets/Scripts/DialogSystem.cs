@@ -31,7 +31,7 @@ public class DialogSystem : MonoBehaviour
 
 	public bool UpdateDialog()
 	{
-		if ( Input.GetKeyDown(keyCodeSkip) || Input.GetMouseButtonDown(0) )
+		if ( Input.GetKeyDown(keyCodeSkip) )
 		{ 
 			if ( isTypingEffect == true )
 			{ 

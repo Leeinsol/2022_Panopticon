@@ -48,6 +48,8 @@ public class TutorialController : MonoBehaviour
             }
             else
             {
+                StageSetting.Instance.SfxSource.Stop();
+
                 Time.timeScale = 0;
                 SettingPanel.SetActive(true);
                 Cursor.lockState = CursorLockMode.None;
@@ -57,7 +59,9 @@ public class TutorialController : MonoBehaviour
 
     public void setSettingPanel()
     {
+        Time.timeScale = 1;
         SettingPanel.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void SetNextTutorial()

@@ -425,14 +425,14 @@ public class player_Controller : MonoBehaviour
         }
 
         // getItem
-        if (Weapon[1].activeSelf)
+        if (Weapon[1].activeSelf && Time.timeScale > 0)
         {
             getItem();
             setRemainItemUI(false);
         }
 
         // Bomb
-        if (useGun && Weapon[2].activeSelf)
+        if (useGun && Weapon[2].activeSelf && Time.timeScale > 0)
         {
             bombFire();
             if (useReload)
@@ -445,7 +445,7 @@ public class player_Controller : MonoBehaviour
         }
 
         // Energydrink 
-        if (useGun && Weapon[3].activeSelf)
+        if (useGun && Weapon[3].activeSelf && Time.timeScale > 0)
         {
             setRemainItemUI(true);
             eatEnergyDrink();

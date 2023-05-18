@@ -14181,6 +14181,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7448772974509906306, guid: d8729a0eb69c4c048a21934241c38f02,
         type: 3}
+      propertyPath: energySound
+      value: 
+      objectReference: {fileID: 8300000, guid: f411c19da87db914db79e056b2f10c5e, type: 3}
+    - target: {fileID: 7448772974509906306, guid: d8729a0eb69c4c048a21934241c38f02,
+        type: 3}
       propertyPath: sprintSpeed
       value: 25
       objectReference: {fileID: 0}
