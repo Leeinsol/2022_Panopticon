@@ -145,8 +145,6 @@ public class StageSetting : MonoBehaviour
     void Save()
     {
         string jdata = JsonUtility.ToJson(new Serialization<StageStar>(myStageList));
-        //byte[] bytes = System.Text.Encoding.UTF8.GetBytes(jdata);
-        //string code = System.Convert.ToBase64String(bytes);
 
         File.WriteAllText(filePath, jdata);
     }
@@ -154,10 +152,6 @@ public class StageSetting : MonoBehaviour
     void Load()
     {
         if (!File.Exists(filePath)) { ResetStar(); return; }
-        //string code = File.ReadAllText(filePath);
-        //byte[] bytes = System.Convert.FromBase64String(code);
-        //string jdata = System.Text.Encoding.UTF8.GetString(bytes);
-
 
         string jdata = File.ReadAllText(filePath);
         myStageList = JsonUtility.FromJson<Serialization<StageStar>>(jdata).target;
