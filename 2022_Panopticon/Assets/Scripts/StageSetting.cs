@@ -120,22 +120,6 @@ public class StageSetting : MonoBehaviour
     public void SetStar(string mode, int currentStar)
     {
         SaveStarNum(mode, currentStar);
-        //if (mode == "easy")
-        //{
-        //    SetEasyStar(currentStar);
-        //    Debug.Log(PlayerPrefs.GetInt("easyStar"));
-
-        //}
-        //else if (mode == "normal")
-        //{
-        //    SetNormalStar(currentStar);
-        //    Debug.Log(PlayerPrefs.GetInt("normalStar"));
-        //}
-        //else if (mode == "hard")
-        //{
-        //    SetHardStar(currentStar);
-        //    Debug.Log(PlayerPrefs.GetInt("hardStar"));
-        //}
     }
     void SaveStarNum(string mode, int currentStar)
     {
