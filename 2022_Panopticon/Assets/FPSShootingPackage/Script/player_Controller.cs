@@ -313,17 +313,6 @@ public class player_Controller : MonoBehaviour
         BombDamage = damage;
     }
 
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    Instantiate(BombModel, transform.position, transform.rotation);
-
-    //    Collider[] colliders = Physics.OverlapSphere(transform.position, BombRadius);
-    //    foreach(Collider hit in colliders)
-    //    {
-    //        player_Controller
-    //    }
-    //}
-
     // Update is called once per frame
     void Update()
     {
@@ -383,10 +372,6 @@ public class player_Controller : MonoBehaviour
         // Fire
         if (useGun && Weapon[0].activeSelf && Time.timeScale > 0)
         {
-            //checkFireState();
-            //Fire();
-            //checkUltimate();
-
             if (ultimateGauge < ultimateNum)
             {
                 Fire();
@@ -403,12 +388,6 @@ public class player_Controller : MonoBehaviour
             {
                 ultimateFire();
             }
-
-            //if (ultimateGauge >= 3)
-            //{
-            //    //Debug.Log(fireTimer);
-            //    ultimateFire();
-            //}
         }
 
         if (ultimateGauge >= ultimateNum)
@@ -450,34 +429,10 @@ public class player_Controller : MonoBehaviour
         }
         powerUp();
         changeWeapon();
-
-        //Debug.Log(energyTimer);
-        //Debug.Log(isPowerUp);
-
-        
-        
-        //shootUltimateBullet();
-        //Debug.Log("energy: " + WeaponNum[2]);
     }
 
-    void checkFireState()
-    {
-        if (ultimateGauge < ultimateNum)
-            Fire();
-        
-        else
-            ultimateFire();
-
-
-        //if (ultimateGauge >= 3)
-        //{
-        //    //Debug.Log(fireTimer);
-        //    checkUltimate();
-        //}
-    }
     void setUltimateTimer()
     {
-        //Debug.Log(ultimateTimer);
 
         ultimateTimer -= Time.deltaTime;
         if (ultimateTimer < 0)
