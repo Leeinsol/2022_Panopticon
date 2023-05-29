@@ -457,15 +457,10 @@ public class player_Controller : MonoBehaviour
         if (Input.GetKey(FireKey))
         {
             shootUltimateBullet();
-            //UltimateFire();
             if (fireTimer < fireRate) fireTimer += Time.deltaTime;
-            //else shootUltimateBullet();
         }
 
         if (Input.GetKeyDown(FireKey)) fireTimer = fireRate;
-
-       
-
     }
 
     void showClosestCEnemy()
@@ -504,9 +499,7 @@ public class player_Controller : MonoBehaviour
 
                 setUltimateCrossHair(1f);
 
-                // 에너미의 중앙으로 에임 옮기기
                 Vector3 colliderCenter = new Vector3(closestCollider.gameObject.transform.position.x, 1.7f, closestCollider.gameObject.transform.position.z);
-                //Vector3 colliderCenter = closestCollider.bounds.center;
 
                 Vector3 screenPosition = Camera.main.WorldToScreenPoint(colliderCenter);
 
@@ -514,13 +507,6 @@ public class player_Controller : MonoBehaviour
 
                 RectTransformUtility.ScreenPointToLocalPointInRectangle(playerCanvas.transform as RectTransform, screenPosition, playerCanvas.worldCamera, out localPosition);
                 ultimateCrossHair.GetComponent<RectTransform>().anchoredPosition = localPosition;
-            }
-
-            else
-            {
-                //Debug.Log("null");
-
-                //Material material = ultimateCrossHair.transform.GetChild(0).GetComponent<Renderer>().material;
             }
         }
     }
