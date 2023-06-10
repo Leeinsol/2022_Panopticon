@@ -668,22 +668,6 @@ public class player_Controller : MonoBehaviour
     }
 
 
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    // get EnergyDrink
-    //    if (collision.transform.parent != null && collision.transform.parent.gameObject.tag == "EnergyDrink")
-    //    {
-    //        WeaponNum[2]++;
-    //        Destroy(collision.gameObject);
-    //    }
-
-    //    if (collision.transform.gameObject.tag == "Bomb")
-    //    {
-    //        WeaponNum[1]++;
-    //        Destroy(collision.gameObject);
-    //    }
-    //}
-
     void eatEnergyDrink()
     {
         if (Input.GetKeyDown(FireKey))
@@ -750,8 +734,6 @@ public class player_Controller : MonoBehaviour
             isPowerUp = false;
         }
     }
-
-
     void BombUI()
     {
         //Debug.Log("set UI");
@@ -835,7 +817,6 @@ public class player_Controller : MonoBehaviour
             }
         }
     }
-
     void changeWeapon()
     {
         int oldIndex = currentIndex;
@@ -914,8 +895,6 @@ public class player_Controller : MonoBehaviour
         BulletNumUI.SetActive(false);
         ItemNumUI.SetActive(false);
     }
-
-
     void SetCrossHair()
     {
         if (crosshairtype == CrossHairType.cross)       crossHairText.text = "+";
