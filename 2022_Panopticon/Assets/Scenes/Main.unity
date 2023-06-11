@@ -27157,7 +27157,7 @@ MonoBehaviour:
   StageDatabase: {fileID: 4900000, guid: 245b0b21edc4fbd4a9046e347a774d6f, type: 3}
   stageList: []
   myStageList: []
-  stage: 0
+  stage: 1
 --- !u!4 &1818746598
 Transform:
   m_ObjectHideFlags: 0
@@ -27518,6 +27518,7 @@ GameObject:
   - component: {fileID: 1840156572}
   - component: {fileID: 1840156571}
   - component: {fileID: 1840156573}
+  - component: {fileID: 1840156574}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -27575,6 +27576,28 @@ MonoBehaviour:
   ZoomKey: 324
   FireKey: 323
   ReloadKey: 114
+--- !u!114 &1840156574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1840156570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18307f558a99ddb408307d2d15e4703a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireEffectPrefab: {fileID: 1743301284569550, guid: ad2ab49d0a2a17148bd51c93d977bdbc,
+    type: 3}
+  getItemEffectPrefab: {fileID: 1337198075554910, guid: 25c7aa9ad705fe143a4d71c1c8deb7d4,
+    type: 3}
+  BloodEffectPrefab: {fileID: 1000012909287652, guid: 1b72d43e22f1ffe4486005e6fa11231e,
+    type: 3}
+  DeathEffectPrefab: {fileID: 1025285306637258, guid: d8f0099df63275647a8bcf646df1ca00,
+    type: 3}
+  ExplosionEffectPrefab: {fileID: 1000013462590818, guid: ecdd96beb7f93494880c052dfccf9dc1,
+    type: 3}
 --- !u!1001 &1858336972
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -35708,6 +35731,11 @@ MonoBehaviour:
   EnergeDrinkModel: {fileID: 8275866744537830725, guid: b04139cfad833c947b8f4b240e0cc0b3,
     type: 3}
   GunRotationSpeed: 3
+  Weapon:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   useItem: 1
   BombPostion: {fileID: 0}
   BombRadius: 10
@@ -35729,6 +35757,7 @@ MonoBehaviour:
   maxReloadTime: 5
   allReloadTime: 1
   reloadActionForce: 0.5
+  isReload: 0
   useFireSound: 1
   useReloadSound: 1
   FireSound: {fileID: 8300000, guid: 89cde63b2e6110649a51f36fe9f4051d, type: 3}
@@ -35756,6 +35785,7 @@ MonoBehaviour:
   middleAimPoint: {fileID: 0}
   ultimateCrossHair: {fileID: 766423075552045222}
   playerCanvas: {fileID: 1206435595259207365}
+  ultimateNum: 100
   getItemEffect: {fileID: 1337198075554910, guid: 25c7aa9ad705fe143a4d71c1c8deb7d4,
     type: 3}
 --- !u!224 &8638261727967599368

@@ -4601,6 +4601,7 @@ GameObject:
   - component: {fileID: 4000013488956786}
   - component: {fileID: 198000011254678926}
   - component: {fileID: 199000010223498802}
+  - component: {fileID: 6141995016233671222}
   m_Layer: 0
   m_Name: GoopSprayEffect
   m_TagString: Untagged
@@ -4615,8 +4616,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1000012909287652}
-  m_LocalRotation: {x: 0, y: 0.3160474, z: 0, w: 0.9487434}
-  m_LocalPosition: {x: -15.900347, y: 1.6319138, z: -6.8096547}
+  m_LocalRotation: {x: 0, y: -0.6787869, z: -0, w: 0.73433536}
+  m_LocalPosition: {x: 12.431778, y: 1.5782037, z: 11.960982}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4634,7 +4635,7 @@ ParticleSystem:
   serializedVersion: 8
   lengthInSec: 2
   simulationSpeed: 2
-  stopAction: 2
+  stopAction: 0
   cullingMode: 3
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
@@ -9230,3 +9231,17 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &6141995016233671222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000012909287652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a87024bada6af7049a91a8c21624e643, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectType: 2
+  timer: 0

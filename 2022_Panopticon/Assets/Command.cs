@@ -154,3 +154,95 @@ public class ZoomCameraCommand : Command
 
     }
 }
+
+public class FireCommand : Command
+{
+    private GameObject player;
+
+    public FireCommand(GameObject player) { this.player = player; }
+
+    public override void Execute()
+    {
+        player.GetComponent<Player>().Fire();
+
+    }
+
+    public override void End()
+    {
+
+    }
+}
+
+public class UltimateFireCommand : Command
+{
+    private GameObject player;
+
+    public UltimateFireCommand(GameObject player) { this.player = player; }
+
+    public override void Execute()
+    {
+        player.GetComponent<Player>().ultimateFire();
+
+    }
+
+    public override void End()
+    {
+
+    }
+}
+
+public class getItemCommand : Command
+{
+    private GameObject player;
+
+    public getItemCommand(GameObject player) { this.player = player; }
+
+    public override void Execute()
+    {
+        player.GetComponent<Player>().getItem();
+
+    }
+
+    public override void End()
+    {
+        player.GetComponent<Player>().setGunOrigin();
+
+    }
+}
+
+public class BombCommand : Command
+{
+    private GameObject player;
+
+    public BombCommand(GameObject player) { this.player = player; }
+
+    public override void Execute()
+    {
+        player.GetComponent<Player>().bombFire();
+
+    }
+
+    public override void End()
+    {
+        player.GetComponent<Player>().endBombFire();
+
+    }
+}
+
+public class EnergyCommand : Command
+{
+    private GameObject player;
+
+    public EnergyCommand(GameObject player) { this.player = player; }
+
+    public override void Execute()
+    {
+        player.GetComponent<Player>().eatEnergyDrink();
+        player.GetComponent<Player>().RemainEnergyDrinkNum();
+    }
+
+    public override void End()
+    {
+
+    }
+}

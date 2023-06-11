@@ -246,16 +246,23 @@ public class Enemy : MonoBehaviour
 
     public void playBloodEffect(RaycastHit hitInfo)
     {
-        bloodEffect.transform.position = hitInfo.point;
-        bloodEffect.transform.forward = hitInfo.normal;
+        var effect = PollingManager.GetObject(EffectType.Blood);
+        effect.transform.position = hitInfo.point;
+        effect.transform.forward = hitInfo.normal;
 
-        Instantiate(bloodEffect.GetComponent<ParticleSystem>(), bloodEffect.transform.position, Quaternion.Euler(bloodEffect.transform.forward));
-        bloodEffect.GetComponent<ParticleSystem>().Play();
+        effect.Play();
+
+        //Instantiate(bloodEffect.GetComponent<ParticleSystem>(), bloodEffect.transform.position, Quaternion.Euler(bloodEffect.transform.forward));
+        //bloodEffect.GetComponent<ParticleSystem>().Play();
     }
     public void playDeathEffect()
     {
-        Instantiate(deathEffect.GetComponent<ParticleSystem>(), transform.position, Quaternion.identity);
-        deathEffect.GetComponent<ParticleSystem>().Play();
+        var effect = PollingManager.GetObject(EffectType.Death);
+        effect.transform.position = transform.position;
+
+        effect.Play();
+        //Instantiate(deathEffect.GetComponent<ParticleSystem>(), transform.position, Quaternion.identity);
+        //deathEffect.GetComponent<ParticleSystem>().Play();
         Debug.Log("playDeathEffect");
     }
     void playNav()

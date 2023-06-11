@@ -114,7 +114,7 @@ public class Player : MonoBehaviour
     float ReloadTimer;
     float OneBulletReloadTime;
     float currentReloadTime;
-    bool isReload = false;
+    public bool isReload = false;
 
     // Sound
     public bool useFireSound = true;
@@ -164,7 +164,7 @@ public class Player : MonoBehaviour
     Collider closestCollider = null;
 
     float RayCastDis = 21f;
-    int ultimateNum = 100;
+    public int ultimateNum = 100;
 
     public GameObject getItemEffect;
     
@@ -290,7 +290,28 @@ public class Player : MonoBehaviour
         Crouch();
         checkGroundDistance();
 
+        if (ultimateGauge >= ultimateNum)
+        {
+            setUltimateTimer();
+        }
 
+        if (!Weapon[0].activeSelf)
+        {
+            setUltimateCrossHair(0.2f);
+        }
+
+        if (useGun && Weapon[2].activeSelf && Time.timeScale > 0)
+        {
+            if (useReload)
+            {
+                reloadBomb();
+                setRemainItemUI(true);
+                RemainBombNum();
+            }
+        }
+
+        powerUp();
+        changeWeapon();
     }
 
     public void endSprint()
@@ -447,18 +468,637 @@ public class Player : MonoBehaviour
         zoomTimer = zoomSpeed;
         SetFOVSmooth(defaultFOV);
     }
+
+    public void Fire()
+    {
+        if (!useGun) return;
+        if (!useReload && ultimateGauge < ultimateNum) ShootBullet();
+
+        if (bulletNum > 0 && useReload)
+        {
+            if (isReload)
+            {
+                setReloadBulletUI(false);
+                return;
+            }
+            ShootBullet();
+        }
+        if (fireTimer < fireRate) fireTimer += Time.deltaTime;
+    }
+
+    public void bombFire()
+    {
+        if (!useGun) return;
+        if (ReloadTimerUI.activeSelf) return;
+
+        BombUI();
+        flightLengthFactor += IncreaseAmount * Time.deltaTime;
+        if (flightLengthFactor >= 1f)
+        {
+            flightLengthFactor = 1f;
+            IncreaseAmount = -IncreaseAmount;
+            //Debug.Log("check");
+        }
+        else if (flightLengthFactor <= 0f)
+        {
+            flightLengthFactor = 0f;
+            IncreaseAmount = -IncreaseAmount;
+        }
+
+    }
+
+    public void endBombFire()
+    {
+        if (!useGun) return;
+        if (ReloadTimerUI.activeSelf) return;
+
+
+        Ray ray = new Ray(theCamera.transform.position, theCamera.transform.forward);
+        RaycastHit hitInfo = new RaycastHit();
+
+
+        if (Physics.Raycast(ray, out hitInfo, Mathf.Infinity, ~LayerMask.GetMask("Ignore Raycast")))
+        {
+            Vector3 forwardPosition = theCamera.transform.position + theCamera.transform.forward * 2f;
+            Vector3 nextVector = hitInfo.point - transform.position;
+            nextVector.y = 5;
+
+            GameObject bomb = Instantiate(BombInstantiate, forwardPosition, transform.rotation);
+            Rigidbody rigidBomb = bomb.GetComponent<Rigidbody>();
+
+
+            rigidBomb.AddForce(nextVector * flightLengthFactor, ForceMode.Impulse);
+            rigidBomb.AddTorque(Vector3.back * 10, ForceMode.Impulse);
+
+            //Collider playerCollider = GetComponent<Collider>();
+            //Collider bombCollider = bomb.transform.GetChild(0).GetComponent<Collider>();
+            //Physics.IgnoreCollision(playerCollider, bombCollider);
+            flightLengthFactor = 0f;
+            BombGauge.transform.parent.gameObject.SetActive(false);
+            //reloadBomb();
+
+            //reloadBomb();
+
+            WeaponNum[2]--;
+
+            if (WeaponNum[2] <= 0)
+            {
+                Debug.Log("다 사용했어요" + currentIndex);
+                currentIndex++;
+                changeWeaponNext(currentIndex);
+                setRemainItemUI(false);
+            }
+            else
+            {
+                SetReload();
+            }
+        }
+    }
+    void BombUI()
+    {
+        //Debug.Log("set UI");
+        BombGauge.transform.parent.gameObject.SetActive(true);
+
+        BombGauge.fillAmount = flightLengthFactor;
+    }
+    void changeWeapon()
+    {
+        int oldIndex = currentIndex;
+
+        Vector2 scrollDelta = Input.mouseScrollDelta;
+
+        //changeWeaponPrevious(oldIndex, scrollDelta);
+        //changeWeaponNext(oldIndex, scrollDelta);
+
+        if (scrollDelta.y != 0 && Time.timeScale > 0)
+        {
+            if (scrollDelta.y > 0)
+            {
+                // Scroll up
+                changeWeaponPrevious(oldIndex);
+            }
+            else if (scrollDelta.y < 0)
+            {
+                // Scroll down
+                changeWeaponNext(oldIndex);
+            }
+            setRemainItemUI(false);
+            PlaySoundEffects(changeWaeponSound);
+
+            //Debug.Log(currentIndex);
+
+            if (isReload)
+            {
+                //isReload = false;
+                setReloadBulletUI(false);
+            }
+
+            if (ultimateGauge < ultimateNum)
+            {
+                setUltimateCrossHair(0.2f);
+            }
+        }
+
+
+        offWeapon();
+        Weapon[currentIndex].SetActive(true);
+        //Debug.Log(currentIndex);
+        if (currentIndex == 0 && ultimateGauge < ultimateNum) BulletNumUI.SetActive(true);
+        else if (currentIndex == 2 || currentIndex == 3) ItemNumUI.SetActive(true);
+    }
+
+    void changeWeaponPrevious(int oldIndex)
+    {
+        do
+        {
+            currentIndex--;
+            if (currentIndex < 0)
+            {
+                currentIndex = WeaponNum.Length - 1;
+            }
+        } while (WeaponNum[currentIndex] == 0 && currentIndex != oldIndex);
+    }
+
+    void changeWeaponNext(int oldIndex)
+    {
+        do
+        {
+            currentIndex++;
+            if (currentIndex >= WeaponNum.Length)
+            {
+                currentIndex = 0;
+            }
+        } while (WeaponNum[currentIndex] == 0 && currentIndex != oldIndex);
+    }
+    void ShootBullet()
+    {
+        if (fireTimer < fireRate)
+        {
+            return;
+        }
+        //Debug.Log("shootBullet");
+
+        if (isSprinting)
+        {
+            isSprinting = false;
+            setGunOrigin();
+        }
+        Ray ray = new Ray(theCamera.transform.position, theCamera.transform.forward);
+        RaycastHit hitInfo = new RaycastHit();
+        Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 2f);
+        bulletNum--;
+
+        if (useFireSound)
+        {
+            audioSource.volume = 0.7f;
+            PlaySoundEffects(FireSound);
+        }
+
+        StopAllCoroutines();
+        StartCoroutine(reloadActionCoroutine());
+
+
+        if (Physics.Raycast(ray, out hitInfo, RayCastDis))
+        {
+            bulletEffect.transform.position = hitInfo.point;
+            bulletEffect.transform.forward = hitInfo.normal;
+
+            // Particle: Looping -> False / Stop Action -> Destroy
+            //Instantiate(psBullet, bulletEffect.transform.position, Quaternion.Euler(bulletEffect.transform.forward));
+            //psBullet.Play();
+            var effect = PollingManager.GetObject(EffectType.Fire);
+            effect.transform.position = hitInfo.point;
+            effect.transform.forward = hitInfo.normal;
+
+            effect.Play();
+
+            Collider collider = hitInfo.collider;
+
+            // 총 맞았을 때
+            if (collider.gameObject.GetComponent<Enemy>())
+            {
+
+                if (collider is CapsuleCollider)
+                {
+                    //Debug.Log("캡슐");
+                    //Debug.Log(currentBulletPower);
+                    collider.gameObject.GetComponent<Enemy>().hp -= currentBulletPower;
+
+                    //Debug.Log(collider.gameObject.GetComponent<Enemy>().hp);
+                    collider.gameObject.GetComponent<Enemy>().playHurtAnim();
+                    collider.gameObject.GetComponent<Enemy>().playBloodEffect(hitInfo);
+                    ultimateGauge++;
+                    //Debug.Log(ultimateGauge);
+                }
+                if (collider is SphereCollider)
+                {
+                    Debug.Log("머리");
+                    //collider.gameObject.GetComponent<Enemy>().hp -= 2;
+
+                    //Debug.Log(collider.gameObject.GetComponent<Enemy>().hp);
+                    //collider.gameObject.GetComponent<Enemy>().playHurtAnim();
+
+                    collider.gameObject.GetComponent<Enemy>().hp -= (currentBulletPower * 2);
+
+                    //Debug.Log(collider.gameObject.GetComponent<Enemy>().hp);
+                    collider.gameObject.GetComponent<Enemy>().playHurtAnim();
+
+                    ultimateGauge += 2;
+                    Debug.Log(ultimateGauge);
+                }
+            }
+        }
+        fireTimer = 0f;
+    }
+
+    public void SetReload()
+    {
+        isReload = true;
+        if (useReload) ReloadTimerUI.SetActive(true);
+
+        SetReloadTimer();
+        currentReloadTime = ReloadTimer;
+        //Debug.Log(ReloadTimer);
+        ReloadTimerUI.GetComponent<Slider>().maxValue = ReloadTimer;
+    }
+
+    void PlaySoundEffects(AudioClip audioClip)
+    {
+        audioSource.PlayOneShot(audioClip);
+    }
+
+
+    IEnumerator reloadActionCoroutine()
+    {
+        Vector3 reloadAction = new Vector3(GunOriginPos.x, GunOriginPos.y, reloadActionForce);
+        Weapon[0].transform.localPosition = GunOriginPos;
+
+        while (Weapon[0].transform.localPosition.z <= reloadActionForce - 0.02f)
+        {
+            Weapon[0].transform.localPosition = Vector3.Lerp(Weapon[0].transform.localPosition, reloadAction, 0.4f);
+            yield return null;
+        }
+
+        while (Weapon[0].transform.localPosition != GunOriginPos)
+        {
+            Weapon[0].transform.localPosition = Vector3.Lerp(Weapon[0].transform.localPosition, GunOriginPos, 0.1f);
+            yield return null;
+        }
+    }
+
+    public void setUltimateState()
+    {
+        crossHairText.enabled = false;
+        BulletNumUI.SetActive(false);
+        showClosestCEnemy();
+
+    }
+    public void setFireTimer()
+    {
+        fireTimer = fireRate;
+    }
+    public void ultimateFire()
+    {
+        shootUltimateBullet();
+        if (fireTimer < fireRate) fireTimer += Time.deltaTime;
+
+    }
+
+    void showClosestCEnemy()
+    {
+        ultimateCrossHair.SetActive(true);
+        //crossHairText.enabled = false;
+        setUltimateCrossHair(0.2f);
+
+        Ray ray = new Ray(theCamera.transform.position, theCamera.transform.forward);
+        RaycastHit hitInfo = new RaycastHit();
+        if (Physics.Raycast(ray, out hitInfo, RayCastDis))
+        {
+            Collider[] collidersInRange = Physics.OverlapSphere(hitInfo.point, radius);
+
+            closestCollider = null;
+            float closestDistance = Mathf.Infinity;
+            foreach (Collider collider in collidersInRange)
+            {
+                if (collider.name == "ZombiePrefab")
+                {
+
+                    float distance = Vector3.Distance(collider.transform.position, hitInfo.point);
+                    if (distance < closestDistance)
+                    {
+                        closestCollider = collider;
+                        closestDistance = distance;
+                    }
+                }
+            }
+            //OnDrawGizmos();
+
+
+            if (closestCollider != null)
+            {
+                //Debug.Log("! null");
+
+                setUltimateCrossHair(1f);
+
+                Vector3 colliderCenter = new Vector3(closestCollider.gameObject.transform.position.x, 1.7f, closestCollider.gameObject.transform.position.z);
+
+                Vector3 screenPosition = Camera.main.WorldToScreenPoint(colliderCenter);
+
+                Vector2 localPosition;
+
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(playerCanvas.transform as RectTransform, screenPosition, playerCanvas.worldCamera, out localPosition);
+                ultimateCrossHair.GetComponent<RectTransform>().anchoredPosition = localPosition;
+            }
+        }
+    }
+
+    void shootUltimateBullet()
+    {
+        if (fireTimer < fireRate)
+        {
+            return;
+        }
+
+        //Debug.Log("shootUltimateBullet");
+
+        Ray ray = new Ray(theCamera.transform.position, theCamera.transform.forward);
+        RaycastHit hitInfo = new RaycastHit();
+
+        if (useFireSound) PlaySoundEffects(FireSound);
+
+        StopAllCoroutines();
+        StartCoroutine(reloadActionCoroutine());
+        if (Physics.Raycast(ray, out hitInfo, RayCastDis))
+        {
+            //Debug.Log("RayCast");
+            bulletEffect.transform.position = hitInfo.point;
+            bulletEffect.transform.forward = hitInfo.normal;
+
+            Instantiate(psBullet, bulletEffect.transform.position, Quaternion.Euler(bulletEffect.transform.forward));
+            psBullet.Play();
+
+            if (closestCollider != null)
+            {
+                //Debug.Log("closestCollider: " + closestCollider);
+                closestCollider.GetComponent<Enemy>().hp -= currentBulletPower;
+                //closestCollider.GetComponent<Enemy>().decreaseHP();
+                //closestCollider.GetComponent<Enemy>().decreaseHP(currentBulletPower);
+
+                closestCollider.gameObject.GetComponent<Enemy>().playHurtAnim();
+                closestCollider.gameObject.GetComponent<Enemy>().playBloodEffect(hitInfo);
+            }
+        }
+
+        fireTimer = 0f;
+    }
+
+    void setUltimateCrossHair(float alpha)
+    {
+        Color color = ultimateCrossHair.transform.GetChild(0).GetComponent<Image>().color;
+        color.a = alpha;
+
+        if (alpha < 0.8f)
+        {
+            ultimateCrossHair.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+        }
+        ultimateCrossHair.transform.GetChild(0).GetComponent<Image>().color = color;
+    }
+
+    void setUltimateTimer()
+    {
+
+        ultimateTimer -= Time.deltaTime;
+        if (ultimateTimer < 0)
+        {
+            ultimateTimer = ultimateTime;
+            currentBulletPower = bulletPower;
+            ultimateGauge = 0;
+            ultimateCrossHair.SetActive(false);
+            crossHairText.enabled = true;
+            BulletNumUI.SetActive(true);
+        }
+    }
+
+
+    public void getItem()
+    {
+
+        Ray ray = new Ray(theCamera.transform.position, theCamera.transform.forward);
+
+
+        //RaycastHit hitInfo = new RaycastHit();
+        RaycastHit[] hits = Physics.RaycastAll(ray);
+
+        for (int i = 0; i < hits.Length; i++)
+        {
+            RaycastHit hit = hits[i];
+            if (hit.transform.parent != null && hit.transform.parent.gameObject.tag == "EnergyDrink")
+            {
+                //Debug.Log("에너지 드링크");
+                isPulling = true;
+                StartCoroutine(PullItem(hit.transform.parent.gameObject));
+                break;
+            }
+            if (hit.transform.gameObject.tag == "Bomb")
+            {
+                isPulling = true;
+                StartCoroutine(PullItem(hit.transform.gameObject));
+                break;
+            }
+        }
+    }
+
+    IEnumerator PullItem(GameObject Object)
+    {
+        float t = 0;
+        Vector3 originalPosition = Object.transform.position;
+
+        while (isPulling)
+        {
+            t += Time.deltaTime * 1.2f;
+            float shakeAmount = 0.1f;
+            Vector3 randomOffset = new Vector3(Random.Range(-shakeAmount, shakeAmount), Random.Range(-shakeAmount, shakeAmount), Random.Range(-shakeAmount, shakeAmount));
+
+            Object.transform.position = Vector3.Lerp(originalPosition, transform.position + randomOffset, t);
+
+            float distance = Vector3.Distance(Object.transform.position, transform.position);
+            if (distance < distanceThreshold)
+            {
+                if (Object.gameObject.tag == "Bomb")
+                {
+                    WeaponNum[2]++;
+                }
+
+                if (Object.gameObject.tag == "EnergyDrink")
+                {
+                    WeaponNum[3]++;
+                }
+                PlaySoundEffects(getItemSound);
+
+
+                var effect = PollingManager.GetObject(EffectType.GetItem);
+                effect.transform.position = Object.transform.position;
+     
+
+                effect.Play();
+                
+                //Instantiate(getItemEffect.GetComponent<ParticleSystem>(), getItemEffect.transform.position, Quaternion.Euler(getItemEffect.transform.forward));
+                //getItemEffect.GetComponent<ParticleSystem>().Play();
+
+                Destroy(Object);
+                yield break;
+            }
+
+            yield return null;
+        }
+    }
+
+    public void pullItemMotion()
+    {
+        Weapon[1].transform.localPosition = Vector3.Slerp(Weapon[1].transform.localPosition, GetItemPos, GunRotationSpeed * Time.deltaTime);
+        Weapon[1].transform.localRotation = Quaternion.Slerp(Weapon[1].transform.localRotation, GetItemRot, GunRotationSpeed * Time.deltaTime);
+    }
+
+    void reloadBomb()
+    {
+        if (!isReload) return;
+        if (WeaponNum[1] <= 0) return;
+
+        ReloadTimer -= Time.deltaTime;
+        ReloadTimerUI.GetComponent<Slider>().value = ReloadTimer;
+
+        //Debug.Log("reload Time: " + ReloadTimer);
+
+        if (ReloadTimer < 0)
+        {
+            //Debug.Log("reload Time: " + ReloadTimer);
+
+            PlaySoundEffects(allReloadSound);
+            setReloadBulletUI(false);
+        }
+    }
+
+    void RemainBombNum()
+    {
+        ItemNumUI.transform.GetChild(0).GetComponent<Text>().text = WeaponNum[2].ToString();
+    }
+
+    public void eatEnergyDrink()
+    {
+        PlaySoundEffects(energySound);
+        currentBulletPower = Weapon[3].GetComponent<Item_energyDrink>().energyDrink.getPower();
+
+        isPowerUp = true;
+        energyTimer += Weapon[3].GetComponent<Item_energyDrink>().energyDrink.getTime();
+
+
+        WeaponNum[3]--;
+        PowerTimeUI.GetComponent<Slider>().maxValue = energyTimer;
+
+
+        if (WeaponNum[3] <= 0)
+        {
+            currentIndex++;
+            changeWeaponNext(currentIndex);
+
+        }
+    }
+
+    public void RemainEnergyDrinkNum()
+    {
+        ItemNumUI.transform.GetChild(0).GetComponent<Text>().text = WeaponNum[3].ToString();
+    }
+
+    void powerUp()
+    {
+        if (!isPowerUp) return;
+        //Debug.Log("powerUP");
+
+        //PowerTimeUI.transform.GetChild(0).GetComponent<Text>().text = energyTimer.ToString();
+        //ReloadTimerUI.SetActive(true);
+        //ReloadTimerUI.GetComponent<Slider>().value = energyTimer;
+
+        PowerTimeUI.SetActive(true);
+        PowerTimeUI.GetComponent<Slider>().value = energyTimer;
+        energyTimer -= Time.deltaTime;
+        //Debug.Log(energyTimer);
+        //Debug.Log(currentBulletPower);
+
+
+        if (energyTimer < 0)
+        {
+            //Debug.Log("끝");
+
+            energyTimer = Weapon[3].GetComponent<Item_energyDrink>().energyDrink.getTime();
+            //setReloadBulletUI(false);
+            PowerTimeUI.SetActive(false);
+            energyTimer = 0;
+            PowerTimeUI.GetComponent<Slider>().value = energyTimer;
+
+            currentBulletPower = bulletPower;
+            Debug.Log(currentBulletPower);
+            setRemainItemUI(false);
+            isPowerUp = false;
+        }
+    }
+
+
     void SetFOVSmooth(float target)
     {
         zoomTimer -= Time.deltaTime;
         theCamera.fieldOfView = Mathf.Lerp(target, theCamera.fieldOfView, zoomTimer * 0.5f);
     }
 
-    void setGunOrigin()
+    public void setGunOrigin()
     {
+        isPulling = false;
+
         Weapon[currentIndex].transform.localPosition = GunOriginPos;
         Weapon[currentIndex].transform.localRotation = GunOriginRot;
     }
 
+    public void bulletUI()
+    {
+        BulletNumUI.transform.Find("bulletText").gameObject.GetComponent<Text>().text = bulletNum.ToString();
+        BulletNumUI.transform.Find("MaxBulletText").gameObject.GetComponent<Text>().text = maxBulletNum.ToString();
+    }
+    public void PressReloadKey()
+    {
+        if (!isReload && bulletNum != maxBulletNum) SetReload();
+    }
+
+    public void reloadBullet()
+    {
+        if (!isReload) return;
+
+        ReloadTimer -= Time.deltaTime;
+        ReloadTimerUI.GetComponent<Slider>().value = ReloadTimer;
+
+        if (reloadType == reloadBulletType.oneByOneReload) increaseBullet();
+
+        if (ReloadTimer < 0)
+        {
+            bulletNum = maxBulletNum;
+
+            if (reloadType == reloadBulletType.allReload && useReloadSound) PlaySoundEffects(allReloadSound);
+
+            setReloadBulletUI(false);
+        }
+    }
+
+    void increaseBullet()
+    {
+        for (int i = 1; i < maxBulletNum - bulletNum + 1; i++)
+        {
+            if (currentReloadTime - OneBulletReloadTime > ReloadTimer)
+            {
+                bulletNum++;
+                if (reloadType == reloadBulletType.oneByOneReload && useReloadSound) PlaySoundEffects(oneByOneReloadSound);
+
+                currentReloadTime -= OneBulletReloadTime;
+            }
+        }
+    }
     void SetReloadTimer()
     {
         if (reloadType == reloadBulletType.oneByOneReload) ReloadTimer = OneBulletReloadTime * (maxBulletNum - bulletNum);
@@ -496,7 +1136,7 @@ public class Player : MonoBehaviour
         isReload = state;
         ReloadTimerUI.GetComponent<Slider>().maxValue = ReloadTimer;
     }
-    void setRemainItemUI(bool isShow)
+    public void setRemainItemUI(bool isShow)
     {
         ItemNumUI.SetActive(isShow);
         //Debug.Log("실행 " + RemainItemNumUI.activeSelf);
@@ -509,4 +1149,5 @@ public class Player : MonoBehaviour
 
         StaminaBar.GetComponent<Slider>().value = ratio;
     }
+
 }

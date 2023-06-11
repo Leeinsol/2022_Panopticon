@@ -23,6 +23,11 @@ public class PlayerControl : MonoBehaviour
     Command jump;
     Command headBob;
     Command zoomCamera;
+    Command fire;
+    Command ultimateFire;
+    Command getItem;
+    Command bomb;
+    Command energy;
 
 
     // Start is called before the first frame update
@@ -38,6 +43,11 @@ public class PlayerControl : MonoBehaviour
         jump= new JumpCommand(player);
         headBob= new HeadBobCommand(player);
         zoomCamera = new ZoomCameraCommand(player);
+        fire = new FireCommand(player);
+        ultimateFire = new UltimateFireCommand(player);
+        getItem = new getItemCommand(player);
+        bomb = new BombCommand(player);
+        energy = new EnergyCommand(player);
     }
 
     // Update is called once per frame
@@ -81,7 +91,75 @@ public class PlayerControl : MonoBehaviour
 
         if (playerScript.Weapon[0].activeSelf && Time.timeScale > 0)
         {
+            if (playerScript.ultimateGauge < playerScript.ultimateNum)
+            {
+                if (Input.GetKey(FireKey))
+                {
+                    fire.Execute();
+                }
+                if (Input.GetKeyDown(FireKey)) playerScript.setFireTimer();
+                if (playerScript.bulletNum == 0 && !playerScript.isReload) playerScript.SetReload();
 
+                if(playerScript.useReload)
+                {
+                    playerScript.bulletUI();
+                    if (Input.GetKeyDown(ReloadKey))
+                    {
+                        playerScript.PressReloadKey();
+
+                    }
+                    playerScript.reloadBullet();
+                }
+            }
+            else
+            {
+                playerScript.setUltimateState();
+                if (Input.GetKey(FireKey))
+                {
+                    ultimateFire.Execute();
+                }
+                if (Input.GetKeyDown(FireKey)) playerScript.setFireTimer();
+
+            }
+        }
+
+        if (playerScript.Weapon[1].activeSelf && Time.timeScale > 0)
+        {
+            if (Input.GetKeyDown(FireKey))
+            {
+                getItem.Execute();
+            }
+            if (Input.GetKeyUp(FireKey))
+            {
+                getItem.End();
+            }
+
+            if (Input.GetKey(FireKey))
+            {
+                playerScript.pullItemMotion();
+                playerScript.setRemainItemUI(false);
+            }
+        }
+        if (playerScript.Weapon[2].activeSelf && Time.timeScale > 0)
+        {
+            if (Input.GetKey(FireKey))
+            {
+                bomb.Execute();
+            }
+            if (Input.GetKeyUp(FireKey))
+            {
+                bomb.End();
+            }
+        }
+
+        if (playerScript.Weapon[3].activeSelf && Time.timeScale > 0)
+        {
+            playerScript.setRemainItemUI(true);
+            if (Input.GetKeyDown(FireKey))
+            {
+                energy.Execute();
+            }
+            playerScript.RemainEnergyDrinkNum();
         }
     }
 }

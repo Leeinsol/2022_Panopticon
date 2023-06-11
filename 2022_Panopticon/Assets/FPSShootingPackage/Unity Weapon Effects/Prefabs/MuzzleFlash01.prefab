@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4300533007854612}
   - component: {fileID: 198234346748616026}
   - component: {fileID: 199409127382122440}
+  - component: {fileID: -1438329129112614439}
   m_Layer: 0
   m_Name: MuzzleFlash01
   m_TagString: Untagged
@@ -25,8 +26,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1743301284569550}
-  m_LocalRotation: {x: 0, y: -0.7372787, z: 0, w: 0.6755888}
-  m_LocalPosition: {x: 10.000999, y: 1.4454165, z: 0.63986796}
+  m_LocalRotation: {x: 0, y: 0.9848265, z: 0, w: 0.17354178}
+  m_LocalPosition: {x: -16.458523, y: 2.0959806, z: 17.646965}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -44,7 +45,7 @@ ParticleSystem:
   serializedVersion: 8
   lengthInSec: 0.25
   simulationSpeed: 1
-  stopAction: 2
+  stopAction: 0
   cullingMode: 3
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
@@ -1543,7 +1544,7 @@ ParticleSystem:
     sprites:
     - sprite: {fileID: 0}
     flipU: 0
-    flipV: 0.5
+    flipV: 0
   VelocityModule:
     enabled: 0
     x:
@@ -4833,7 +4834,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: a8cb413d77ceb054abf10c2c6ee66337, type: 2}
-  - {fileID: 2100000, guid: a8cb413d77ceb054abf10c2c6ee66337, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4867,7 +4867,7 @@ ParticleSystemRenderer:
   m_ShadowBias: 0
   m_RenderAlignment: 0
   m_Pivot: {x: 0, y: 0.1, z: 0}
-  m_Flip: {x: 0, y: 0, z: 0}
+  m_Flip: {x: 0, y: 0.5, z: 0}
   m_UseCustomVertexStreams: 1
   m_EnableGPUInstancing: 1
   m_ApplyActiveColorSpace: 0
@@ -4884,6 +4884,20 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &-1438329129112614439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1743301284569550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a87024bada6af7049a91a8c21624e643, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectType: 0
+  timer: 0
 --- !u!1 &1992675705445476
 GameObject:
   m_ObjectHideFlags: 0
@@ -6425,8 +6439,8 @@ ParticleSystem:
     rowMode: 1
     sprites:
     - sprite: {fileID: 0}
-    flipU: 0.5
-    flipV: 0.5
+    flipU: 0
+    flipV: 0
   VelocityModule:
     enabled: 0
     x:
@@ -9716,7 +9730,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: a8cb413d77ceb054abf10c2c6ee66337, type: 2}
-  - {fileID: 2100000, guid: a8cb413d77ceb054abf10c2c6ee66337, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9750,7 +9763,7 @@ ParticleSystemRenderer:
   m_ShadowBias: 0
   m_RenderAlignment: 0
   m_Pivot: {x: 0, y: 0, z: 0}
-  m_Flip: {x: 0, y: 0, z: 0}
+  m_Flip: {x: 0.5, y: 0.5, z: 0}
   m_UseCustomVertexStreams: 1
   m_EnableGPUInstancing: 1
   m_ApplyActiveColorSpace: 0

@@ -20,9 +20,6 @@ public class Bomb : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
 
-        //rigidbody.velocity = transform.position * bombSpeed;
-        //rigidbody.AddForce(transform.forward * bombSpeed);
-
         StartCoroutine(Explosion());
     }
 
@@ -41,33 +38,20 @@ public class Bomb : MonoBehaviour
         effectObj.SetActive(true);
 
         float blastRadius = 3f;
-        //GameObject blastRadiusObj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        //blastRadiusObj.transform.position = transform.position;
-        //blastRadiusObj.transform.localScale = new Vector3(blastRadius * 2f, blastRadius * 2f, blastRadius * 2f);
-        //Destroy(blastRadiusObj.GetComponent<Collider>());
-        //Material blastRadiusMat = new Material(Shader.Find("UI/Unlit/Transparent"));
-        //blastRadiusMat.color = new Color(.35f, .1f, .1f, 0.3f);
-        //blastRadiusObj.GetComponent<MeshRenderer>().material = blastRadiusMat;
 
         float scaleTime = 0.5f;
         float scaleStartTime = Time.time;
         while (Time.time < scaleStartTime + scaleTime)
         {
             float t = (Time.time - scaleStartTime) / scaleTime;
-            //blastRadius = Mathf.Lerp(0f, 5f, t);
-            //blastRadiusObj.transform.localScale = new Vector3(blastRadius, blastRadius, blastRadius);
             Vector3.Lerp(Vector3.zero, new Vector3(blastRadius * 2f, blastRadius * 2f, blastRadius * 2f), t);
             yield return null;
         }
-        //blastRadiusObj.transform.localScale = new Vector3(5f, 5f, 5f);
-        //blastRadiusObj.transform.localScale = new Vector3(blastRadius * 2f, blastRadius * 2f, blastRadius * 2f);
-
-        //Destroy(blastRadiusObj, 1f);
-
         rayHits = Physics.SphereCastAll(transform.position, blastRadius, Vector3.up, 0f, LayerMask.GetMask("Enemy"));
-        //Debug.Log("rayHits: " + rayHits.Length);
-
-        effectObj.gameObject.transform.Find("ExplosionEffect").gameObject.SetActive(true);
+        var effect = PollingManager.GetObject(EffectType.Explosion);
+        effect.transform.position = transform.position;
+        effect.Play();
+        //effectObj.gameObject.transform.Find("ExplosionEffect").gameObject.SetActive(true);
         PlaySoundEffects(explosionSound);
 
         foreach (RaycastHit hitObj in rayHits)
@@ -77,15 +61,9 @@ public class Bomb : MonoBehaviour
             {
                 enemy.HitByBomb(transform.position);
             }
-            //enemy.GetComponent<Enemy>().isDamaged = false;
-
-            //hitObj.transform.GetComponent<Enemy>().HitByBomb(transform.position);
-
         }
 
         Destroy(gameObject, 1f);
-
-        //Invoke("DestroyBomb", 1f);
     }
     void PlaySoundEffects(AudioClip audioClip)
     {
@@ -104,8 +82,6 @@ public class Bomb : MonoBehaviour
         {
             rigidbody.constraints = RigidbodyConstraints.FreezeAll;
             PlaySoundEffects(BombSound);
-
-            //Destroy(gameObject, 1f);
         }
     }
 }
