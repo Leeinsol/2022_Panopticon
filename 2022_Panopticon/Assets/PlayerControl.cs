@@ -33,7 +33,6 @@ public class PlayerControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //player = new Player();
         playerScript = player.GetComponent<Player>();
         move = new MoveCommand(player);
         sprint = new SprintCommand(player);
