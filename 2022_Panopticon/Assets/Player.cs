@@ -310,6 +310,11 @@ public class Player : MonoBehaviour
             }
         }
 
+        if (useReload)
+        {
+            bulletUI();
+        }
+
         powerUp();
         changeWeapon();
     }

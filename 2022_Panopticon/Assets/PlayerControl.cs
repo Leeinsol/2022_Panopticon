@@ -14,7 +14,7 @@ public class PlayerControl : MonoBehaviour
     public KeyCode FireKey = KeyCode.Mouse0;
     public KeyCode ReloadKey = KeyCode.R;
 
-    Player playerScript;
+    Player playerComponent;
     Command move;
     Command sprint;
     Command crouch;
@@ -28,12 +28,13 @@ public class PlayerControl : MonoBehaviour
     Command getItem;
     Command bomb;
     Command energy;
+    Command reload;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        playerScript = player.GetComponent<Player>();
+        playerComponent = player.GetComponent<Player>();
         move = new MoveCommand(player);
         sprint = new SprintCommand(player);
         crouch = new CrouchCommand(player);
@@ -47,10 +48,24 @@ public class PlayerControl : MonoBehaviour
         getItem = new getItemCommand(player);
         bomb = new BombCommand(player);
         energy = new EnergyCommand(player);
+        reload = new ReloadCommand(player);
     }
 
     // Update is called once per frame
     void Update()
+    {
+        MovementInput();
+        SprintInput();
+        CrouchInput();
+        CameraInput();
+        JumpInput();
+        HeadBob();
+        ZoomCameraInput();
+        GunInput();
+        ItemInput();
+    }
+
+    void MovementInput()
     {
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A)
             || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
@@ -62,8 +77,11 @@ public class PlayerControl : MonoBehaviour
         {
             move.End();
         }
-
-        if (Input.GetKeyDown(SprintKey) && playerScript.iswalking)
+    }
+ 
+    void SprintInput()
+    {
+        if (Input.GetKeyDown(SprintKey) && playerComponent.iswalking)
         {
             sprint.Execute();
         }
@@ -71,7 +89,10 @@ public class PlayerControl : MonoBehaviour
         {
             sprint.End();
         }
+    }
 
+    void CrouchInput()
+    {
         if (Input.GetKeyDown(CrouchKey))
         {
             crouch.Execute();
@@ -80,49 +101,80 @@ public class PlayerControl : MonoBehaviour
         {
             crouch.End();
         }
+    }
 
-        if (playerScript.useCameraRotationHorizontality && Time.timeScale > 0) camVertical.Execute();
-        if (playerScript.useCameraRotationHorizontality && Time.timeScale > 0) camHorizontal.Execute();
-        if (Input.GetKeyDown(JumpKey) && playerScript.isGround)   jump.Execute();
-        if (playerScript.iswalking) headBob.Execute();
-        if (Input.GetKey(ZoomKey)) zoomCamera.Execute();
-        if (Input.GetKeyUp(ZoomKey)) zoomCamera.End();
+    void CameraInput()
+    {
+        if (playerComponent.useCameraRotationHorizontality && Time.timeScale > 0) 
+            camVertical.Execute();
+        if (playerComponent.useCameraRotationVerticality && Time.timeScale > 0) 
+            camHorizontal.Execute();
+    }
 
-        if (playerScript.Weapon[0].activeSelf && Time.timeScale > 0)
+    void JumpInput()
+    {
+        if (Input.GetKeyDown(JumpKey) && playerComponent.isGround)
+            jump.Execute();
+    }
+
+    void HeadBob()
+    {
+        if (playerComponent.iswalking) headBob.Execute();
+
+    }
+
+    void ZoomCameraInput()
+    {
+        if (Input.GetKey(ZoomKey)) 
+            zoomCamera.Execute();
+        if (Input.GetKeyUp(ZoomKey)) 
+            zoomCamera.End();
+    }
+
+    void GunInput()
+    {
+        if (playerComponent.Weapon[0].activeSelf && Time.timeScale > 0)
         {
-            if (playerScript.ultimateGauge < playerScript.ultimateNum)
+            if (playerComponent.ultimateGauge < playerComponent.ultimateNum)
             {
+                if (Input.GetKeyDown(FireKey))
+                {
+                    fire.Set();
+                }
                 if (Input.GetKey(FireKey))
                 {
                     fire.Execute();
                 }
-                if (Input.GetKeyDown(FireKey)) playerScript.setFireTimer();
-                if (playerScript.bulletNum == 0 && !playerScript.isReload) playerScript.SetReload();
 
-                if(playerScript.useReload)
+                if (playerComponent.bulletNum == 0 && !playerComponent.isReload)
+                    reload.Set();
+
+                if (playerComponent.useReload)
                 {
-                    playerScript.bulletUI();
                     if (Input.GetKeyDown(ReloadKey))
                     {
-                        playerScript.PressReloadKey();
-
+                        reload.Execute();
                     }
-                    playerScript.reloadBullet();
+                    reload.Do();
                 }
             }
             else
             {
-                playerScript.setUltimateState();
+                ultimateFire.Set();
                 if (Input.GetKey(FireKey))
                 {
                     ultimateFire.Execute();
                 }
-                if (Input.GetKeyDown(FireKey)) playerScript.setFireTimer();
+                if (Input.GetKeyDown(FireKey))
+                    fire.Set();
 
             }
         }
+    }
 
-        if (playerScript.Weapon[1].activeSelf && Time.timeScale > 0)
+    void ItemInput()
+    {
+        if (playerComponent.Weapon[1].activeSelf && Time.timeScale > 0)
         {
             if (Input.GetKeyDown(FireKey))
             {
@@ -135,11 +187,10 @@ public class PlayerControl : MonoBehaviour
 
             if (Input.GetKey(FireKey))
             {
-                playerScript.pullItemMotion();
-                playerScript.setRemainItemUI(false);
+                getItem.Do();
             }
         }
-        if (playerScript.Weapon[2].activeSelf && Time.timeScale > 0)
+        if (playerComponent.Weapon[2].activeSelf && Time.timeScale > 0)
         {
             if (Input.GetKey(FireKey))
             {
@@ -151,14 +202,13 @@ public class PlayerControl : MonoBehaviour
             }
         }
 
-        if (playerScript.Weapon[3].activeSelf && Time.timeScale > 0)
+        if (playerComponent.Weapon[3].activeSelf && Time.timeScale > 0)
         {
-            playerScript.setRemainItemUI(true);
+            energy.Do();
             if (Input.GetKeyDown(FireKey))
             {
                 energy.Execute();
             }
-            playerScript.RemainEnergyDrinkNum();
         }
     }
 }

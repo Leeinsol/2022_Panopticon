@@ -10,7 +10,10 @@ public abstract class Command
     //{
     //    this.actor = actor;
     //}
+
+    abstract public void Set();
     abstract public void Execute();
+    abstract public void Do();
     abstract public void End();
 
 }
@@ -31,6 +34,13 @@ public class MoveCommand : Command
 
     }
 
+    public override void Set()
+    {
+    }
+
+    public override void Do()
+    {
+    }
 }
 
 public class SprintCommand : Command
@@ -47,6 +57,13 @@ public class SprintCommand : Command
     public override void End()
     {
         player.GetComponent<Player>().endSprint();
+    }
+    public override void Set()
+    {
+    }
+
+    public override void Do()
+    {
     }
 }
 
@@ -65,6 +82,13 @@ public class CrouchCommand : Command
     {
         player.GetComponent<Player>().EndCrouch();
     }
+    public override void Set()
+    {
+    }
+
+    public override void Do()
+    {
+    }
 }
 
 public class CamVerticalCommand : Command
@@ -82,6 +106,13 @@ public class CamVerticalCommand : Command
     {
 
     }
+    public override void Set()
+    {
+    }
+
+    public override void Do()
+    {
+    }
 }
 public class CamHorizontalCommand : Command
 {
@@ -97,6 +128,13 @@ public class CamHorizontalCommand : Command
     public override void End()
     {
 
+    }
+    public override void Set()
+    {
+    }
+
+    public override void Do()
+    {
     }
 }
 
@@ -115,6 +153,13 @@ public class JumpCommand : Command
     public override void End()
     {
 
+    }
+    public override void Set()
+    {
+    }
+
+    public override void Do()
+    {
     }
 }
 
@@ -135,6 +180,13 @@ public class HeadBobCommand : Command
     {
 
     }
+    public override void Set()
+    {
+    }
+
+    public override void Do()
+    {
+    }
 }
 public class ZoomCameraCommand : Command
 {
@@ -152,6 +204,13 @@ public class ZoomCameraCommand : Command
     {
         player.GetComponent<Player>().EndZoomCamera();
 
+    }
+    public override void Set()
+    {
+    }
+
+    public override void Do()
+    {
     }
 }
 
@@ -171,6 +230,14 @@ public class FireCommand : Command
     {
 
     }
+    public override void Set()
+    {
+        player.GetComponent<Player>().setFireTimer();
+    }
+
+    public override void Do()
+    {
+    }
 }
 
 public class UltimateFireCommand : Command
@@ -188,6 +255,14 @@ public class UltimateFireCommand : Command
     public override void End()
     {
 
+    }
+    public override void Set()
+    {
+        player.GetComponent<Player>().setUltimateState();
+    }
+
+    public override void Do()
+    {
     }
 }
 
@@ -208,6 +283,15 @@ public class getItemCommand : Command
         player.GetComponent<Player>().setGunOrigin();
 
     }
+    public override void Set()
+    {
+    }
+
+    public override void Do()
+    {
+        player.GetComponent<Player>().pullItemMotion();
+        player.GetComponent<Player>().setRemainItemUI(false);
+    }
 }
 
 public class BombCommand : Command
@@ -227,6 +311,14 @@ public class BombCommand : Command
         player.GetComponent<Player>().endBombFire();
 
     }
+    public override void Set()
+    {
+    }
+
+    public override void Do()
+    {
+        
+    }
 }
 
 public class EnergyCommand : Command
@@ -244,5 +336,43 @@ public class EnergyCommand : Command
     public override void End()
     {
 
+    }
+    public override void Set()
+    {
+    }
+
+    public override void Do()
+    {
+        player.GetComponent<Player>().setRemainItemUI(true);
+        player.GetComponent<Player>().RemainEnergyDrinkNum();
+    }
+}
+
+public class ReloadCommand : Command
+{
+    private GameObject player;
+
+    public ReloadCommand(GameObject player)
+    {  
+        this.player = player;
+    }
+
+    public override void Execute()
+    {
+        player.GetComponent<Player>().PressReloadKey();
+    }
+
+    public override void End()
+    {
+
+    }
+    public override void Set()
+    {
+        player.GetComponent<Player>().SetReload();
+    }
+
+    public override void Do()
+    {
+        player.GetComponent<Player>().reloadBullet();
     }
 }

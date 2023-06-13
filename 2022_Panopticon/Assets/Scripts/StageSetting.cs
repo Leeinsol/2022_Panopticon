@@ -33,6 +33,7 @@ public class StageSetting : MonoBehaviour
 {
     public AudioSource BGMSource;
     public AudioSource SfxSource;
+    public KeyCode FireKey = KeyCode.Mouse0;
 
 
     public TextAsset StageDatabase;
@@ -44,6 +45,7 @@ public class StageSetting : MonoBehaviour
 
     [SerializeField]
     Stage stage = Stage.tutorial;
+
 
     private void Awake()
     {
