@@ -7,7 +7,7 @@ public class PlayerControl : MonoBehaviour
 {
     public GameObject player;
 
-    public KeyCode SprintKey = KeyCode.LeftShift;
+    public KeyCode SprintKey;
     public KeyCode CrouchKey = KeyCode.LeftControl;
     public KeyCode JumpKey = KeyCode.Space;
     public KeyCode ZoomKey = KeyCode.Mouse1;
@@ -49,8 +49,10 @@ public class PlayerControl : MonoBehaviour
         bomb = new BombCommand(player);
         energy = new EnergyCommand(player);
         reload = new ReloadCommand(player);
-    }
 
+        SprintKey = ChangeInputKey.Instance.Keys[0];
+    }
+    
     // Update is called once per frame
     void Update()
     {

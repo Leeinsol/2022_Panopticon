@@ -67,6 +67,13 @@ public class title : MonoBehaviour
     {
         SettingPanel.SetActive(true);
     }
+
+    public void nextPage()
+    {
+        SettingPanel.transform.GetChild(0).GetChild(1).gameObject.SetActive(false);
+        SettingPanel.transform.GetChild(0).GetChild(2).gameObject.SetActive(true);
+    }
+
     public void QuitGame()
     {
 #if UNITY_EDITOR

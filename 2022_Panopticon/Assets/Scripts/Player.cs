@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class Player : MonoBehaviour
 {
@@ -145,7 +146,6 @@ public class Player : MonoBehaviour
     public int[] WeaponNum;
     private int currentIndex = 0;
 
-    public GameObject RemainItemNumUI;
     public GameObject PowerTimeUI;
     public GameObject getItemModel;
 
@@ -167,7 +167,11 @@ public class Player : MonoBehaviour
     public int ultimateNum = 100;
 
     public GameObject getItemEffect;
-    
+
+    public static event Action<int> changeBullet;
+    public static event Action<float> changeStamina;
+    public static event Action<float> changeReloadTime;
+
     private void Start()
     {
         ultimateNum = 100;
@@ -478,6 +482,7 @@ public class Player : MonoBehaviour
     {
         if (!useGun) return;
         if (!useReload && ultimateGauge < ultimateNum) ShootBullet();
+        
 
         if (bulletNum > 0 && useReload)
         {
@@ -652,6 +657,7 @@ public class Player : MonoBehaviour
         RaycastHit hitInfo = new RaycastHit();
         Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 2f);
         bulletNum--;
+        changeBullet?.Invoke(bulletNum);
 
         if (useFireSound)
         {
@@ -723,7 +729,7 @@ public class Player : MonoBehaviour
 
         SetReloadTimer();
         currentReloadTime = ReloadTimer;
-        //Debug.Log(ReloadTimer);
+        setFireTimer();
         ReloadTimerUI.GetComponent<Slider>().maxValue = ReloadTimer;
     }
 
@@ -922,7 +928,7 @@ public class Player : MonoBehaviour
         {
             t += Time.deltaTime * 1.2f;
             float shakeAmount = 0.1f;
-            Vector3 randomOffset = new Vector3(Random.Range(-shakeAmount, shakeAmount), Random.Range(-shakeAmount, shakeAmount), Random.Range(-shakeAmount, shakeAmount));
+            Vector3 randomOffset = new Vector3(UnityEngine.Random.Range(-shakeAmount, shakeAmount), UnityEngine.Random.Range(-shakeAmount, shakeAmount), UnityEngine.Random.Range(-shakeAmount, shakeAmount));
 
             Object.transform.position = Vector3.Lerp(originalPosition, transform.position + randomOffset, t);
 
@@ -970,8 +976,8 @@ public class Player : MonoBehaviour
         if (WeaponNum[1] <= 0) return;
 
         ReloadTimer -= Time.deltaTime;
-        ReloadTimerUI.GetComponent<Slider>().value = ReloadTimer;
-
+        //ReloadTimerUI.GetComponent<Slider>().value = ReloadTimer;
+        changeReloadTime?.Invoke(ReloadTimer);
         //Debug.Log("reload Time: " + ReloadTimer);
 
         if (ReloadTimer < 0)
@@ -1064,8 +1070,8 @@ public class Player : MonoBehaviour
 
     public void bulletUI()
     {
-        BulletNumUI.transform.Find("bulletText").gameObject.GetComponent<Text>().text = bulletNum.ToString();
-        BulletNumUI.transform.Find("MaxBulletText").gameObject.GetComponent<Text>().text = maxBulletNum.ToString();
+        //BulletNumUI.transform.Find("bulletText").gameObject.GetComponent<Text>().text = bulletNum.ToString();
+        //BulletNumUI.transform.Find("MaxBulletText").gameObject.GetComponent<Text>().text = maxBulletNum.ToString();
     }
     public void PressReloadKey()
     {
@@ -1077,7 +1083,8 @@ public class Player : MonoBehaviour
         if (!isReload) return;
 
         ReloadTimer -= Time.deltaTime;
-        ReloadTimerUI.GetComponent<Slider>().value = ReloadTimer;
+        //ReloadTimerUI.GetComponent<Slider>().value = ReloadTimer;
+        changeReloadTime?.Invoke(ReloadTimer);
 
         if (reloadType == reloadBulletType.oneByOneReload) increaseBullet();
 
@@ -1098,6 +1105,8 @@ public class Player : MonoBehaviour
             if (currentReloadTime - OneBulletReloadTime > ReloadTimer)
             {
                 bulletNum++;
+                changeBullet?.Invoke(bulletNum);
+
                 if (reloadType == reloadBulletType.oneByOneReload && useReloadSound) PlaySoundEffects(oneByOneReloadSound);
 
                 currentReloadTime -= OneBulletReloadTime;
@@ -1151,8 +1160,8 @@ public class Player : MonoBehaviour
     void StaminaUI()
     {
         float ratio = stamina / maxStamina;
-
-        StaminaBar.GetComponent<Slider>().value = ratio;
+        changeStamina?.Invoke(ratio);
+        //StaminaBar.GetComponent<Slider>().value = ratio;
     }
 
 }
