@@ -171,6 +171,9 @@ public class Player : MonoBehaviour
     public static event Action<int> changeBullet;
     public static event Action<float> changeStamina;
     public static event Action<float> changeReloadTime;
+    public static event Action<int> changeBombNum;
+    public static event Action<float> changeBombGauge;
+    public static event Action<float> changePowerUpTime;
 
     private void Start()
     {
@@ -299,7 +302,7 @@ public class Player : MonoBehaviour
             setUltimateTimer();
         }
 
-        if (!Weapon[0].activeSelf)
+        if (!Weapon[0].activeSelf && ultimateGauge >= ultimateNum)
         {
             setUltimateCrossHair(0.2f);
         }
@@ -309,8 +312,8 @@ public class Player : MonoBehaviour
             if (useReload)
             {
                 reloadBomb();
-                setRemainItemUI(true);
                 RemainBombNum();
+                setRemainItemUI(true);
             }
         }
 
@@ -568,8 +571,8 @@ public class Player : MonoBehaviour
     {
         //Debug.Log("set UI");
         BombGauge.transform.parent.gameObject.SetActive(true);
-
-        BombGauge.fillAmount = flightLengthFactor;
+        changeBombGauge?.Invoke(flightLengthFactor);
+        //BombGauge.fillAmount = flightLengthFactor;
     }
     void changeWeapon()
     {
@@ -609,9 +612,13 @@ public class Player : MonoBehaviour
             }
         }
 
-
-        offWeapon();
-        Weapon[currentIndex].SetActive(true);
+        if (!Weapon[currentIndex].activeSelf)
+        {
+            offWeapon();
+            Weapon[currentIndex].SetActive(true);
+            setGunOrigin();
+        }
+        
         //Debug.Log(currentIndex);
         if (currentIndex == 0 && ultimateGauge < ultimateNum) BulletNumUI.SetActive(true);
         else if (currentIndex == 2 || currentIndex == 3) ItemNumUI.SetActive(true);
@@ -729,7 +736,7 @@ public class Player : MonoBehaviour
 
         SetReloadTimer();
         currentReloadTime = ReloadTimer;
-        setFireTimer();
+
         ReloadTimerUI.GetComponent<Slider>().maxValue = ReloadTimer;
     }
 
@@ -766,6 +773,7 @@ public class Player : MonoBehaviour
     }
     public void setFireTimer()
     {
+        if (isReload) return;
         fireTimer = fireRate;
     }
     public void ultimateFire()
@@ -991,7 +999,7 @@ public class Player : MonoBehaviour
 
     void RemainBombNum()
     {
-        ItemNumUI.transform.GetChild(0).GetComponent<Text>().text = WeaponNum[2].ToString();
+        changeBombNum?.Invoke(WeaponNum[2]);
     }
 
     public void eatEnergyDrink()
@@ -1017,7 +1025,8 @@ public class Player : MonoBehaviour
 
     public void RemainEnergyDrinkNum()
     {
-        ItemNumUI.transform.GetChild(0).GetComponent<Text>().text = WeaponNum[3].ToString();
+        changeBombNum?.Invoke(WeaponNum[3]);
+
     }
 
     void powerUp()
@@ -1030,7 +1039,7 @@ public class Player : MonoBehaviour
         //ReloadTimerUI.GetComponent<Slider>().value = energyTimer;
 
         PowerTimeUI.SetActive(true);
-        PowerTimeUI.GetComponent<Slider>().value = energyTimer;
+        changePowerUpTime?.Invoke(energyTimer);
         energyTimer -= Time.deltaTime;
         //Debug.Log(energyTimer);
         //Debug.Log(currentBulletPower);
@@ -1044,7 +1053,7 @@ public class Player : MonoBehaviour
             //setReloadBulletUI(false);
             PowerTimeUI.SetActive(false);
             energyTimer = 0;
-            PowerTimeUI.GetComponent<Slider>().value = energyTimer;
+            changePowerUpTime?.Invoke(energyTimer);
 
             currentBulletPower = bulletPower;
             Debug.Log(currentBulletPower);

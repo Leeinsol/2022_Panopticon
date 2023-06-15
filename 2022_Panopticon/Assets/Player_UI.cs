@@ -9,6 +9,8 @@ public class Player_UI : MonoBehaviour
     public GameObject StaminaBar;
     public GameObject ReloadTimerUI;
     public GameObject ItemNumUI;
+    public Image BombGauge;
+    public GameObject PowerTimeUI;
 
     Player player;
 
@@ -17,6 +19,9 @@ public class Player_UI : MonoBehaviour
         Player.changeBullet += UpdateBullet;
         Player.changeStamina += updateStamina;
         Player.changeReloadTime += updateReloadTimer;
+        Player.changeBombNum += updateBombNum;
+        Player.changeBombGauge += updateBombGauge;
+        Player.changePowerUpTime += updatePowerTimer;
     }
 
     private void OnDisable()
@@ -24,6 +29,9 @@ public class Player_UI : MonoBehaviour
         Player.changeBullet -= UpdateBullet;
         Player.changeStamina -= updateStamina;
         Player.changeReloadTime -= updateReloadTimer;
+        Player.changeBombNum -= updateBombNum;
+        Player.changeBombGauge -= updateBombGauge;
+        Player.changePowerUpTime -= updatePowerTimer;
 
     }
 
@@ -54,5 +62,19 @@ public class Player_UI : MonoBehaviour
         ReloadTimerUI.GetComponent<Slider>().value = timer;
     }
 
+    void updateBombNum(int bomb)
+    {
+        ItemNumUI.transform.GetChild(0).GetComponent<Text>().text = bomb.ToString();
+    }
 
+    void updateBombGauge(float fill)
+    {
+        BombGauge.fillAmount = fill;
+    } 
+
+    void updatePowerTimer(float timer)
+    {
+        PowerTimeUI.GetComponent<Slider>().value = timer;
+
+    }
 }

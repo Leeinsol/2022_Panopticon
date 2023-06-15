@@ -32385,7 +32385,7 @@ MonoBehaviour:
   ItemNumUI: {fileID: 8638261727967599375}
   useReload: 1
   ReloadKey: 114
-  reloadType: 1
+  reloadType: 0
   maxReloadTime: 5
   allReloadTime: 1
   reloadActionForce: 0.2
@@ -35827,6 +35827,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BulletNumUI: {fileID: 1206435595678060698}
   StaminaBar: {fileID: 1206435595719307233}
+  ReloadTimerUI: {fileID: 1206435594935872636}
+  ItemNumUI: {fileID: 8638261727967599375}
+  BombGauge: {fileID: 6562487703180719608}
+  PowerTimeUI: {fileID: 8638261728562363105}
 --- !u!224 &8638261727967599368
 RectTransform:
   m_ObjectHideFlags: 0
