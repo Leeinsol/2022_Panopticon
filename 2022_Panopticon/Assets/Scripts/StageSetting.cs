@@ -154,7 +154,6 @@ public class StageSetting : MonoBehaviour
         StageStar stageStar = myStageList.Find(x => x.Name == mode);
         if (stageStar != null)
         {
-            //stageStar.StarNum = (int.Parse(stageStar.StarNum) + 1).ToString();
             stageStar.StarNum = currentStar.ToString();
         }
         Save();
