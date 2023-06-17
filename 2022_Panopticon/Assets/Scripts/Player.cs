@@ -157,7 +157,6 @@ public class Player : MonoBehaviour
     public int ultimateGauge = 0;
     public float radius = 1f;
     public Transform middleAimPoint;
-    List<Collider> colliders = new List<Collider>();
 
     public GameObject ultimateCrossHair;
     public Canvas playerCanvas;
@@ -174,6 +173,7 @@ public class Player : MonoBehaviour
     public static event Action<int> changeBombNum;
     public static event Action<float> changeBombGauge;
     public static event Action<float> changePowerUpTime;
+
 
     private void Start()
     {

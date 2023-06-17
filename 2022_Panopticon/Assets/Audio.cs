@@ -2,17 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Audio : MonoBehaviour
+public interface Audio
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    void PlaySound(AudioClip audioClip);
+    void StopSound(int ID);
+    void StopAllSounds();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
