@@ -19,7 +19,7 @@ public class Player_UI : MonoBehaviour
         Player.changeBullet += UpdateBullet;
         Player.changeStamina += updateStamina;
         Player.changeReloadTime += updateReloadTimer;
-        Player.changeBombNum += updateBombNum;
+        Player.changeItemNum += updateBombNum;
         Player.changeBombGauge += updateBombGauge;
         Player.changePowerUpTime += updatePowerTimer;
     }
@@ -29,7 +29,7 @@ public class Player_UI : MonoBehaviour
         Player.changeBullet -= UpdateBullet;
         Player.changeStamina -= updateStamina;
         Player.changeReloadTime -= updateReloadTimer;
-        Player.changeBombNum -= updateBombNum;
+        Player.changeItemNum -= updateBombNum;
         Player.changeBombGauge -= updateBombGauge;
         Player.changePowerUpTime -= updatePowerTimer;
 

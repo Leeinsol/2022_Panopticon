@@ -51,6 +51,11 @@ public class PlayerControl : MonoBehaviour
         reload = new ReloadCommand(player);
 
         SprintKey = ChangeInputKey.Instance.Keys[0];
+        CrouchKey = ChangeInputKey.Instance.Keys[1];
+        JumpKey = ChangeInputKey.Instance.Keys[2];
+        ZoomKey = ChangeInputKey.Instance.Keys[3];
+        FireKey = ChangeInputKey.Instance.Keys[4];
+        ReloadKey = ChangeInputKey.Instance.Keys[5];
     }
     
     // Update is called once per frame

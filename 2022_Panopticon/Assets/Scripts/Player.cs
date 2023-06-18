@@ -170,7 +170,7 @@ public class Player : MonoBehaviour
     public static event Action<int> changeBullet;
     public static event Action<float> changeStamina;
     public static event Action<float> changeReloadTime;
-    public static event Action<int> changeBombNum;
+    public static event Action<int> changeItemNum;
     public static event Action<float> changeBombGauge;
     public static event Action<float> changePowerUpTime;
 
@@ -999,7 +999,7 @@ public class Player : MonoBehaviour
 
     void RemainBombNum()
     {
-        changeBombNum?.Invoke(WeaponNum[2]);
+        changeItemNum?.Invoke(WeaponNum[2]);
     }
 
     public void eatEnergyDrink()
@@ -1025,7 +1025,7 @@ public class Player : MonoBehaviour
 
     public void RemainEnergyDrinkNum()
     {
-        changeBombNum?.Invoke(WeaponNum[3]);
+        changeItemNum?.Invoke(WeaponNum[3]);
 
     }
 
