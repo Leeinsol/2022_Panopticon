@@ -32,7 +32,6 @@ public class Player_UI : MonoBehaviour
         Player.changeItemNum -= updateBombNum;
         Player.changeBombGauge -= updateBombGauge;
         Player.changePowerUpTime -= updatePowerTimer;
-
     }
 
     // Start is called before the first frame update
@@ -55,6 +54,7 @@ public class Player_UI : MonoBehaviour
 
     void updateStamina(float stamina)
     {
+        Debug.Log("Stamina");
         StaminaBar.GetComponent<Slider>().value = stamina;
     }
     void updateReloadTimer(float timer)

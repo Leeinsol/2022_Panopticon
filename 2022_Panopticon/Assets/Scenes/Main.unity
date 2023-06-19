@@ -31513,6 +31513,7 @@ GameObject:
   - component: {fileID: 8638261727872279312}
   - component: {fileID: 8638261727872279313}
   - component: {fileID: 8638261727872279314}
+  - component: {fileID: 8638261727872279315}
   m_Layer: 8
   m_Name: FPSShootingPackage
   m_TagString: Player
@@ -35873,6 +35874,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3a2f0f1798dd440479cee8262595e122, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BulletNumUI: {fileID: 1206435595678060698}
+  StaminaBar: {fileID: 1206435595719307233}
+  ReloadTimerUI: {fileID: 1206435594935872636}
+  ItemNumUI: {fileID: 8638261727967599375}
+  BombGauge: {fileID: 6562487703180719608}
+  PowerTimeUI: {fileID: 8638261728562363105}
+--- !u!114 &8638261727872279315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1206435594591277136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 409555e746585cb41b94c7cf7de55936, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   BulletNumUI: {fileID: 1206435595678060698}

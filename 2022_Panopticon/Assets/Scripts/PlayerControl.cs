@@ -90,7 +90,7 @@ public class PlayerControl : MonoBehaviour
     {
         if (Input.GetKeyDown(SprintKey) && playerComponent.iswalking)
         {
-            sprint.Execute();
+            sprint.Enter();
         }
         if (Input.GetKeyUp(SprintKey))
         {
@@ -102,7 +102,7 @@ public class PlayerControl : MonoBehaviour
     {
         if (Input.GetKeyDown(CrouchKey))
         {
-            crouch.Execute();
+            crouch.Enter();
         }
         if (Input.GetKeyUp(CrouchKey))
         {
@@ -121,7 +121,7 @@ public class PlayerControl : MonoBehaviour
     void JumpInput()
     {
         if (Input.GetKeyDown(JumpKey) && playerComponent.isGround)
-            jump.Execute();
+            jump.Enter();
     }
 
     void HeadBob()
@@ -160,9 +160,9 @@ public class PlayerControl : MonoBehaviour
                 {
                     if (Input.GetKeyDown(ReloadKey))
                     {
-                        reload.Execute();
+                        reload.Enter();
                     }
-                    reload.Do();
+                    reload.Execute();
                 }
             }
             else
@@ -185,7 +185,7 @@ public class PlayerControl : MonoBehaviour
         {
             if (Input.GetKeyDown(FireKey))
             {
-                getItem.Execute();
+                getItem.Enter();
             }
             if (Input.GetKeyUp(FireKey))
             {
@@ -194,7 +194,7 @@ public class PlayerControl : MonoBehaviour
 
             if (Input.GetKey(FireKey))
             {
-                getItem.Do();
+                getItem.Execute();
             }
         }
         if (playerComponent.Weapon[2].activeSelf && Time.timeScale > 0)
@@ -211,10 +211,10 @@ public class PlayerControl : MonoBehaviour
 
         if (playerComponent.Weapon[3].activeSelf && Time.timeScale > 0)
         {
-            energy.Do();
+            energy.Execute();
             if (Input.GetKeyDown(FireKey))
             {
-                energy.Execute();
+                energy.Enter();
             }
         }
     }

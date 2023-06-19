@@ -12,8 +12,8 @@ public abstract class Command
     }
 
     abstract public void Set();
+    abstract public void Enter();
     abstract public void Execute();
-    abstract public void Do();
     abstract public void End();
 }
 
@@ -21,9 +21,9 @@ public class MoveCommand : Command
 {
     public MoveCommand(GameObject actor) : base(actor) { }
     
-    public override void Execute()
+    public override void Enter()
     {
-        actor.GetComponent<Player>().Move();
+        
     }
     public override void End() {
 
@@ -34,8 +34,9 @@ public class MoveCommand : Command
     {
     }
 
-    public override void Do()
+    public override void Execute()
     {
+        actor.GetComponent<Player>().Move();
     }
 }
 
@@ -43,7 +44,7 @@ public class SprintCommand : Command
 {
     public SprintCommand(GameObject actor) : base(actor) { }
 
-    public override void Execute()
+    public override void Enter()
     {
         actor.GetComponent<Player>().isSprinting=true;
     }
@@ -56,7 +57,7 @@ public class SprintCommand : Command
     {
     }
 
-    public override void Do()
+    public override void Execute()
     {
     }
 }
@@ -65,7 +66,7 @@ public class CrouchCommand : Command
 {
     public CrouchCommand(GameObject actor) : base(actor) { }
 
-    public override void Execute()
+    public override void Enter()
     {
         actor.GetComponent<Player>().setCrouch();
     }
@@ -78,7 +79,7 @@ public class CrouchCommand : Command
     {
     }
 
-    public override void Do()
+    public override void Execute()
     {
     }
 }
@@ -87,9 +88,8 @@ public class CamVerticalCommand : Command
 {
     public CamVerticalCommand(GameObject actor) : base(actor) { }
 
-    public override void Execute()
+    public override void Enter()
     {
-        actor.GetComponent<Player>().CameraRotationVerticality();
     }
     public override void End()
     {
@@ -99,17 +99,17 @@ public class CamVerticalCommand : Command
     {
     }
 
-    public override void Do()
+    public override void Execute()
     {
+        actor.GetComponent<Player>().CameraRotationVerticality();
     }
 }
 public class CamHorizontalCommand : Command
 {
     public CamHorizontalCommand(GameObject actor) : base(actor) { }
 
-    public override void Execute()
+    public override void Enter()
     {
-        actor.GetComponent<Player>().CameraRotationHorizontality();
     }
 
     public override void End()
@@ -119,8 +119,9 @@ public class CamHorizontalCommand : Command
     {
     }
 
-    public override void Do()
+    public override void Execute()
     {
+        actor.GetComponent<Player>().CameraRotationHorizontality();
     }
 }
 
@@ -128,7 +129,7 @@ public class JumpCommand : Command
 {
     public JumpCommand(GameObject actor) : base(actor) { }
 
-    public override void Execute()
+    public override void Enter()
     {
         actor.GetComponent<Player>().Jump();
     }
@@ -140,7 +141,7 @@ public class JumpCommand : Command
     {
     }
 
-    public override void Do()
+    public override void Execute()
     {
     }
 }
@@ -150,9 +151,8 @@ public class HeadBobCommand : Command
 {
     public HeadBobCommand(GameObject actor) : base(actor) { }
 
-    public override void Execute()
+    public override void Enter()
     {
-        actor.GetComponent<Player>().HeadBob();
     }
 
     public override void End()
@@ -162,17 +162,17 @@ public class HeadBobCommand : Command
     {
     }
 
-    public override void Do()
+    public override void Execute()
     {
+        actor.GetComponent<Player>().HeadBob();
     }
 }
 public class ZoomCameraCommand : Command
 {
     public ZoomCameraCommand(GameObject actor) : base(actor) { }
 
-    public override void Execute()
+    public override void Enter()
     {
-        actor.GetComponent<Player>().ZoomCamera();
     }
 
     public override void End()
@@ -183,8 +183,9 @@ public class ZoomCameraCommand : Command
     {
     }
 
-    public override void Do()
+    public override void Execute()
     {
+        actor.GetComponent<Player>().ZoomCamera();
     }
 }
 
@@ -192,9 +193,8 @@ public class FireCommand : Command
 {
     public FireCommand(GameObject actor) : base(actor) { }
 
-    public override void Execute()
+    public override void Enter()
     {
-        actor.GetComponent<Player>().Fire();
     }
 
     public override void End()
@@ -205,8 +205,9 @@ public class FireCommand : Command
         actor.GetComponent<Player>().setFireTimer();
     }
 
-    public override void Do()
+    public override void Execute()
     {
+        actor.GetComponent<Player>().Fire();
     }
 }
 
@@ -214,9 +215,8 @@ public class UltimateFireCommand : Command
 {
     public UltimateFireCommand(GameObject actor) : base(actor) { }
 
-    public override void Execute()
+    public override void Enter()
     {
-        actor.GetComponent<Player>().ultimateFire();
     }
 
     public override void End()
@@ -227,8 +227,9 @@ public class UltimateFireCommand : Command
         actor.GetComponent<Player>().setUltimateState();
     }
 
-    public override void Do()
+    public override void Execute()
     {
+        actor.GetComponent<Player>().ultimateFire();
     }
 }
 
@@ -236,7 +237,7 @@ public class getItemCommand : Command
 {
     public getItemCommand(GameObject actor) : base(actor) { }
 
-    public override void Execute()
+    public override void Enter()
     {
         actor.GetComponent<Player>().getItem();
     }
@@ -249,7 +250,7 @@ public class getItemCommand : Command
     {
     }
 
-    public override void Do()
+    public override void Execute()
     {
         actor.GetComponent<Player>().pullItemMotion();
         actor.GetComponent<Player>().setRemainItemUI(false);
@@ -260,9 +261,8 @@ public class BombCommand : Command
 {
     public BombCommand(GameObject actor) : base(actor) { }
 
-    public override void Execute()
+    public override void Enter()
     {
-        actor.GetComponent<Player>().bombFire();
     }
 
     public override void End()
@@ -273,8 +273,9 @@ public class BombCommand : Command
     {
     }
 
-    public override void Do()
+    public override void Execute()
     {
+        actor.GetComponent<Player>().bombFire();
     }
 }
 
@@ -282,7 +283,7 @@ public class EnergyCommand : Command
 {
     public EnergyCommand(GameObject actor) : base(actor) { }
 
-    public override void Execute()
+    public override void Enter()
     {
         actor.GetComponent<Player>().eatEnergyDrink();
         actor.GetComponent<Player>().RemainEnergyDrinkNum();
@@ -296,7 +297,7 @@ public class EnergyCommand : Command
     {
     }
 
-    public override void Do()
+    public override void Execute()
     {
         actor.GetComponent<Player>().RemainEnergyDrinkNum();
         actor.GetComponent<Player>().setRemainItemUI(true);
@@ -307,7 +308,7 @@ public class ReloadCommand : Command
 {
     public ReloadCommand(GameObject actor) : base(actor) { }
 
-    public override void Execute()
+    public override void Enter()
     {
         actor.GetComponent<Player>().PressReloadKey();
     }
@@ -320,7 +321,7 @@ public class ReloadCommand : Command
         actor.GetComponent<Player>().SetReload();
     }
 
-    public override void Do()
+    public override void Execute()
     {
         actor.GetComponent<Player>().reloadBullet();
     }
