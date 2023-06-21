@@ -698,27 +698,18 @@ public class Player : MonoBehaviour
 
                 if (collider is CapsuleCollider)
                 {
-                    //Debug.Log("Ä¸½¶");
-                    //Debug.Log(currentBulletPower);
                     collider.gameObject.GetComponent<Enemy>().hp -= currentBulletPower;
 
-                    //Debug.Log(collider.gameObject.GetComponent<Enemy>().hp);
                     collider.gameObject.GetComponent<Enemy>().playHurtAnim();
                     collider.gameObject.GetComponent<Enemy>().playBloodEffect(hitInfo);
                     ultimateGauge++;
-                    //Debug.Log(ultimateGauge);
                 }
                 if (collider is SphereCollider)
                 {
                     Debug.Log("¸Ó¸®");
-                    //collider.gameObject.GetComponent<Enemy>().hp -= 2;
-
-                    //Debug.Log(collider.gameObject.GetComponent<Enemy>().hp);
-                    //collider.gameObject.GetComponent<Enemy>().playHurtAnim();
 
                     collider.gameObject.GetComponent<Enemy>().hp -= (currentBulletPower * 2);
 
-                    //Debug.Log(collider.gameObject.GetComponent<Enemy>().hp);
                     collider.gameObject.GetComponent<Enemy>().playHurtAnim();
 
                     ultimateGauge += 2;
