@@ -54,7 +54,6 @@ public class Player_UI : MonoBehaviour
 
     void updateStamina(float stamina)
     {
-        Debug.Log("Stamina");
         StaminaBar.GetComponent<Slider>().value = stamina;
     }
     void updateReloadTimer(float timer)
