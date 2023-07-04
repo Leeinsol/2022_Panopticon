@@ -692,7 +692,6 @@ public class Player : MonoBehaviour
 
             Collider collider = hitInfo.collider;
 
-            // 총 맞았을 때
             if (collider.gameObject.GetComponent<Enemy>())
             {
 
@@ -706,14 +705,11 @@ public class Player : MonoBehaviour
                 }
                 if (collider is SphereCollider)
                 {
-                    Debug.Log("머리");
-
                     collider.gameObject.GetComponent<Enemy>().hp -= (currentBulletPower * 2);
 
                     collider.gameObject.GetComponent<Enemy>().playHurtAnim();
 
                     ultimateGauge += 2;
-                    Debug.Log(ultimateGauge);
                 }
             }
         }
@@ -777,7 +773,6 @@ public class Player : MonoBehaviour
     void showClosestCEnemy()
     {
         ultimateCrossHair.SetActive(true);
-        //crossHairText.enabled = false;
         setUltimateCrossHair(0.2f);
 
         Ray ray = new Ray(theCamera.transform.position, theCamera.transform.forward);
