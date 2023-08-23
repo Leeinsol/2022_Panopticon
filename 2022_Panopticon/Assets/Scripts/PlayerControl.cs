@@ -50,12 +50,14 @@ public class PlayerControl : MonoBehaviour
         energy = new EnergyCommand(player);
         reload = new ReloadCommand(player);
 
-        SprintKey = ChangeInputKey.Instance.Keys[0];
-        CrouchKey = ChangeInputKey.Instance.Keys[1];
-        JumpKey = ChangeInputKey.Instance.Keys[2];
-        ZoomKey = ChangeInputKey.Instance.Keys[3];
-        FireKey = ChangeInputKey.Instance.Keys[4];
-        ReloadKey = ChangeInputKey.Instance.Keys[5];
+
+        SprintKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), ChangeInputKey.Instance.myKeyList[0].KeyCode);
+        CrouchKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), ChangeInputKey.Instance.myKeyList[1].KeyCode);
+        JumpKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), ChangeInputKey.Instance.myKeyList[2].KeyCode);
+        ZoomKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), ChangeInputKey.Instance.myKeyList[3].KeyCode);
+        FireKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), ChangeInputKey.Instance.myKeyList[4].KeyCode);
+        ReloadKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), ChangeInputKey.Instance.myKeyList[5].KeyCode);
+
     }
     
     // Update is called once per frame

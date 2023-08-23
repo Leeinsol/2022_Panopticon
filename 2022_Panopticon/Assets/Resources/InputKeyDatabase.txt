@@ -1,0 +1,6 @@
+Sprint	KeyCode.LeftSprint
+Crouch	KeyCode.LeftControl
+Jump	KeyCode.Space
+Zoom	KeyCode.Mouse1
+Fire	KeyCode.Mouse0
+Reload	KeyCode.R

@@ -66,6 +66,9 @@ public class title : MonoBehaviour
     public void setting()
     {
         SettingPanel.SetActive(true);
+        SettingPanel.transform.GetChild(0).GetChild(1).gameObject.SetActive(true);
+        SettingPanel.transform.GetChild(0).GetChild(2).gameObject.SetActive(false);
+        SettingPanel.transform.GetChild(0).GetChild(2).GetChild(1).gameObject.SetActive(false);
     }
 
     public void nextPage()
