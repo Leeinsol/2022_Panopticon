@@ -4242,6 +4242,7 @@ MonoBehaviour:
   useRandomEnergyDrink: 0
   energyDrinkNum: 10
   isDistanceCorrection: 0
+  sharedData: {fileID: 0}
 --- !u!4 &405014765
 Transform:
   m_ObjectHideFlags: 0
@@ -8402,6 +8403,7 @@ MonoBehaviour:
   nextSceneName: Main
   tutorialMusic: {fileID: 8300000, guid: 318eca451de165841888fddd006e7865, type: 3}
   SettingPanel: {fileID: 1987958117}
+  sharedData: {fileID: 11400000, guid: 55e9fee4807396e44a59a0846ac10742, type: 2}
 --- !u!4 &865138879
 Transform:
   m_ObjectHideFlags: 0
@@ -8467,6 +8469,7 @@ MonoBehaviour:
   nextSceneName: 
   tutorialMusic: {fileID: 0}
   SettingPanel: {fileID: 0}
+  sharedData: {fileID: 0}
 --- !u!114 &865138881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8499,6 +8502,7 @@ MonoBehaviour:
   nextSceneName: 
   tutorialMusic: {fileID: 0}
   SettingPanel: {fileID: 0}
+  sharedData: {fileID: 0}
 --- !u!114 &865138882
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8518,6 +8522,7 @@ MonoBehaviour:
   nextSceneName: Main
   tutorialMusic: {fileID: 8300000, guid: 318eca451de165841888fddd006e7865, type: 3}
   SettingPanel: {fileID: 0}
+  sharedData: {fileID: 0}
 --- !u!1001 &868891063
 PrefabInstance:
   m_ObjectHideFlags: 0

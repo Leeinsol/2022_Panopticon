@@ -21,19 +21,22 @@ public class ItemManager : MonoBehaviour
 
     public bool isDistanceCorrection = true;
 
+    public SharedData sharedData;
+
+
     // Start is called before the first frame update
     void Start()
     {
 
-        if (StageSetting.Instance.getStage() == "easy")
+        if (sharedData.stage == "easy")
         {
             energyDrinkNum = 7;
         }
-        else if (StageSetting.Instance.getStage() == "normal")
+        else if (sharedData.stage == "normal")
         {
             energyDrinkNum = 10;
         }
-        else if (StageSetting.Instance.getStage() == "hard")
+        else if (sharedData.stage == "hard")
         {
             energyDrinkNum = 5;
         }

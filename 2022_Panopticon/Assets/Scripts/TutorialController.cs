@@ -15,6 +15,9 @@ public class TutorialController : MonoBehaviour
     public AudioClip tutorialMusic;
 
     public GameObject SettingPanel;
+
+    public SharedData sharedData;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -94,7 +97,7 @@ public class TutorialController : MonoBehaviour
             PlayerPrefs.SetInt("Stage", 1);
             if (PlayerPrefs.GetInt("isCinemaEnd") == 0)
             {
-                StageSetting.Instance.setStageHard();
+                sharedData.stage = "hard";
                 SceneManager.LoadScene(nextSceneName);
 
             }

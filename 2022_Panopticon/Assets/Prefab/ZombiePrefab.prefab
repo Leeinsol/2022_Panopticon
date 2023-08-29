@@ -1878,6 +1878,7 @@ MonoBehaviour:
     type: 3}
   deathEffect: {fileID: 1025285306637258, guid: d8f0099df63275647a8bcf646df1ca00,
     type: 3}
+  sharedData: {fileID: 11400000, guid: 55e9fee4807396e44a59a0846ac10742, type: 2}
 --- !u!195 &5115912789076446619
 NavMeshAgent:
   m_ObjectHideFlags: 0

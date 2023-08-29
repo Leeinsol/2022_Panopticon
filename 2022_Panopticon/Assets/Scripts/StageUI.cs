@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using UnityEngine.Events;
 public class StageUI : MonoBehaviour
 {
     public AudioSource BGMSource;
+    public SharedData sharedData;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,22 +20,14 @@ public class StageUI : MonoBehaviour
         
     }
 
-    public void StageEasy()
+    public void SelectStage(string stage)
     {
-        StageSetting.Instance.setStageEasy();
+        Debug.Log(stage);
+        sharedData.stage = stage;
+        SceneManager.LoadScene("Main");
     }
 
-    public void StageNormal()
-    {
-        StageSetting.Instance.setStageNormal();
-
-    }
-
-    public void StageHard()
-    {
-        StageSetting.Instance.setStageHard();
-    }
-
+    
     public void loadTutorial()
     {
         StageSetting.Instance.BGMSource = BGMSource;

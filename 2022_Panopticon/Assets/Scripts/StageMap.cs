@@ -9,11 +9,13 @@ public class StageMap : MonoBehaviour
     public GameObject[] PrisonStair;
     public GameObject[] Tower;
 
+    public SharedData sharedData;
+
     // Start is called before the first frame update
     void Start()
     {
-
-        if (StageSetting.Instance.getStage() == "easy")
+        Debug.Log(sharedData.stage);
+        if (sharedData.stage == "easy")
         {
             PrisonRoom[0].SetActive(false);
             PrisonRoom[1].SetActive(false);
@@ -24,7 +26,7 @@ public class StageMap : MonoBehaviour
             Tower[0].SetActive(false);
             Tower[1].SetActive(false);
         }
-        else if (StageSetting.Instance.getStage() == "normal")
+        else if (sharedData.stage == "normal")
         {
             PrisonRoom[1].SetActive(false);
             PrisonStair[1].SetActive(false);

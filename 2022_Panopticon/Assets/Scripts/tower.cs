@@ -37,6 +37,9 @@ public class tower : MonoBehaviour
     Transform cameraTransform;
     GameObject Camera;
 
+    public SharedData sharedData;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -95,11 +98,11 @@ public class tower : MonoBehaviour
             //PlayerPrefs.GetInt("remainTower");
 
 
-            if (StageSetting.Instance.getStage() == "easy")
+            if (sharedData.stage == "easy")
             {
                 PlayerPrefs.SetInt("Stage", 2);
             }
-            else if (StageSetting.Instance.getStage() == "normal")
+            else if (sharedData.stage == "normal")
             {
                 PlayerPrefs.SetInt("Stage", 3);
             }

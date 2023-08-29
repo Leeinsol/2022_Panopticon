@@ -174,6 +174,7 @@ public class Player : MonoBehaviour
     public static event Action<float> changeBombGauge;
     public static event Action<float> changePowerUpTime;
 
+    public SharedData sharedData;
 
     private void Start()
     {
@@ -269,17 +270,17 @@ public class Player : MonoBehaviour
         ultimateTimer = ultimateTime;
 
 
-        if (StageSetting.Instance.getStage() == "easy")
+        if (sharedData.stage == "easy")
         {
             ultimateNum = 30;
             ultimateTime = 12;
         }
-        else if (StageSetting.Instance.getStage() == "normal")
+        else if (sharedData.stage == "normal")
         {
             ultimateNum = 50;
             ultimateTime = 10;
         }
-        else if (StageSetting.Instance.getStage() == "hard")
+        else if (sharedData.stage == "hard")
         {
             ultimateNum = 100;
             ultimateTime = 7;

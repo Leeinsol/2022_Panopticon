@@ -281,26 +281,6 @@ public class player_Controller : MonoBehaviour
         setRemainItemUI(false);
         ultimateTimer = ultimateTime;
 
-
-        if (StageSetting.Instance.getStage() == "easy")
-        {
-            ultimateNum = 30;
-            ultimateTime = 12;
-        }
-        else if (StageSetting.Instance.getStage() == "normal")
-        {
-            ultimateNum = 50;
-            ultimateTime = 10;
-        }
-        else if (StageSetting.Instance.getStage() == "hard")
-        {
-            ultimateNum = 100;
-            ultimateTime = 7;
-        }
-
-
-        
-
         //Debug.Log("ultimateNum: " + ultimateNum);
         //Debug.Log("ultimateTime: " + ultimateTime);
     }

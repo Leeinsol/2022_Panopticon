@@ -91,10 +91,6 @@ public class title : MonoBehaviour
         SceneManager.LoadScene("Title");
     }
 
-    public void Reset()
-    {
-        StageSetting.Instance.ResetStar();
-    }
 
     public void setQuitPanel(bool state)
     {

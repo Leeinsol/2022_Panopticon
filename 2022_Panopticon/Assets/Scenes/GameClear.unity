@@ -816,6 +816,7 @@ MonoBehaviour:
   oneStar: {fileID: 1530035416}
   twoStar: {fileID: 1266542306}
   threeStar: {fileID: 1136427801}
+  sharedData: {fileID: 11400000, guid: 55e9fee4807396e44a59a0846ac10742, type: 2}
 --- !u!114 &375258024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -848,6 +849,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BGMSource: {fileID: 0}
+  sharedData: {fileID: 0}
 --- !u!114 &375258026
 MonoBehaviour:
   m_ObjectHideFlags: 0

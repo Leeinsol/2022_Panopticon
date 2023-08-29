@@ -47,6 +47,7 @@ public class StageSetting : MonoBehaviour
     Stage stage = Stage.tutorial;
 
 
+
     private void Awake()
     {
         getAudioSource();
@@ -98,36 +99,7 @@ public class StageSetting : MonoBehaviour
         BGMSource = GetComponent<AudioSource>();
 
     }
-    public string getStage()
-    {
-        return stage.ToString();
-    }
 
-    public void setStageEasy()
-    {
-        stage = Stage.easy;
-    }
-
-    public void setStageNormal()
-    {
-        stage = Stage.normal;
-
-    }
-
-    public void setStageHard()
-    {
-        stage = Stage.hard;
-    }
-
-    public void SetStar(string mode, int currentStar)
-    {
-        SaveStarNum(mode, currentStar);
-    }
-    void SaveStarNum(string mode, int currentStar)
-    {
-        if (GetStarNum(mode) < currentStar)
-            SetStarNum(mode, currentStar);
-    }
     void Save()
     {
         string jdata = JsonUtility.ToJson(new Serialization<StageStar>(myStageList));
@@ -143,21 +115,6 @@ public class StageSetting : MonoBehaviour
         myStageList = JsonUtility.FromJson<Serialization<StageStar>>(jdata).target;
     }
 
-    public int GetStarNum(string mode)
-    {
-        StageStar stageStar = myStageList.Find(x => x.Name == mode);
-        return int.Parse(stageStar.StarNum);
-    }
-
-    public void SetStarNum(string mode, int currentStar)
-    {
-        StageStar stageStar = myStageList.Find(x => x.Name == mode);
-        if (stageStar != null)
-        {
-            stageStar.StarNum = currentStar.ToString();
-        }
-        Save();
-    }
 
     public void ResetStar()
     {

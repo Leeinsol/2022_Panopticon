@@ -30,6 +30,8 @@ public class cinema_moving : MonoBehaviour
     public GameObject canvas;
     public GameObject Sprintcanvas;
 
+    public SharedData sharedData;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -211,7 +213,7 @@ void moveRotateLeft()
     void loadTitle()
     {
         PlayerPrefs.SetInt("isCinemaEnd", 1);
-        StageSetting.Instance.setStageEasy();
+        sharedData.stage = "easy";
         SceneManager.LoadScene("Main");
     }
 
