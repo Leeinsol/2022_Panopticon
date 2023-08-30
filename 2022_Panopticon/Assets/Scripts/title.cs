@@ -11,6 +11,7 @@ public class title : MonoBehaviour
     public GameObject ResetPanel;
     public GameObject AllresetButton;
     public GameObject ResetButton;
+    public GameObject InputButton;
 
     public AudioClip titleMusic;
     
@@ -25,8 +26,10 @@ public class title : MonoBehaviour
             StageSetting.Instance.BGMSource.Play();
 
         }
-        StagePanel.SetActive(false);
-
+        closeSettingPanel();
+        closeStagePanel();
+        setQuitPanel(false);
+        setResetPanel(false);
     }
     
     // Update is called once per frame
@@ -47,8 +50,6 @@ public class title : MonoBehaviour
         }
 
     }
-
- 
 
     public void closeStagePanel()
     {
@@ -101,19 +102,23 @@ public class title : MonoBehaviour
         ResetPanel.SetActive(state);
     }
 
-    public void setAllresetButton()
+    public void setResetButton(GameObject button)
     {
-        AllresetButton.SetActive(false);
-        ResetButton.SetActive(false);
-    
-        AllresetButton.SetActive(true);        
+        offAllResetButton();
+        button.SetActive(true);        
     }
     public void setResetButton()
     {
+        offAllResetButton();
+
+        ResetButton.SetActive(true);
+    }
+
+    void offAllResetButton()
+    {
         AllresetButton.SetActive(false);
         ResetButton.SetActive(false);
-        
-        ResetButton.SetActive(true);
+        InputButton.SetActive(false);
     }
 
     public void resetPlayerPrefs()

@@ -16,6 +16,10 @@ public class Enemy : MonoBehaviour
     Vector3 destination;
     public Transform targetPos;
     public float towerRadius = 8.0f;
+    float avoidanceRadious = 5f;
+    float circleRadius = 2f;
+    float monsterRadius = 10f;
+    float avoidForce = 1f;
     private Vector3 currentDestination;
     private bool hasReachedDestination = false;
 
@@ -55,6 +59,7 @@ public class Enemy : MonoBehaviour
         {
             walkSpeed = 0.4f;
             runSpeed = 0.8f;
+
             hp = 3;
         }
         else if (sharedData.stage == "normal")
@@ -71,12 +76,14 @@ public class Enemy : MonoBehaviour
         }
 
         enemyModel = transform.GetChild(0).gameObject;
-        //hp = maxHp;
         rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
         audioSource = GetComponent<AudioSource>();
-        //destination = agent.destination;
-        SetDestination();
+
+        //SetDestination();
+
+        StartCoroutine(SetDestination());
+
         animator = enemyModel.GetComponent<Animator>();
         if (PlayerPrefs.GetInt("isCinemaEnd") == 1)
         {
@@ -91,50 +98,31 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //rb.velocity = Vector3.zero;
         agent.isStopped = false;
-        //SetDestination();
 
         if (!hasReachedDestination && agent.remainingDistance <= agent.stoppingDistance)
         {
             hasReachedDestination = true;
-            //SetDestination();
-            StartCoroutine(SetDestination());
+            //StartCoroutine(SetDestination());
         }
-
-        //agent.SetDestination(targetPos.transform.position);
-        //agent.destination = destination;
-        //agent.destination = targetPos.transform.position;
-        //agent.destination = targetPos;
 
         if (GameObject.Find("CinemaCamera") != null)
         {
             if (GameObject.Find("CinemaCamera").GetComponent<cinema_moving>().isDoorOpen
             || PlayerPrefs.GetInt("isCinemaEnd") == 1)
             {
-                //Debug.Log("�����̽�");
                 agent.isStopped = false;
                 animator.SetBool("isRun", true);
             }
         }
         
-
-
-        //animator.SetBool("isAttack", false);
         deadCheck();
         checkAngryState();
-        //Debug.Log(agent.speed);
-        //Debug.Log(hp);
         speedTimer();
-        //Debug.Log(animator.GetBool("isAttack"));
-
-        //Debug.Log("speed: " + walkSpeed + runSpeed);
-        //Debug.Log("Enemy hp: " + hp);
     }
 
     void speedTimer()
     {
-        //Debug.Log("speedTiemr" + Timer);
         Timer += Time.deltaTime;
         if (Timer > 10)
         {
@@ -163,25 +151,119 @@ public class Enemy : MonoBehaviour
 
     IEnumerator SetDestination()
     {
-        yield return new WaitForSeconds(3f);
-        Vector3 directionToCenter = targetPos.position - transform.position;
-        directionToCenter.Normalize();
+        //yield return new WaitForSeconds(3f);
+        //Vector3 directionToCenter = targetPos.position - transform.position;
+        //directionToCenter.Normalize();
 
-        Vector3 destination = targetPos.position + directionToCenter * towerRadius;
+        //Vector3 destination = targetPos.position + directionToCenter * towerRadius;
 
-        agent.SetDestination(destination);
+        //agent.SetDestination(destination);
 
-        currentDestination = destination;
-        hasReachedDestination = false;
+        //currentDestination = destination;
+        //hasReachedDestination = false;
+
+        while (true)
+        {
+            Vector3 randomPoint = GetRandomPointAroundTower();
+            agent.SetDestination(randomPoint);
+
+            yield return new WaitForSeconds(Random.Range(2f, 5f));
+        }
+
+        //float angle = Random.Range(0f, 360f);
+        //while (true)
+        //{
+        //    Vector3 circlePoint = targetPos.position + Quaternion.Euler(0f, angle, 0f) * Vector3.forward * circleRadius;
+        //    Vector3 randomPoint = GetRandomPointAroundTower(circlePoint);
+        //    agent.SetDestination(randomPoint);
+
+        //    angle += Random.Range(60f, 120f);
+
+        //    yield return new WaitForSeconds(Random.Range(2f, 5f));
+        //}
+
     }
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.tag == "Player")
-    //    {
-    //        animator.SetBool("isAttack",true);
-    //    }
-    //}
+    Vector3 GetRandomPointAroundTower()
+    {
+        //Vector3 randomDirection = Random.insideUnitSphere * towerRadius;
+        //randomDirection += circlePoint;
+
+        //Vector3 correctedDirection = (targetPos.position - randomDirection).normalized * towerRadius;
+        //Vector3 finalDestination = circlePoint + correctedDirection;
+
+        //NavMeshHit hit;
+        //if(NavMesh.SamplePosition(finalDestination, out hit, towerRadius, NavMesh.AllAreas))
+        //{
+        //    return hit.position;
+        //}
+
+        //return circlePoint; 
+
+        //2
+        Vector3 randomDirection = Random.insideUnitSphere * towerRadius;
+        randomDirection += targetPos.position;
+
+        NavMeshHit hit;
+        NavMesh.SamplePosition(randomDirection, out hit, towerRadius, NavMesh.AllAreas);
+
+        Vector3 adjustedPos = AvoidanceCheck(hit.position);
+        return adjustedPos;
+
+        //int maxAttempts = 10;
+        //int attemptCount = 0;
+        //while (attemptCount < maxAttempts)
+        //{
+        //    Vector3 randomDirection = Random.insideUnitSphere * towerRadius;
+        //    randomDirection += targetPos.position;
+
+        //    NavMeshHit hit;
+        //    if(NavMesh.SamplePosition(randomDirection, out hit, towerRadius, NavMesh.AllAreas))
+        //    {
+        //        if (!CheckForMonsterCollision(hit.position)){
+        //            return hit.position;
+        //        }
+        //    }
+        //    attemptCount++;
+        //}
+        //return transform.position;
+    }
+    
+    bool CheckForMonsterCollision(Vector3 position)
+    {
+        Collider[] colliders = Physics.OverlapSphere(position, monsterRadius);
+        foreach(Collider collider in colliders)
+        {
+            if (collider.gameObject == gameObject) continue;
+            if (collider.bounds.Intersects(GetComponent<Collider>().bounds)) return true;
+        }
+        return false;
+    }
+
+
+    Vector3 AvoidanceCheck(Vector3 targetPos)
+    {
+        //Vector3 avoidanceDirection = Vector3.zero;
+        //Collider[] nearbyColliders = Physics.OverlapSphere(transform.position, avoidanceRadious);
+
+        //foreach (Collider collider in nearbyColliders)
+        //{
+        //    if (collider != null && collider != this.gameObject)
+        //    {
+        //        Vector3 toOther = collider.transform.position - transform.position;
+        //        avoidanceDirection -= toOther.normalized / toOther.magnitude;
+        //    }
+        //}
+
+        //Vector3 adjustedPosition = targetPos + avoidanceDirection * avoidForce;
+
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(targetPos, out hit, avoidanceRadious, NavMesh.AllAreas))
+        {
+            return hit.position;
+        }
+        return targetPos;
+    }
 
     private void OnCollisionEnter(Collision collision)
     {

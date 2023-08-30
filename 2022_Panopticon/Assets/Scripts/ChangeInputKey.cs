@@ -22,36 +22,12 @@ public class ChangeInputKey : MonoBehaviour
 
     int currentIndex = 0;
     KeyCode[] keyCodes;
-    private static ChangeInputKey instance = null;
 
     public TextAsset InputKeyDatabase;
     public List<InputKey> keyList, myKeyList;
     string filePath;
 
 
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(this.gameObject);
-        }
-        else
-        {
-            Destroy(this.gameObject);
-        }
-    }
-    public static ChangeInputKey Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                return null;
-            }
-            return instance;
-        }
-    }
     // Start is called before the first frame update
     void Start()
     {
@@ -65,9 +41,6 @@ public class ChangeInputKey : MonoBehaviour
         filePath = Application.persistentDataPath + "/MyKeyList.txt";
 
         Load();
-
-        PlayerPrefs.SetInt("Stage", 3);
-
 
         keyCodes = (KeyCode[])System.Enum.GetValues(typeof(KeyCode));
         content = ScrollView.transform.GetChild(0).GetChild(0).transform;
@@ -178,10 +151,6 @@ public class ChangeInputKey : MonoBehaviour
     public void resetInputSetting()
     {
         defaultInputKey();
-        foreach(InputKey k in myKeyList)
-        {
-            Debug.Log(k.KeyCode);
-        }
 
         Save();
         setKeyButtonInteractable();

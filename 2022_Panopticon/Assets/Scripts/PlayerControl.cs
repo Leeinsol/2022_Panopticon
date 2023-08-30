@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerControl : MonoBehaviour
@@ -30,6 +31,8 @@ public class PlayerControl : MonoBehaviour
     Command energy;
     Command reload;
 
+    public List<InputKey> myKeyList;
+    string filePath;
 
     // Start is called before the first frame update
     void Start()
@@ -51,12 +54,16 @@ public class PlayerControl : MonoBehaviour
         reload = new ReloadCommand(player);
 
 
-        SprintKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), ChangeInputKey.Instance.myKeyList[0].KeyCode);
-        CrouchKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), ChangeInputKey.Instance.myKeyList[1].KeyCode);
-        JumpKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), ChangeInputKey.Instance.myKeyList[2].KeyCode);
-        ZoomKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), ChangeInputKey.Instance.myKeyList[3].KeyCode);
-        FireKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), ChangeInputKey.Instance.myKeyList[4].KeyCode);
-        ReloadKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), ChangeInputKey.Instance.myKeyList[5].KeyCode);
+        filePath = Application.persistentDataPath + "/MyKeyList.txt";
+
+        Load();
+
+        SprintKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), myKeyList[0].KeyCode);
+        CrouchKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), myKeyList[1].KeyCode);
+        JumpKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), myKeyList[2].KeyCode);
+        ZoomKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), myKeyList[3].KeyCode);
+        FireKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), myKeyList[4].KeyCode);
+        ReloadKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), myKeyList[5].KeyCode);
 
     }
     
@@ -219,5 +226,11 @@ public class PlayerControl : MonoBehaviour
                 energy.Enter();
             }
         }
+    }
+
+    void Load()
+    {
+        string jdata = File.ReadAllText(filePath);
+        myKeyList = JsonUtility.FromJson<Serialization<InputKey>>(jdata).target;
     }
 }
