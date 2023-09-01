@@ -4,64 +4,63 @@ using System.Text;
 using UnityEngine;
 using System.IO;
 
-public static class EncryptionUtility
+public class EncryptionUtility:MonoBehaviour
 {
-    private static readonly string key = "MystageRecodeKey";
-    private static readonly string iv = GenerateRandomInitializationVector(); // 초기화 벡터
-
-    private static string GenerateRandomInitializationVector()
+    void Start()
     {
-        using (RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
-        {
-            byte[] ivBytes = new byte[16]; // 16바이트 크기의 IV
-            rng.GetBytes(ivBytes);
-            return Convert.ToBase64String(ivBytes);
-        }
+
     }
+    //public static string Decrypt(string textToDecrypt, string key)
+    //{
+    //    RijndaelManaged rijndaelCipher = new RijndaelManaged();
+    //    rijndaelCipher.Mode = CipherMode.CBC;
+    //    rijndaelCipher.Padding = PaddingMode.PKCS7;
 
-    public static string Encrypt(string data)
-    {
-        using (Aes aesAlg = Aes.Create())
-        {
-            aesAlg.Key = Encoding.UTF8.GetBytes(key);
-            aesAlg.IV = Convert.FromBase64String(iv);
+    //    rijndaelCipher.KeySize = 128;
+    //    rijndaelCipher.BlockSize = 128;
 
-            ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
+    //    byte[] encryptedData = Convert.FromBase64String(textToDecrypt);
+    //    byte[] pwdBytes = Encoding.UTF8.GetBytes(key);
+    //    byte[] keyBytes = new byte[16];
 
-            using (MemoryStream msEncrypt = new MemoryStream())
-            {
-                using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
-                {
-                    using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
-                    {
-                        swEncrypt.Write(data);
-                    }
-                }
-                return Convert.ToBase64String(msEncrypt.ToArray());
-            }
-        }
-    }
+    //    int len = pwdBytes.Length;
+    //    if (len > keyBytes.Length)
+    //    {
+    //        len = keyBytes.Length;
+    //    }
 
-    public static string Decrypt(string encryptedData)
-    {
-        using (Aes aesAlg = Aes.Create())
-        {
-            aesAlg.Key = Encoding.UTF8.GetBytes(key);
-            aesAlg.IV = Convert.FromBase64String(iv);
+    //    Array.Copy(pwdBytes, keyBytes, len);
+    //    rijndaelCipher.Key = keyBytes;
+    //    rijndaelCipher.IV = keyBytes;
+    //    byte[] plainText = rijndaelCipher.CreateDecryptor().TransformFinalBlock(encryptedData, 0, encryptedData.Length);
+    //    return Encoding.UTF8.GetString(plainText);
+    //}
 
-            ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
+    //public static string Encrypt(string textToEncrypt, string key)
+    //{
+    //    RijndaelManaged rijndaelCipher = new RijndaelManaged();
+    //    rijndaelCipher.Mode = CipherMode.CBC;
+    //    rijndaelCipher.Padding = PaddingMode.PKCS7;
 
-            using (MemoryStream msDecrypt = new MemoryStream(Convert.FromBase64String(encryptedData)))
-            {
-                using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
-                {
-                    using (StreamReader srDecrypt = new StreamReader(csDecrypt))
-                    {
-                        return srDecrypt.ReadToEnd();
-                    }
-                }
-            }
-        }
-    }
+    //    rijndaelCipher.KeySize = 128;
+    //    rijndaelCipher.BlockSize = 128;
+    //    byte[] pwdBytes = Encoding.UTF8.GetBytes(key);
+    //    byte[] keyBytes = new byte[16];
+
+    //    int len = pwdBytes.Length;
+    //    if (len > keyBytes.Length)
+    //    {
+    //        len = keyBytes.Length;
+    //    }
+
+    //    Array.Copy(pwdBytes, keyBytes, len);
+    //    rijndaelCipher.Key = keyBytes;
+    //    rijndaelCipher.IV = keyBytes;
+    //    ICryptoTransform transform = rijndaelCipher.CreateEncryptor();
+    //    byte[] plainText = Encoding.UTF8.GetBytes(textToEncrypt);
+
+    //    return Convert.ToBase64String(transform.TransformFinalBlock(plainText, 0, plainText.Length));
+    //}
 }
+
 

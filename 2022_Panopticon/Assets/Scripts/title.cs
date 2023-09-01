@@ -26,10 +26,10 @@ public class title : MonoBehaviour
             StageSetting.Instance.BGMSource.Play();
 
         }
-        closeSettingPanel();
-        closeStagePanel();
-        setQuitPanel(false);
-        setResetPanel(false);
+        if(StagePanel!=null)        closeStagePanel();
+        if(SettingPanel!=null)      closeSettingPanel();
+        if(QuitPanel!=null)         setQuitPanel(false);
+        if (ResetPanel != null)     setResetPanel(false);
     }
     
     // Update is called once per frame
