@@ -11861,11 +11861,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BGMSource: {fileID: 910035150}
   SfxSource: {fileID: 514075675}
-  FireKey: 323
-  StageDatabase: {fileID: 4900000, guid: 245b0b21edc4fbd4a9046e347a774d6f, type: 3}
-  stageList: []
-  myStageList: []
-  stage: 0
 --- !u!4 &910035152
 Transform:
   m_ObjectHideFlags: 0
@@ -27657,6 +27652,7 @@ MonoBehaviour:
   ZoomKey: 324
   FireKey: 323
   ReloadKey: 114
+  myKeyList: []
 --- !u!114 &1840156574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28256,6 +28252,8 @@ MonoBehaviour:
   deathSound: {fileID: 0}
   bloodEffect: {fileID: 0}
   deathEffect: {fileID: 0}
+  walkSpeed: 0
+  runSpeed: 0
   sharedData: {fileID: 0}
 --- !u!195 &1891445862
 NavMeshAgent:

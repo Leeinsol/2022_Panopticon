@@ -47,14 +47,16 @@ public class Enemy : MonoBehaviour
     public GameObject bloodEffect;
     public GameObject deathEffect;
 
-    float walkSpeed;
-    float runSpeed;
+    public float walkSpeed;
+    public float runSpeed;
 
     public SharedData sharedData;
 
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log(sharedData.stage);
+
         if (sharedData.stage == "easy")
         {
             walkSpeed = 0.4f;
@@ -91,7 +93,7 @@ public class Enemy : MonoBehaviour
         }
 
         agent.enabled = true;
-        agent.isStopped = true;
+        //agent.isStopped = true;
 
         setRandomState();
     }
