@@ -153,17 +153,6 @@ public class Enemy : MonoBehaviour
 
     IEnumerator SetDestination()
     {
-        //yield return new WaitForSeconds(3f);
-        //Vector3 directionToCenter = targetPos.position - transform.position;
-        //directionToCenter.Normalize();
-
-        //Vector3 destination = targetPos.position + directionToCenter * towerRadius;
-
-        //agent.SetDestination(destination);
-
-        //currentDestination = destination;
-        //hasReachedDestination = false;
-
         while (true)
         {
             Vector3 randomPoint = GetRandomPointAroundTower();
@@ -171,38 +160,10 @@ public class Enemy : MonoBehaviour
 
             yield return new WaitForSeconds(Random.Range(2f, 5f));
         }
-
-        //float angle = Random.Range(0f, 360f);
-        //while (true)
-        //{
-        //    Vector3 circlePoint = targetPos.position + Quaternion.Euler(0f, angle, 0f) * Vector3.forward * circleRadius;
-        //    Vector3 randomPoint = GetRandomPointAroundTower(circlePoint);
-        //    agent.SetDestination(randomPoint);
-
-        //    angle += Random.Range(60f, 120f);
-
-        //    yield return new WaitForSeconds(Random.Range(2f, 5f));
-        //}
-
     }
 
     Vector3 GetRandomPointAroundTower()
     {
-        //Vector3 randomDirection = Random.insideUnitSphere * towerRadius;
-        //randomDirection += circlePoint;
-
-        //Vector3 correctedDirection = (targetPos.position - randomDirection).normalized * towerRadius;
-        //Vector3 finalDestination = circlePoint + correctedDirection;
-
-        //NavMeshHit hit;
-        //if(NavMesh.SamplePosition(finalDestination, out hit, towerRadius, NavMesh.AllAreas))
-        //{
-        //    return hit.position;
-        //}
-
-        //return circlePoint; 
-
-        //2
         Vector3 randomDirection = Random.insideUnitSphere * towerRadius;
         randomDirection += targetPos.position;
 
@@ -211,26 +172,18 @@ public class Enemy : MonoBehaviour
 
         Vector3 adjustedPos = AvoidanceCheck(hit.position);
         return adjustedPos;
-
-        //int maxAttempts = 10;
-        //int attemptCount = 0;
-        //while (attemptCount < maxAttempts)
-        //{
-        //    Vector3 randomDirection = Random.insideUnitSphere * towerRadius;
-        //    randomDirection += targetPos.position;
-
-        //    NavMeshHit hit;
-        //    if(NavMesh.SamplePosition(randomDirection, out hit, towerRadius, NavMesh.AllAreas))
-        //    {
-        //        if (!CheckForMonsterCollision(hit.position)){
-        //            return hit.position;
-        //        }
-        //    }
-        //    attemptCount++;
-        //}
-        //return transform.position;
     }
-    
+
+    Vector3 AvoidanceCheck(Vector3 targetPos)
+    {
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(targetPos, out hit, avoidanceRadious, NavMesh.AllAreas))
+        {
+            return hit.position;
+        }
+        return targetPos;
+    }
+
     bool CheckForMonsterCollision(Vector3 position)
     {
         Collider[] colliders = Physics.OverlapSphere(position, monsterRadius);
@@ -242,30 +195,6 @@ public class Enemy : MonoBehaviour
         return false;
     }
 
-
-    Vector3 AvoidanceCheck(Vector3 targetPos)
-    {
-        //Vector3 avoidanceDirection = Vector3.zero;
-        //Collider[] nearbyColliders = Physics.OverlapSphere(transform.position, avoidanceRadious);
-
-        //foreach (Collider collider in nearbyColliders)
-        //{
-        //    if (collider != null && collider != this.gameObject)
-        //    {
-        //        Vector3 toOther = collider.transform.position - transform.position;
-        //        avoidanceDirection -= toOther.normalized / toOther.magnitude;
-        //    }
-        //}
-
-        //Vector3 adjustedPosition = targetPos + avoidanceDirection * avoidForce;
-
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(targetPos, out hit, avoidanceRadious, NavMesh.AllAreas))
-        {
-            return hit.position;
-        }
-        return targetPos;
-    }
 
     private void OnCollisionEnter(Collision collision)
     {

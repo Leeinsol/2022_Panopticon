@@ -80,7 +80,6 @@ public class ChangeInputKey : MonoBehaviour
 
         KeyButton[currentIndex].GetComponentInChildren<TextMeshProUGUI>().text = keyCode.ToString();
 
-        //Keys[currentIndex] = keyCode;
         SetInputKey(keyList[currentIndex].KeyName, keyCode);
         
         buttonState(keyCode);
@@ -89,7 +88,6 @@ public class ChangeInputKey : MonoBehaviour
     public void setCurrentIndex(int index)
     {
         currentIndex = index;
-        //buttonState(Keys[currentIndex]);
         string key = myKeyList[currentIndex].KeyCode;
         buttonState((KeyCode)System.Enum.Parse(typeof(KeyCode),key));
 
