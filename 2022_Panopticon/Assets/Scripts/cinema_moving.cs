@@ -47,33 +47,12 @@ public class cinema_moving : MonoBehaviour
             SetCanvas(true);
 
             Array.Resize(ref cinemaNums, 0);
-            //isDoorOpen = false;
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        //if (!isRotateleft)
-        //    moveRotateLeft();
-
-        //if (isRotateleft)
-        //{
-        //    moveRotateRight();
-
-        //}
-
-        //if(isRotateleft && isRotateRight)
-        //{
-        //    moveRotateMiddle();
-
-        //}
-        //if (isRotateleft && isRotateRight && isRotateMiddle)
-        //{
-        //    zoomCamera();
-
-        //}
-
         if (PlayerPrefs.GetInt("isCinemaEnd") == 0)
         {
             if (cinemaNum == 0)
@@ -94,29 +73,6 @@ public class cinema_moving : MonoBehaviour
             if (cinemaNum == 5)
                 doorOpen();
         }
-
-
-
-        //else if (isRotateleft)
-        //{
-        //    moveRotateRight();
-        //    if (isRotateRight)
-        //    {
-        //        moveRotateMiddle();
-        //        if (isRotateMiddle)
-        //        {
-        //            zoomCamera();
-
-        //        }
-        //    }
-        //}
-
-
-
-        //float FOVvalue = Mathf.SmoothStep(0, 10, Time.deltaTime);
-        //Debug.Log(FOVvalue);
-
-        //zoomCamera();
     }
 
     void SetCanvas(bool set)
@@ -127,7 +83,6 @@ public class cinema_moving : MonoBehaviour
 
 void moveRotateLeft()
     {
-        //Debug.Log("moveRotateLeft");
         Quaternion rot = Quaternion.Euler(0, goalRotation, 0);
         transform.localRotation = Quaternion.Slerp(transform.localRotation, rot, Time.deltaTime * Speed);
 
@@ -139,7 +94,6 @@ void moveRotateLeft()
     }
     void moveRotateRight()
     {
-        //Debug.Log("moveRotateRight");
         Quaternion rot = Quaternion.Euler(0, -goalRotation, 0);
         transform.localRotation = Quaternion.Slerp(transform.localRotation, rot, Time.deltaTime * Speed);
         if (transform.localRotation == rot)
@@ -150,7 +104,6 @@ void moveRotateLeft()
 
     void moveRotateMiddle()
     {
-        //Debug.Log("moveRotateMiddle");
         Quaternion rot = Quaternion.Euler(0, 0, 0);
         transform.localRotation = Quaternion.Slerp(transform.localRotation, rot, Time.deltaTime * Speed);
 
@@ -162,27 +115,15 @@ void moveRotateLeft()
 
     void zoomCamera()
     {
-        //Debug.Log("zoomCamera");
         Quaternion rot = Quaternion.Euler(0, 0, 0);
         transform.localRotation = rot;
-        //float FOVvalue = Mathf.Lerp(60, 10, Time.deltaTime * 50);
-        //float FOVvalue = Mathf.SmoothStep(0, 10, Time.deltaTime * 100.0f);
-        //Debug.Log(FOVvalue);
-        //transform.GetComponent<Camera>().fieldOfView = Mathf.SmoothStep(60, 10, Time.deltaTime * 100.0f);
-        //float FOVtime = (Time.time - startTime) / time;
 
         timer15 = timer15 - Time.deltaTime;
         transform.GetComponent<Camera>().fieldOfView = Mathf.Lerp(10, 60, timer15 * 0.33f);
 
-
         Vector3 destination = new Vector3(transform.position.x, 19.9f, transform.position.z);
-        //Debug.Log(destination);
         transform.localPosition = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * 0.4f);
-        //transform.position= Vector3.MoveTowards(transform.position, new Vector3(0,19.7f,0), 0.4f);
-        //transform.localPosition =destination;
 
-        //Debug.Log(transform.localPosition.y);
-        //Debug.Log(transform.GetComponent<Camera>().fieldOfView);
         if (transform.GetComponent<Camera>().fieldOfView == 10)
         {
             timer30 = timer30 - Time.deltaTime;
@@ -220,9 +161,8 @@ void moveRotateLeft()
     void setCameraPosition()
     {
         transform.position = new Vector3(transform.position.x, 24f, -23f);
-        //transform.GetComponent<Camera>().fieldOfView = 60;
         timer30 = timer30 - Time.deltaTime;
-        //Debug.Log(timer30);
+
         if (timer30 < 0)
         {
             timer30 = Maxtimer30;

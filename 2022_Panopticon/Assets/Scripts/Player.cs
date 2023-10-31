@@ -557,7 +557,7 @@ public class Player : MonoBehaviour
 
             if (WeaponNum[2] <= 0)
             {
-                Debug.Log("´Ù »ç¿ëÇß¾î¿ä" + currentIndex);
+                Debug.Log("ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ß¾ï¿½ï¿½" + currentIndex);
                 currentIndex++;
                 changeWeaponNext(currentIndex);
                 setRemainItemUI(false);
@@ -900,7 +900,7 @@ public class Player : MonoBehaviour
             RaycastHit hit = hits[i];
             if (hit.transform.parent != null && hit.transform.parent.gameObject.tag == "EnergyDrink")
             {
-                //Debug.Log("¿¡³ÊÁö µå¸µÅ©");
+                //Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½å¸µÅ©");
                 isPulling = true;
                 StartCoroutine(PullItem(hit.transform.parent.gameObject));
                 break;
@@ -1034,7 +1034,7 @@ public class Player : MonoBehaviour
 
         if (energyTimer < 0)
         {
-            //Debug.Log("³¡");
+            //Debug.Log("ï¿½ï¿½");
 
             energyTimer = Weapon[3].GetComponent<Item_energyDrink>().energyDrink.getTime();
             //setReloadBulletUI(false);
@@ -1134,7 +1134,7 @@ public class Player : MonoBehaviour
     {
         if (crosshairtype == CrossHairType.cross) crossHairText.text = "+";
 
-        else if (crosshairtype == CrossHairType.circle) crossHairText.text = "¡Û";
+        else if (crosshairtype == CrossHairType.circle) crossHairText.text = "ï¿½ï¿½";
 
         else if (crosshairtype == CrossHairType.dot) crossHairText.text = ".";
     }
@@ -1149,7 +1149,7 @@ public class Player : MonoBehaviour
     public void setRemainItemUI(bool isShow)
     {
         ItemNumUI.SetActive(isShow);
-        //Debug.Log("½ÇÇà " + RemainItemNumUI.activeSelf);
+        //Debug.Log("ï¿½ï¿½ï¿½ï¿½ " + RemainItemNumUI.activeSelf);
 
     }
 
