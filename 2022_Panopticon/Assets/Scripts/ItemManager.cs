@@ -44,7 +44,11 @@ public class ItemManager : MonoBehaviour
         {
             for (int i = 0; i < energyDrinkNum; i++)
             {
+                //Debug.Log(i);
                 Vector2 randomPoint = Random.insideUnitCircle.normalized * Random.Range(minRadius, maxRadius);
+                //Debug.Log(randomPoint);
+                //Vector2 towerPoint = Random.insideUnitCircle * 7f;
+
                 while (randomPoint.magnitude <= minRadius)
                 {
                     randomPoint = Random.insideUnitCircle.normalized * Random.Range(minRadius, maxRadius);
@@ -64,6 +68,19 @@ public class ItemManager : MonoBehaviour
 
     public void instantiateItem(Vector3 position)
     {
+
+        //Debug.Log("instantiateItem");
+
+        //Vector2 randomPoint = Random.insideUnitCircle * circleRadius;
+        //Debug.Log(randomPoint.magnitude);
+
+        ////while(randomPoint.magnitude <= 10f)
+        ////{
+        ////    randomPoint = Random.insideUnitCircle * circleRadius;
+        ////}
+
+        //Instantiate(Bomb, position + new Vector3(randomPoint.x, 0f, randomPoint.y), Quaternion.identity);
+
         Vector2 randomPoint;
         Vector3 vector3;
         if (isDistanceCorrection)

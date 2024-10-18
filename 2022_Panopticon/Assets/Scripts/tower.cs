@@ -156,7 +156,7 @@ public class tower : MonoBehaviour
 
     IEnumerator FlashUI()
     {
-        Debug.Log("ï¿½ï¿½ï¿½ï¿½");
+        Debug.Log("½ÇÇà");
         towerHpUI.color = Color.white;
         yield return new WaitForSeconds(0.2f);
         towerHpUI.color = originalColor;
